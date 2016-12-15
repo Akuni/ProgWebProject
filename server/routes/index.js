@@ -1,6 +1,6 @@
 var app = require('../app');
 
 // routing
-app.get('/', function (req, res, next) {
-  res.render('simpleChat');
+app.get('/', function (req, res) {
+  res.sendfile('./views/simpleChat.html');
 });
