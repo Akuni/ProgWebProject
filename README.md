@@ -27,6 +27,6 @@ Client description
 ## Team
 
 Project by :
- - [Julien](https://github.com/JulienAndre26])
+ - [Julien](https://github.com/JulienAndre26)
  - [Antoine](https://github.com/antoinerollin)
  - [Nicolas](https://github.com/Akuni)
