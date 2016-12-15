@@ -1,6 +1,5 @@
-
 // We need to use the express framework: have a real web servler that knows how to send mime types etc.
-var express=require('express');
+var express = require('express');
 
 // Init globals variables for each module required
 var app = express()
@@ -12,9 +11,7 @@ var app = express()
 server.listen(8082);
 
 // Indicate where static files are located. Without this, no external js file, no css...  
-
-    app.use(express.static(__dirname + '/'));    
-
+app.use(express.static(__dirname + '/'));
 
 // routing
 app.get('/', function (req, res) {
@@ -26,7 +23,6 @@ var usernames = {};
 var listOfPlayers = {};
 
 io.sockets.on('connection', function (socket) {
-
 	// when the client emits 'sendchat', this listens and executes
 	socket.on('sendchat', function (data) {
 		// we tell the client to execute 'updatechat' with 2 parameters
