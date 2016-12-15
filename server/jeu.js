@@ -1,6 +1,5 @@
 var canvas, ctx, mousePos;
 
-
 // Autres joueurs
 var allPlayers = {};
 
@@ -14,9 +13,7 @@ function init() {
   canvas.addEventListener("mousemove", traiteMouseMove);
   
   anime();
-
 }
-
 
 function traiteMouseDown(evt) {
   console.log("mousedown");
@@ -74,7 +71,6 @@ function anime() {
     // 2 On dessine des objets
     drawAllPlayers();
   }
-      // 4 On rappelle la fonction d'animation à 60 im/s
-
+  // 4 On rappelle la fonction d'animation à 60 im/s
   requestAnimationFrame(anime);
 }
