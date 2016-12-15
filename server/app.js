@@ -1,10 +1,8 @@
 var express = require('express');
-var index = require('./routes/index');
-
-var app = express();
 
 // Init globals variables for each module required
-var http = require('http')
+var app = express()
+  , http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 

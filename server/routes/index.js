@@ -1,14 +1,6 @@
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-//router.get('/', function(req, res, next) {
-//  res.render('index', { title: 'Express' });
-//});
+var app = require('../app');
 
 // routing
-router.get('/', function (req, res, next) {
+app.get('/', function (req, res, next) {
   res.render('simpleChat');
 });
-
-module.exports = router;
