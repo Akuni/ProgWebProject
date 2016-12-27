@@ -1,0 +1,38 @@
+.my-body {
+	padding: 50px;
+	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+.my-chat-users {
+	float:left;
+	width:100px;
+	border-right:1px solid black;
+	height:300px;
+	padding:10px;
+	overflow:scroll-y;
+}
+
+.my-chat-content {
+	float:left;
+	width:300px;
+	height:250px;
+	overflow:scroll-y;
+	padding:10px;
+}
+
+.my-chat-content-data {
+	width:200px;
+}
+
+.my-err-img {
+	margin: 0 auto;
+}
+
+a {
+	color: #00B7FF;
+}
+
+#myCanvas {
+	border: 1px solid red;
+	background-color:pink;
+}
