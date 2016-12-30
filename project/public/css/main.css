@@ -32,6 +32,14 @@ a {
 	color: #00B7FF;
 }
 
+.my-sign-up-field {
+	padding: 10px;
+}
+
+.my-sign-up-panel {
+	padding: 30px;
+}
+
 #myCanvas {
 	border: 1px solid red;
 	background-color:pink;
