@@ -40,11 +40,15 @@ a {
 	padding: 30px;
 }
 
+.my-sign-up-wrong {
+	background-color: #ff6d66;
+	color: white;
+}
+
 #myCanvas {
 	border: 1px solid red;
 	background-color:pink;
 }
-
 
 #map {
 	min-width: 200px;
