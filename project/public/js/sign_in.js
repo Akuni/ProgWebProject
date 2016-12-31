@@ -7,12 +7,6 @@ var onConnectionClick = function()
     tname = document.getElementById("name");
     pwd = document.getElementById("password");
 
-    if (tname.value.length <= 0)
-    {
-        window.alert("Can't you just select a team ?");
-        return;
-    }
-
     if (pwd.value.length <= 0)
     {
         window.alert("Password ?");
@@ -42,10 +36,10 @@ socket.on('signin', function(data){
 
     if (data.status)
     {
-        window.location.pathname = window.location.pathname.replace("sign_in", "play");
+        window.location.pathname = window.location.pathname.replace("sign_in", "admin");
     }
     else
     {
-        window.alert("ACCESS DENIED !! Are you OK ?!")
+        window.alert("ACCESS DENIED !! Invalid password. Are you OK ?!")
     }
 });

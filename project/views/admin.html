@@ -52,10 +52,10 @@
                     <a href="#page-top"></a>
                 </li>
                 <li class="page-scroll">
-                    <a href="/sign_up"><span class="fa fa-plus"></span> Sign Up</a>
+                    <a href="#chat"><span class="fa fa-comment"></span> Chat</a>
                 </li>
                 <li class="page-scroll">
-                    <a href="/sign_in"><span class="fa fa-key"></span> Sign In</a>
+                    <a href="/"><span class="fa fa-home"></span> Disconnect</a>
                 </li>
             </ul>
         </div>
@@ -63,49 +63,44 @@
     </div>
     <!-- /.container-fluid -->
 </nav>
+
 <!-- Header -->
 <header>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="intro-text">
-                    <span class="name">Hi there !</span>
+    <section id="chat">
+        <div class="container">
+            <!--Title-->
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>Chat</h2>
                     <hr class="star-light">
-                    <span class="skills">What's going on ?</span>
-                    <!--<hr class="star-light">-->
                 </div>
             </div>
-            <div class="col-md-6 col-md-offset-3">
 
-                <div class="my-sign-up-panel">
-                    <!--Team Name-->
-                    <div class="my-sign-up-field">
-                        <p>What's your team name already ?</p>
-                        <div class="form-group">
-                            <select class="form-control" id="name">
-                                <option>Team Blind</option>
-                                <option>Team Burton</option>
-                                <option>Admin</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!--Password1-->
-                    <div class="my-sign-up-field">
-                        <p>And.. You know... Our little secret ?</p>
-                        <div class="input-group">
-                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                            <input id="password" type="password" class="form-control" name="password" placeholder="Password">
-                        </div>
+            <!--Chat-->
+            <div class="row">
+                <!--Users-->
+                <div class="col-sm-5">
+                    <div class="my-chat-users">
+                        <span class="fa fa-user"></span> <b>USERS</b>
+                        <div id="users"></div>
                     </div>
                 </div>
 
-                <!--Register-->
-                <button id="connection" class="btn btn-primary">Let's have some fun</button>
+                <!--Conversation-->
+                <div class="col-sm-7">
+                    <div class="my-chat-content">
+                        <div id="conversation"></div>
+                        <input id="data" class="my-chat-content-input"/>
+                        <input class="btn btn-primary" type="button" id="datasend" value="send" />
+                    </div>
+                </div>
+
             </div>
         </div>
-    </div>
+    </section>
 </header>
+
+
 
 <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
 <div class="scroll-top page-scroll hidden-sm hidden-xs hidden-lg hidden-md">
@@ -115,7 +110,7 @@
 </div>
 
 <script src="/socket.io/socket.io.js"></script>
-<script src="js/sign_in.js"></script>
+<script src="js/admin.js"></script>
 
 <!-- jQuery -->
 <script src="vendor/jquery/jquery.min.js"></script>

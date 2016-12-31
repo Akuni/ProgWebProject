@@ -4,24 +4,24 @@
 }
 
 .my-chat-users {
-	float:left;
-	width:100px;
-	border-right:1px solid black;
-	height:300px;
+	float:right;
+	border-right:1px solid white;
+	max-height:300px;
 	padding:10px;
 	overflow:scroll-y;
 }
 
 .my-chat-content {
 	float:left;
-	width:300px;
+	text-align: left;
 	height:250px;
+	max-height:250px;
 	overflow:scroll-y;
 	padding:10px;
 }
 
-.my-chat-content-data {
-	width:200px;
+.my-chat-content-input {
+	color: forestgreen;
 }
 
 .my-err-img {
@@ -40,15 +40,11 @@ a {
 	padding: 30px;
 }
 
-.my-sign-up-wrong {
-	background-color: #ff6d66;
-	color: white;
-}
-
 #myCanvas {
 	border: 1px solid red;
 	background-color:pink;
 }
+
 
 #map {
 	min-width: 200px;

@@ -15,21 +15,18 @@ var onRegisterClick = function()
 
     if (tname.value.length <= 0)
     {
-        window.alert("A team without a name ?! What a joke.");
         setStatusCorrectnessStyle(name, true);
         return;
     }
 
     if (mail.value.length <= 0)
     {
-        window.alert("You don't want to let me spam you ? :(");
         setStatusCorrectnessStyle(mail, true);
         return;
     }
 
     if (p1.value.length <= 0)
     {
-        window.alert("I love your password.");
         setStatusCorrectnessStyle(p1, true);
         return;
     }
@@ -38,7 +35,6 @@ var onRegisterClick = function()
         || (p1.value != p3.value)
         || (p1.value != p4.value))
     {
-        window.alert("One of your passwords is different from the others. And i will not tell you which one. :D");
         setStatusCorrectnessStyle(p1, true);
         setStatusCorrectnessStyle(p2, true);
         setStatusCorrectnessStyle(p3, true);
@@ -86,7 +82,7 @@ socket.on('signup', function(data){
     console.log("[Sign Up] Received : " + JSON.stringify(data));
     if (data.status)
     {
-        window.location.pathname = window.location.pathname.replace("sign_up", "");
+        window.location.pathname = window.location.pathname.replace("sign_up", "sign_in");
     }
     else
     {

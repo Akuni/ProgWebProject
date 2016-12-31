@@ -36,20 +36,22 @@ var listOfPlayers = {};
 
 io.sockets.on('connection', function (socket) {
 
-  socket.on('signup', function(data)
-  {
-     console.log("[Sign Up] Received : " + JSON.stringify(data));
+    socket.on('signup', function(data)
+    {
+        console.log("[Sign Up] Received : " + JSON.stringify(data));
 
-      // TODO: CHECK DATA
-    socket.emit('signup', {"status": true});
-  });
+        // TODO: CHECK DATA IN DATABASE IF ALREADY EXISTS
+        socket.emit('signup', {"status": true});
+    });
 
     socket.on('signin', function(data)
     {
         console.log("[Sign In] Received : " + JSON.stringify(data));
 
-        // TODO: CHECK DATA
-        socket.emit('signin', {"status": true});
+        // TODO: CHECK DATA IN DATABASE
+        var res = {};
+        res.status = true;
+        socket.emit('signin', res);
     });
 
   socket.on('sendchat', function (data) {
@@ -67,12 +69,13 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
     io.sockets.emit('updateusers', usernames);
 
-  var player = {'x':0, 'y':0, 'v':0}
+  var player = {'x':0, 'y':0, 'v':0};
     listOfPlayers[username] = player;
     io.sockets.emit('updatePlayers',listOfPlayers);
   });
 
   socket.on('disconnect', function(){
+
     delete usernames[socket.username];
     io.sockets.emit('updateusers', usernames);
 
