@@ -53,3 +53,10 @@ a {
 	height: 80%;
 	border: 1px solid blue;
 }
+
+.map-wrapper {
+    background-color: grey;
+    height: 500px;
+	width: 500px;
+	border: dashed red 2px;
+}
