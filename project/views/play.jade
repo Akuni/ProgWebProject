@@ -1,0 +1,31 @@
+doctype html
+html
+  head
+    link(rel='stylesheet', href='/css/main.css')
+    style(type='text/css').
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        height: 100%;
+      }
+  body
+    #map
+    script(type='text/javascript').
+      var map;
+      function initMap() {
+        var mapOptions = {
+          zoom : 8,
+          center : new google.maps.LatLng(-34.397, 150.644)
+        };
+        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        // listen for the window resize event & trigger Google Maps to update too
+        $(window).resize(function () {
+          // (the 'map' here is the result of the created 'var map = ...' above)
+          google.maps.event.trigger(map, "resize");
+        });
+      }
+    script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmiBoA1oh9awNJXAIGl3dxQuOgTcmR90&callback=initMap')
