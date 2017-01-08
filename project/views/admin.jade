@@ -46,6 +46,10 @@ html(lang='en')
                                 span.fa.fa-group
                                 |  Teams
                         li.page-scroll
+                            a(href='/admin/enigma')
+                                span.fa.fa-star
+                                |  Enigmas
+                        li.page-scroll
                             a(href='/')
                                 span.fa.fa-sign-out
                                 |  Disconnect
@@ -76,7 +80,6 @@ html(lang='en')
                                 input#datasend.btn.btn-primary(type='button', value='send')
         section#teams
             .container
-                // Title
                 .row
                     .col-lg-12.text-center
                         h2 Teams
@@ -96,10 +99,14 @@ html(lang='en')
                                 td Team OK
                                 td 4
                                 td team@ok.com
+
+
         // Scroll to Top Button (Only visible on small and extra-small screen sizes)
         .scroll-top.page-scroll.hidden-sm.hidden-xs.hidden-lg.hidden-md
             a.btn.btn-primary(href='#page-top')
                 i.fa.fa-chevron-up
+
+
         script(src='/socket.io/socket.io.js')
         script(src='/js/admin.js')
         // jQuery
