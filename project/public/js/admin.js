@@ -22,8 +22,27 @@ socket.on('updateusers', function(listOfUsers) {
     }
 });
 
+socket.on('getteams', function (data) {
+    console.log(JSON.stringify(data));
+
+    var teams_table = document.querySelector("#teams_table");
+
+    var content = "";
+    data.forEach(function(elem){
+        content += '<tr>'
+            + '<td>' + elem.name + '</td>'
+            + '<td>' + elem.score + '</td>'
+            + '<td>' + elem.email + '</td>'
+            + '</tr>';
+    });
+
+    teams_table.innerHTML = content;
+});
+
 // on load of page
 window.addEventListener("load", function(){
+
+    socket.emit('getteams');
 
     // get handles on various GUI components
     conversation = document.querySelector("#conversation");

@@ -38,7 +38,7 @@ html(lang='en')
                         li.hidden
                             a(href='#page-top')
                         li.page-scroll
-                            a(href='#enigma_list')
+                            a(href='#enigmas_list')
                                 span.fa.fa-list
                                 |  Enigmas
                         li.page-scroll
@@ -57,11 +57,11 @@ html(lang='en')
             // /.container-fluid
         // Header
         header
-            section#enigma_list.success
+            section#enigmas_list.success
                 .container
                     .row
                         .col-lg-12.text-center
-                            h2 Enigma List
+                            h2 Enigmas List
                             hr.star-light
                         table.col-lg-12.table.table-condensed
                             thead
@@ -69,18 +69,10 @@ html(lang='en')
                                     th Location
                                     th Question
                                     th Valid Response
+                                    th Invalid Responses
                                     th Award
-                            tbody
-                                tr
-                                    td [1.012345 ; 890.9876543]
-                                    td What is my name ?
-                                    td IDK
-                                    td 1
-                                tr
-                                    td [4.012345 ; -6.9876543]
-                                    td What is your name ?
-                                    td Shit
-                                    td 2
+                            tbody#enigmas_list_content
+
 
         section#add_enigma
             .container
@@ -88,6 +80,7 @@ html(lang='en')
                     .col-lg-12.text-center
                         h2 Add Enigma
                         hr.star-primary
+
                     .col-md-6.col-md-offset-3
                         .my-sign-up-panel
 
@@ -110,7 +103,7 @@ html(lang='en')
                                 .input-group
                                     span.input-group-addon
                                         i.fa.fa-question
-                                    input#name.form-control(type='text', name='question', placeholder='Question')
+                                    input#question.form-control(type='text', name='question', placeholder='Question')
 
                             // Responses
                             .my-sign-up-field
@@ -142,6 +135,7 @@ html(lang='en')
                                         i.fa.fa-star
                                     input#award.form-control(type='number', name='award', placeholder='Earning points')
 
+                    .col-lg-12.text-center
                         // Register
                         button#register.btn.btn-primary Submit
 

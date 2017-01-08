@@ -16,8 +16,23 @@ var onConnectionClick = function()
     socket.emit('signin', {"name": tname.value, "password": pwd.value} );
 };
 
+socket.on('getteams', function (data) {
+    console.log(JSON.stringify(data));
+
+    var teams_list = document.querySelector("#name");
+
+    var content = "";
+    data.forEach(function(elem){
+        content += '<option>' + elem.name + '</option>'
+    });
+
+    teams_list.innerHTML = content + teams_list.innerHTML;
+});
+
 // On page load
 window.addEventListener("load", function() {
+
+    socket.emit('getteams');
 
     document.querySelector("#connection").onclick = onConnectionClick;
 
