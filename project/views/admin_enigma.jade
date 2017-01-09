@@ -1,0 +1,160 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='description', content='')
+        meta(name='author', content='')
+        title PW Project
+        // Bootstrap Core CSS
+        link(href='/vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+        // Theme CSS
+        link(href='/css/freelancer.min.css', rel='stylesheet')
+        link(rel='stylesheet', href='/css/main.css', type='text/css')
+        // Custom Fonts
+        link(href='/vendor/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Montserrat:400,700', rel='stylesheet', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic', rel='stylesheet', type='text/css')
+        // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+        // WARNING: Respond.js doesn't work if you view the page via file://
+        //if lt IE 9
+          script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+          script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    body#page-top.index
+        // Navigation
+        nav#mainNav.navbar.navbar-default.navbar-fixed-top.navbar-custom
+            .container
+                // Brand and toggle get grouped for better mobile display
+                .navbar-header.page-scroll
+                    button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+                        span.sr-only Toggle navigation
+                        |  Menu
+                        i.fa.fa-bars
+                    a.navbar-brand(href='/') Project
+                // Collect the nav links, forms, and other content for toggling
+                #bs-example-navbar-collapse-1.collapse.navbar-collapse
+                    ul.nav.navbar-nav.navbar-right
+                        li.hidden
+                            a(href='#page-top')
+                        li.page-scroll
+                            a(href='#enigmas_list')
+                                span.fa.fa-list
+                                |  Enigmas
+                        li.page-scroll
+                            a(href='#add_enigma')
+                                span.fa.fa-plus
+                                |  Add Enigma
+                        li.page-scroll
+                            a(href='/admin')
+                                span.fa.fa-home
+                                |  Home
+                        li.page-scroll
+                            a(href='/')
+                                span.fa.fa-sign-out
+                                |  Disconnect
+                // /.navbar-collapse
+            // /.container-fluid
+        // Header
+        header
+            section#enigmas_list.success
+                .container
+                    .row
+                        .col-lg-12.text-center
+                            h2 Enigmas List
+                            hr.star-light
+                        table.col-lg-12.table.table-condensed
+                            thead
+                                tr
+                                    th Location
+                                    th Question
+                                    th Valid Response
+                                    th Invalid Responses
+                                    th Award
+                            tbody#enigmas_list_content
+
+
+        section#add_enigma
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2 Add Enigma
+                        hr.star-primary
+
+                    .col-md-6.col-md-offset-3
+                        .my-sign-up-panel
+
+                            // Location
+                            .my-sign-up-field
+                                p Location
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-compass
+                                    input#latitude.form-control(type='number', name='latitude', placeholder='Latitude')
+
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-compass
+                                    input#longitude.form-control(type='number', name='longitude', placeholder='Longitude')
+
+                            // Question
+                            .my-sign-up-field
+                                p Question
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-question
+                                    input#question.form-control(type='text', name='question', placeholder='Question')
+
+                            // Responses
+                            .my-sign-up-field
+                                p Responses
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-check
+                                    input#valid_response.form-control(type='text', name='valid_response', placeholder='Valid response')
+
+                            .my-sign-up-field
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-times
+                                    input#invalid_response1.form-control(type='text', name='invalid_response1', placeholder='Invalid response')
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-times
+                                    input#invalid_response2.form-control(type='text', name='invalid_response2', placeholder='Invalid response')
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-times
+                                    input#invalid_response3.form-control(type='text', name='invalid_response3', placeholder='Invalid response')
+
+                            // Responses
+                            .my-sign-up-field
+                                p Award
+                                .input-group
+                                    span.input-group-addon
+                                        i.fa.fa-star
+                                    input#award.form-control(type='number', name='award', placeholder='Earning points')
+
+                    .col-lg-12.text-center
+                        // Register
+                        button#register.btn.btn-primary Submit
+
+        // Scroll to Top Button (Only visible on small and extra-small screen sizes)
+        .scroll-top.page-scroll.hidden-sm.hidden-xs.hidden-lg.hidden-md
+            a.btn.btn-primary(href='#page-top')
+                i.fa.fa-chevron-up
+
+
+        script(src='/socket.io/socket.io.js')
+        script(src='/js/admin_enigma.js')
+        // jQuery
+        script(src='/vendor/jquery/jquery.min.js')
+        // Bootstrap Core JavaScript
+        script(src='/vendor/bootstrap/js/bootstrap.min.js')
+        // Plugin JavaScript
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
+        // Contact Form JavaScript
+        script(src='/js/jqBootstrapValidation.js')
+        script(src='/js/contact_me.js')
+        // Theme JavaScript
+        script(src='/js/freelancer.min.js')

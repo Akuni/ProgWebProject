@@ -39,6 +39,10 @@ a {
 .my-sign-up-panel {
 	padding: 30px;
 }
+.my-sign-up-wrong {
+	background-color: #a94442;
+	color: white;
+}
 
 #myCanvas {
 	border: 1px solid red;

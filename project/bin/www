@@ -30,6 +30,47 @@ server.on('listening', onListening);
 var usernames = {};
 var listOfPlayers = {};
 
+
+/** DATABASE ACCESSES **/
+var getTeams = function(){
+    // !! MOCK
+    var teams = [];
+    for (var i = 0; i < 10; i++)
+    {
+        var team = {};
+        team.name = "Team " + i;
+        team.score = i;
+        team.email = "team"+i+"@spork.com";
+        teams.push(team);
+    }
+
+    return teams;
+};
+
+var getEnigmas = function(){
+    // !! MOCK
+    var enigmas = [];
+    for (var i = 0; i < 10; i++)
+    {
+        var enigma = {};
+
+        var invalid_responses = [];
+        invalid_responses.push('invalid' + i + '1');
+        invalid_responses.push('invalid' + i + '2');
+        invalid_responses.push('invalid' + i + '3');
+
+        enigma.location = '[' + -i + ';' + i + ']';
+        enigma.question = "question" + i;
+        enigma.valid_response = "response" + i;
+        enigma.invalid_responses = invalid_responses;
+        enigma.award = i;
+        enigmas.push(enigma);
+    }
+
+    return enigmas;
+};
+
+/** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
     socket.on('signup', function(data)
     {
@@ -47,6 +88,30 @@ io.sockets.on('connection', function (socket) {
         var res = {};
         res.status = true;
         socket.emit('signin', res);
+    });
+
+  socket.on('getteams', function()
+  {
+    console.log("[Get Teams] Received");
+    var teams = getTeams();
+    socket.emit('getteams', teams);
+  });
+
+    socket.on('getenigmas', function()
+    {
+        console.log("[Get Enigmas] Received");
+        var enigmas = getEnigmas();
+        socket.emit('getenigmas', enigmas);
+    });
+
+    socket.on('addenigma', function(enigma)
+    {
+        console.log("[Add Enigma] Received");
+
+        console.log(JSON.stringify(enigma));
+
+        var enigmas = getEnigmas();
+        io.sockets.emit('getenigmas' , enigmas);
     });
 
   socket.on('sendchat', function (data) {

@@ -57,6 +57,7 @@ var clearStatusCorrectnessStyle = function()
 };
 
 var setStatusCorrectnessStyle = function(elem, isWrong){
+
     if (isWrong)
         elem.classList.add("my-sign-up-wrong");
     else
@@ -74,8 +75,6 @@ window.addEventListener("load", function() {
             onRegisterClick();
         }
     });
-
-
 });
 
 socket.on('signup', function(data){
