@@ -11,15 +11,16 @@ socket.on('getenigmas', function (data) {
     var teams_table = document.querySelector("#enigmas_list_content");
 
     var content = "";
-    data.forEach(function(elem){
-        content += '<tr>'
-            + '<td>' + elem.location + '</td>'
-            + '<td>' + elem.question + '</td>'
-            + '<td>' + elem.valid_response + '</td>'
-            + '<td>' + elem.invalid_responses + '</td>'
-            + '<td>' + elem.award + '</td>'
-            + '</tr>';
-    });
+    for(var i = 0; i < data.length; i++){
+        content += '<tr><td>' + data[i].location + '</td>'
+            + '<td>' + data[i].question + '</td>'
+            + '<td>' + data[i].valid_response + '</td>';
+        for(var j = 0; j < data[i].invalid_responses.length; j++)
+        {
+            content += '<td>' + data[i][j] + '</td>';
+        }
+        content += '<td>' + data[i].award + '</td></tr>';
+    }
 
     teams_table.innerHTML = content;
 });

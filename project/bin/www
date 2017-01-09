@@ -6,6 +6,7 @@
 var app = require('../app');
 var debug = require('debug')('project:server');
 var http = require('http');
+var mongodb = require('mongodb');
 
 /**
  * Get port from environment and store in Express.
@@ -32,87 +33,141 @@ var listOfPlayers = {};
 
 
 /** DATABASE ACCESSES **/
-var getTeams = function(){
-    // !! MOCK
-    var teams = [];
-    for (var i = 0; i < 10; i++)
-    {
-        var team = {};
-        team.name = "Team " + i;
-        team.score = i;
-        team.email = "team"+i+"@spork.com";
-        teams.push(team);
+var getTeams = function (callback) {
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/pwdb';
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongodb server', err);
+      return callback(false);
+    } else {
+      var collection = db.collection('teams');
+      collection.find({}).toArray(function (err, result) {
+        if (err) {
+          console.log('Unable to get teams', err);
+          return callback(false);
+        } else {
+          return callback(result);
+        }
+      });
     }
-
-    return teams;
+  });
 };
 
-var getEnigmas = function(){
-    // !! MOCK
-    var enigmas = [];
-    for (var i = 0; i < 10; i++)
-    {
-        var enigma = {};
-
-        var invalid_responses = [];
-        invalid_responses.push('invalid' + i + '1');
-        invalid_responses.push('invalid' + i + '2');
-        invalid_responses.push('invalid' + i + '3');
-
-        enigma.location = '[' + -i + ';' + i + ']';
-        enigma.question = "question" + i;
-        enigma.valid_response = "response" + i;
-        enigma.invalid_responses = invalid_responses;
-        enigma.award = i;
-        enigmas.push(enigma);
+var addTeam = function(team, callback){
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/pwdb';
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongodb server', err);
+      return callback(false);
+    } else {
+      var collection = db.collection('teams');
+      collection.insertOne(team, function (err, result) {
+        if (err) {
+          console.log('Unable to get teams', err);
+          return callback(false);
+        } else {
+          return callback(result);
+        }
+      });
     }
+  });
+};
 
-    return enigmas;
+var teamExists = function(team, callback){
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/pwdb';
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongodb server', err);
+      return callback(false);
+    } else {
+      var collection = db.collection('teams');
+      collection.find(team).toArray(function (err, result) {
+        if (err) {
+          console.log('Unable to get team', team, err);
+          return callback(false);
+        } else {
+          return callback(result.length);
+        }
+      });
+    }
+  });
+};
+
+var getEnigmas = function (callback) {
+  var MongoClient = mongodb.MongoClient;
+  var url = 'mongodb://localhost:27017/pwdb';
+  MongoClient.connect(url, function (err, db) {
+    if (err) {
+      console.log('Unable to connect to the mongodb server', err);
+      return callback(false);
+    } else {
+      var collection = db.collection('enigmas');
+      collection.find({}).toArray(function (err, result) {
+        if (err) {
+          console.log('Unable to get enigmas', err);
+          return callback(false);
+        } else {
+          return callback(result);
+        }
+      });
+    }
+  });
 };
 
 /** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
-    socket.on('signup', function(data)
-    {
-        console.log("[Sign Up] Received : " + JSON.stringify(data));
+  socket.on('signup', function (data) {
+    console.log("[Sign Up] Received : " + JSON.stringify(data));
 
-        // TODO: CHECK DATA IN DATABASE IF ALREADY EXISTS
-        socket.emit('signup', {"status": true});
+    teamExists({"name":data.name}, function(team){
+      console.log(team);
+      if(team) // Already existing team
+        socket.emit('signup', {"status" : false});
+      else // Team available
+        addTeam(data, function(){ // Adding team
+          socket.emit('signup', {"status" : true}); // Team added
+        });
     });
-
-    socket.on('signin', function(data)
-    {
-        console.log("[Sign In] Received : " + JSON.stringify(data));
-
-        // TODO: CHECK DATA IN DATABASE
-        var res = {};
-        res.status = true;
-        socket.emit('signin', res);
-    });
-
-  socket.on('getteams', function()
-  {
-    console.log("[Get Teams] Received");
-    var teams = getTeams();
-    socket.emit('getteams', teams);
   });
 
-    socket.on('getenigmas', function()
-    {
-        console.log("[Get Enigmas] Received");
-        var enigmas = getEnigmas();
-        socket.emit('getenigmas', enigmas);
+  socket.on('signin', function (data) {
+    console.log("[Sign In] Received : " + JSON.stringify(data));
+
+    teamExists(data, function(team){
+      console.log(team);
+      if(team) // Team exists
+        socket.emit('signin', {"status" : true, "team": team});
+      else // Team doesn't exists
+        socket.emit('signin', {"status" : false});
     });
+  });
 
-    socket.on('addenigma', function(enigma)
-    {
-        console.log("[Add Enigma] Received");
-
-        console.log(JSON.stringify(enigma));
-
-        var enigmas = getEnigmas();
-        io.sockets.emit('getenigmas' , enigmas);
+  socket.on('getteams', function () {
+    getTeams(function (data) {
+      console.log("[Get Teams] Received", data);
+      socket.emit('getteams', data);
     });
+  });
+
+  socket.on('getenigmas', function () {
+    getEnigmas(function (data) {
+      console.log("[Get Enigmas] Received", data);
+      socket.emit('getenigmas', data);
+    });
+  });
+
+  socket.on('addenigma', function (enigma) {
+    console.log("[Add Enigma] Received");
+
+    console.log(JSON.stringify(enigma));
+    // TODO: ADD ENIGMA
+
+    var enigmas = getEnigmas();
+    io.sockets.emit('getenigmas', enigmas);
+  });
 
   socket.on('sendchat', function (data) {
     io.sockets.emit('updatechat', socket.username, data);
@@ -122,25 +177,25 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('updatepos', socket.username, newPos);
   });
 
-  socket.on('adduser', function(username){
+  socket.on('adduser', function (username) {
     socket.username = username;
     usernames[username] = username;
     socket.emit('updatechat', 'SERVER', 'you have connected');
     socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
     io.sockets.emit('updateusers', usernames);
 
-  var player = {'x':0, 'y':0, 'v':0};
+    var player = {'x' : 0, 'y' : 0, 'v' : 0};
     listOfPlayers[username] = player;
-    io.sockets.emit('updatePlayers',listOfPlayers);
+    io.sockets.emit('updatePlayers', listOfPlayers);
   });
 
-  socket.on('disconnect', function(){
+  socket.on('disconnect', function () {
 
     delete usernames[socket.username];
     io.sockets.emit('updateusers', usernames);
 
     delete listOfPlayers[socket.username];
-    io.sockets.emit('updatePlayers',listOfPlayers);
+    io.sockets.emit('updatePlayers', listOfPlayers);
 
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });

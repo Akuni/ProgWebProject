@@ -22,9 +22,9 @@ socket.on('getteams', function (data) {
     var teams_list = document.querySelector("#name");
 
     var content = "";
-    data.forEach(function(elem){
-        content += '<option>' + elem.name + '</option>'
-    });
+    for(var i = 0; i < data.length; i++){
+        content += '<option>' + data[i].name + '</option>';
+    }
 
     teams_list.innerHTML = content + teams_list.innerHTML;
 });
