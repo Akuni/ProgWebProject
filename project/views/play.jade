@@ -18,6 +18,8 @@ html
       #message
     script(type='text/javascript').
       var map;
+      var addedMarker;
+
       function initMap() {
           getLocation();
         var mapOptions = {
@@ -46,10 +48,21 @@ html
           });
       }
       function placeMarker(location) {
-          var marker = new google.maps.Marker({
-              position: location,
-              map: map
-          });
+            if(addedMarker == null)
+                addedMarker = new google.maps.Marker({
+                  position: location,
+                  map: map
+              });
+            else if (addedMarker.position != location){
+                addedMarker.setMap(null);
+                addedMarker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+            }
+
+          //putLocation = location;
+
       }
     script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmiBoA1oh9awNJXAIGl3dxQuOgTcmR90&callback=initMap')
     script(type='text/javascript').
