@@ -13,19 +13,44 @@ html
         height: 100%;
       }
   body
-    #map
+    .map-wrapper
+      #map
+      #message
     script(type='text/javascript').
       var map;
       function initMap() {
+          getLocation();
         var mapOptions = {
           zoom : 8,
-          center : new google.maps.LatLng(-34.397, 150.644)
+          center : new google.maps.LatLng(0, 0)
         };
-        var map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
         // listen for the window resize event & trigger Google Maps to update too
         $(window).resize(function () {
           // (the 'map' here is the result of the created 'var map = ...' above)
           google.maps.event.trigger(map, "resize");
         });
       }
+      //google.maps.event.addDomListener(window, 'load', initialize);
+      function pan(x,y) {
+          var panPoint = new google.maps.LatLng(x, y);
+          map.setCenter(panPoint)
+      }
     script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmiBoA1oh9awNJXAIGl3dxQuOgTcmR90&callback=initMap')
+    script(type='text/javascript').
+        var x = document.getElementById('message');
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(showPosition);
+            } else {
+                x.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
+        function showPosition(position) {
+            var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+            var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
+
+            pan(position.coords.latitude , position.coords.longitude);
+            document.getElementById('message').innerHTML = "Lat:" + position.coords.latitude + ", long:" +position.coords.longitude;
+        }

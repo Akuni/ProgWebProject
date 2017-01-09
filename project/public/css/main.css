@@ -45,11 +45,12 @@ a {
 	background-color:pink;
 }
 
+.map-wrapper {
+    width:400px;
+    height: 300px;
+}
 
 #map {
-	min-width: 200px;
-	width: 50%;
-	min-height: 200px;
-	height: 80%;
-	border: 1px solid blue;
+
+	border: 1px solid red;
 }
