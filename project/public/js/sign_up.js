@@ -75,8 +75,6 @@ window.addEventListener("load", function() {
             onRegisterClick();
         }
     });
-
-
 });
 
 socket.on('signup', function(data){
