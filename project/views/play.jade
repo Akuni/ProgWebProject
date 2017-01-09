@@ -20,6 +20,7 @@ html
       var map;
       function initMap() {
           getLocation();
+
         var mapOptions = {
           zoom : 17,
           center : new google.maps.LatLng(0, 0)
@@ -51,6 +52,7 @@ html
               map: map
           });
       }
+
     script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmiBoA1oh9awNJXAIGl3dxQuOgTcmR90&callback=initMap')
     script(type='text/javascript').
         var x = document.getElementById('message');
@@ -61,6 +63,7 @@ html
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
         }
+
         function showPosition(position) {
             var latlon = position.coords.latitude + "," + position.coords.longitude;
 
