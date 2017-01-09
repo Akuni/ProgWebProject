@@ -69,7 +69,10 @@ html
         var x = document.getElementById('message');
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, errorCallback);
+                navigator.geolocation.getCurrentPosition(showPosition, errorCallback, {
+                    enableHighAccuracy: true,
+                    timeout: 5000
+                });
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
