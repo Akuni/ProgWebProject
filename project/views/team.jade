@@ -1,0 +1,115 @@
+doctype html
+html(lang='en')
+    head
+        meta(charset='utf-8')
+        meta(http-equiv='X-UA-Compatible', content='IE=edge')
+        meta(name='viewport', content='width=device-width, initial-scale=1')
+        meta(name='description', content='')
+        meta(name='author', content='')
+        title PW Project
+        // Bootstrap Core CSS
+        link(href='/vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
+        // Theme CSS
+        link(href='/css/freelancer.min.css', rel='stylesheet')
+        link(rel='stylesheet', href='/css/main.css', type='text/css')
+        // Custom Fonts
+        link(href='/vendor/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Montserrat:400,700', rel='stylesheet', type='text/css')
+        link(href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic', rel='stylesheet', type='text/css')
+        // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+        // WARNING: Respond.js doesn't work if you view the page via file://
+        //if lt IE 9
+          script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+          script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    body#page-top.index
+        // Navigation
+        nav#mainNav.navbar.navbar-default.navbar-fixed-top.navbar-custom
+            .container
+                // Brand and toggle get grouped for better mobile display
+                .navbar-header.page-scroll
+                    button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+                        span.sr-only Toggle navigation
+                        |  Menu
+                        i.fa.fa-bars
+                    a.navbar-brand(href='/') Project
+                // Collect the nav links, forms, and other content for toggling
+                #bs-example-navbar-collapse-1.collapse.navbar-collapse
+                    ul.nav.navbar-nav.navbar-right
+                        li.hidden
+                            a(href='#page-top')
+                        li.page-scroll
+                            a(href='#game')
+                                span.fa.fa-map-marker
+                                |  Game
+                        li.page-scroll
+                            a(href='#chat')
+                                span.fa.fa-comment
+                                |  Chat
+                        li.page-scroll
+                            a(href='#teams')
+                                span.fa.fa-group
+                                |  Teams
+                        li.page-scroll
+                            a(href='/')
+                                span.fa.fa-sign-out
+                                |  Disconnect
+                // /.navbar-collapse
+            // /.container-fluid
+        // Header
+        header
+            section#chat
+                .container
+                    // Title
+                    .row
+                        .col-lg-12.text-center
+                            h2 Chat
+                            hr.star-light
+                    // Chat
+                    .row
+                        // Users
+                        .col-sm-5
+                            .my-chat-users
+                                span.fa.fa-user
+                                b USERS
+                                #users
+                        // Conversation
+                        .col-sm-7
+                            .my-chat-content
+                                #conversation
+                                input#data.my-chat-content-input
+                                input#datasend.btn.btn-primary(type='button', value='send')
+        section#teams
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2 Teams
+                        hr.star-primary
+                    table.col-lg-12.table.table-condensed.table-hover
+                        thead
+                            tr
+                                th Team Name
+                                th Score
+                                th Email
+                        tbody#teams_table
+
+
+
+        // Scroll to Top Button (Only visible on small and extra-small screen sizes)
+        .scroll-top.page-scroll.hidden-sm.hidden-xs.hidden-lg.hidden-md
+            a.btn.btn-primary(href='#page-top')
+                i.fa.fa-chevron-up
+
+
+        script(src='/socket.io/socket.io.js')
+        script(src='/js/team.js')
+        // jQuery
+        script(src='/vendor/jquery/jquery.min.js')
+        // Bootstrap Core JavaScript
+        script(src='/vendor/bootstrap/js/bootstrap.min.js')
+        // Plugin JavaScript
+        script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
+        // Contact Form JavaScript
+        script(src='/js/jqBootstrapValidation.js')
+        script(src='/js/contact_me.js')
+        // Theme JavaScript
+        script(src='/js/freelancer.min.js')
