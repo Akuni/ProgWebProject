@@ -69,7 +69,6 @@ html
         var x = document.getElementById('message');
         function getLocation() {
             if (navigator.geolocation) {
-                alert("POSITION OK");
                 navigator.geolocation.getCurrentPosition(showPosition);
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
@@ -79,7 +78,7 @@ html
             //var latlon = position.coords.latitude + "," + position.coords.longitude;
 
             //var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
-
+            alert("POSITION OK");
             pan(position.coords.latitude , position.coords.longitude);
             document.getElementById('message').innerHTML = "Lat:" + position.coords.latitude + ", long:" +position.coords.longitude;
         }
