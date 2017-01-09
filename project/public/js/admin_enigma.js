@@ -140,7 +140,7 @@ var setStatusCorrectnessStyle = function(elem, isWrong){
         elem.classList.remove("my-sign-up-wrong");
 };
 
-var map;
+var map, addedMarker;
 // function initMap() {
 //     getLocation();
 //     var mapOptions = {
@@ -165,14 +165,22 @@ function pan(x,y) {
     var marker = new google.maps.Marker({
         position: panPoint,
         map: map,
-        title: 'Hello World!'
+        icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
     });
 }
 
 function placeMarker(location) {
-    var marker = new google.maps.Marker({
+    if (addedMarker != null && addedMarker.position != location) {
+        addedMarker.setMap(null);
+    }
+
+    document.querySelector("#latitude").value = location.lat();
+    document.querySelector("#longitude").value = location.lng();
+
+    addedMarker = new google.maps.Marker({
         position: location,
-        map: map
+        map: map,
+        icon : 'https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/FAQ-32.png'
     });
 }
 
