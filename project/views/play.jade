@@ -21,20 +21,35 @@ html
       function initMap() {
           getLocation();
         var mapOptions = {
-          zoom : 8,
+          zoom : 17,
           center : new google.maps.LatLng(0, 0)
         };
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
+          google.maps.event.addListener(map, 'click', function (event) {
+              placeMarker(event.latLng);
+          });
         // listen for the window resize event & trigger Google Maps to update too
         $(window).resize(function () {
           // (the 'map' here is the result of the created 'var map = ...' above)
           google.maps.event.trigger(map, "resize");
         });
+
       }
       //google.maps.event.addDomListener(window, 'load', initialize);
       function pan(x,y) {
           var panPoint = new google.maps.LatLng(x, y);
-          map.setCenter(panPoint)
+          map.setCenter(panPoint);
+          var marker = new google.maps.Marker({
+              position: panPoint,
+              map: map,
+              title: 'Hello World!'
+          });
+      }
+      function placeMarker(location) {
+          var marker = new google.maps.Marker({
+              position: location,
+              map: map
+          });
       }
     script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmiBoA1oh9awNJXAIGl3dxQuOgTcmR90&callback=initMap')
     script(type='text/javascript').
