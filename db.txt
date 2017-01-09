@@ -1,0 +1,18 @@
+account
+- name
+- password
+- type
+
+teams
+- name
+- score
+- list_enigma_done
+
+enigmas
+- location :
+	- latitude
+	- longitude
+- question
+- valid_response
+- invalid_response (list of 3 invalid responses)
+- award
