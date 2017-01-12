@@ -13,16 +13,22 @@ socket.on('getenigmas', function (data) {
     var content = "";
     data.forEach(function(elem){
         content += '<tr>'
+            + '<td>' + elem.id + '</td>'
             + '<td>' + elem.location + '</td>'
             + '<td>' + elem.question + '</td>'
             + '<td>' + elem.valid_response + '</td>'
             + '<td>' + elem.invalid_responses + '</td>'
             + '<td>' + elem.award + '</td>'
+            + '<td><i class="fa fa-times" onclick="onRemove(' + elem.id + ')"></i></td>'
             + '</tr>';
     });
 
     teams_table.innerHTML = content;
 });
+
+var onRemove = function(id) {
+
+};
 
 // on load of page
 window.addEventListener("load", function(){
