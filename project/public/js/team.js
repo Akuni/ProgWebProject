@@ -4,17 +4,19 @@ var socket = io.connect();
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
-    socket.emit('adduser', "admin#"+socket.id.toString().slice(1,5));
+    socket.emit('adduser', "user#"+socket.id.toString().slice(1,5));
 });
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
 socket.on('updatechat', function (username, data) {
     var chatMessage = "<b>" + username + ":</b> " + data + "<br>";
+    conversation = document.querySelector("#conversation");
     conversation.innerHTML += chatMessage;
 });
 
 // listener, whenever the server emits 'updateusers', this updates the username list
 socket.on('updateusers', function(listOfUsers) {
+    users = document.querySelector("#users");
     users.innerHTML = "";
     for(var name in listOfUsers) {
         var userLineOfHTML = '<div>' + name + '</div>';
@@ -22,27 +24,9 @@ socket.on('updateusers', function(listOfUsers) {
     }
 });
 
-socket.on('getteams', function (data) {
-    console.log(JSON.stringify(data));
-
-    var teams_table = document.querySelector("#teams_table");
-
-    var content = "";
-    data.forEach(function(elem){
-        content += '<tr>'
-            + '<td>' + elem.name + '</td>'
-            + '<td>' + elem.score + '</td>'
-            + '<td>' + elem.email + '</td>'
-            + '</tr>';
-    });
-
-    teams_table.innerHTML = content;
-});
 
 // on load of page
 window.addEventListener("load", function(){
-
-    socket.emit('getteams');
 
     // get handles on various GUI components
     conversation = document.querySelector("#conversation");
@@ -72,3 +56,47 @@ window.addEventListener("load", function(){
         socket.emit('sendchat', message);
     }
 });
+
+var map, addedMarker;
+
+function pan(x,y) {
+    var panPoint = new google.maps.LatLng(x, y);
+    map.setCenter(panPoint);
+    var marker = new google.maps.Marker({
+        position: panPoint,
+        map: map,
+        icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
+    });
+}
+
+function placeMarker(location) {
+    if (addedMarker != null && addedMarker.position != location) {
+        addedMarker.setMap(null);
+    }
+
+    // document.querySelector("#latitude").value = location.lat();
+    // document.querySelector("#longitude").value = location.lng();
+
+    addedMarker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon : 'https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/FAQ-32.png'
+    });
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    // var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+    // var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
+    //
+    pan(position.coords.latitude , position.coords.longitude);
+    // document.getElementById('message').innerHTML = "Lat:" + position.coords.latitude + ", long:" +position.coords.longitude;
+}

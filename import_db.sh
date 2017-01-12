@@ -1,0 +1,1 @@
+mongorestore project/dump/ --drop

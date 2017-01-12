@@ -11,19 +11,30 @@ socket.on('getenigmas', function (data) {
     var teams_table = document.querySelector("#enigmas_list_content");
 
     var content = "";
+
     for(var i = 0; i < data.length; i++){
-        content += '<tr><td>' + data[i].location + '</td>'
+        content += '<tr>';
+        // content += '<td>' + data[i].id + '</td>';
+        content += '<td>' + data[i].location + '</td>'
             + '<td>' + data[i].question + '</td>'
             + '<td>' + data[i].valid_response + '</td>';
+
+        var irs = "";
         for(var j = 0; j < data[i].invalid_responses.length; j++)
-        {
-            content += '<td>' + data[i][j] + '</td>';
-        }
-        content += '<td>' + data[i].award + '</td></tr>';
+            irs += (irs.length > 0)?"/":"" + data[i][j];
+
+        content += '<td>' + irs + '</td>';
+        content += '<td>' + data[i].award + '</td>';
+        // content += '<td><i class="fa fa-times" onclick=\"onRemove(' + elem.id + ')\"></i></td>';
+        content += '</tr>';
     }
 
     teams_table.innerHTML = content;
 });
+
+var onRemove = function(id) {
+    console.log("Remove(" + id + ")");
+};
 
 // on load of page
 window.addEventListener("load", function(){
@@ -38,88 +49,87 @@ window.addEventListener("load", function(){
             sendEnigma();
         }
     });
-
-    var sendEnigma = function(){
-        latitude = document.querySelector("#latitude");
-        longitude = document.querySelector("#longitude");
-        question =  document.querySelector("#question");
-        vr =  document.querySelector("#valid_response");
-        ir1 =  document.querySelector("#invalid_response1");
-        ir2 =  document.querySelector("#invalid_response2");
-        ir3 =  document.querySelector("#invalid_response3");
-        award = document.querySelector("#award");
-
-        clearStatusCorrectnessStyle();
-
-        if (latitude.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(latitude, true);
-            return;
-        }
-
-        if (longitude.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(longitude, true);
-            return;
-        }
-
-        if (question.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(question, true);
-            return;
-        }
-
-        if (vr.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(vr, true);
-            return;
-        }
-
-        if (ir1.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(ir1, true);
-            return;
-        }
-
-        if (ir2.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(ir2, true);
-            return;
-        }
-
-        if (ir3.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(ir3, true);
-            return;
-        }
-
-        if (award.value.length <= 0)
-        {
-            setStatusCorrectnessStyle(award, true);
-            return;
-        }
-
-        var enigma = {};
-
-        enigma.location = {};
-        enigma.location.latitude = latitude.value;
-        enigma.location.longitude = longitude.value;
-
-        enigma.question =  question.value;
-        enigma.valid_response =  vr.value;
-        enigma.invalid_response1 =  ir1.value;
-        enigma.invalid_response2 =  ir2.value;
-        enigma.invalid_response3 =  ir3.value;
-
-        enigma.award = award.value;
-
-        console.log("[Add Enigma] " + JSON.stringify(enigma));
-        socket.emit('addenigma', enigma);
-
-        window.location.reload();
-    };
 });
 
+var sendEnigma = function(){
+    latitude = document.querySelector("#latitude");
+    longitude = document.querySelector("#longitude");
+    question =  document.querySelector("#question");
+    vr =  document.querySelector("#valid_response");
+    ir1 =  document.querySelector("#invalid_response1");
+    ir2 =  document.querySelector("#invalid_response2");
+    ir3 =  document.querySelector("#invalid_response3");
+    award = document.querySelector("#award");
+
+    clearStatusCorrectnessStyle();
+
+    if (latitude.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(latitude, true);
+        return;
+    }
+
+    if (longitude.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(longitude, true);
+        return;
+    }
+
+    if (question.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(question, true);
+        return;
+    }
+
+    if (vr.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(vr, true);
+        return;
+    }
+
+    if (ir1.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(ir1, true);
+        return;
+    }
+
+    if (ir2.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(ir2, true);
+        return;
+    }
+
+    if (ir3.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(ir3, true);
+        return;
+    }
+
+    if (award.value.length <= 0)
+    {
+        setStatusCorrectnessStyle(award, true);
+        return;
+    }
+
+    var enigma = {};
+
+    enigma.location = {};
+    enigma.location.latitude = latitude.value;
+    enigma.location.longitude = longitude.value;
+
+    enigma.question =  question.value;
+    enigma.valid_response =  vr.value;
+    enigma.invalid_response1 =  ir1.value;
+    enigma.invalid_response2 =  ir2.value;
+    enigma.invalid_response3 =  ir3.value;
+
+    enigma.award = award.value;
+
+    console.log("[Add Enigma] " + JSON.stringify(enigma));
+    socket.emit('addenigma', enigma);
+
+    window.location.reload();
+};
 
 var clearStatusCorrectnessStyle = function()
 {
