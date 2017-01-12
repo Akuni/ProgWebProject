@@ -14,18 +14,20 @@ socket.on('getenigmas', function (data) {
 
     for(var i = 0; i < data.length; i++){
         content += '<tr>';
-        // content += '<td>' + data[i].id + '</td>';
-        content += '<td>' + data[i].location + '</td>'
+        content += '<td>' + data[i]._id.slice(-6) + '</td>';
+        content += '<td>[' + data[i].location.latitude + " ; " + data[i].location.longitude + ']</td>'
             + '<td>' + data[i].question + '</td>'
             + '<td>' + data[i].valid_response + '</td>';
 
         var irs = "";
-        for(var j = 0; j < data[i].invalid_responses.length; j++)
-            irs += (irs.length > 0)?"/":"" + data[i][j];
+        for(var j = 0; j < data[i].invalid_response.length; j++)
+            irs += ((j > 0)?"/":"") + data[i].invalid_response[j];
 
         content += '<td>' + irs + '</td>';
         content += '<td>' + data[i].award + '</td>';
-        // content += '<td><i class="fa fa-times" onclick=\"onRemove(' + elem.id + ')\"></i></td>';
+        var test = '<td><i class="fa fa-times" onclick="onRemove(\'' + data[i]._id + '\');"></i></td>';
+
+        content += test;
         content += '</tr>';
     }
 

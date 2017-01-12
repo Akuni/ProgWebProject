@@ -28,12 +28,18 @@ socket.on('getteams', function (data) {
     var teams_table = document.querySelector("#teams_table");
 
     var content = "";
-    for (var elem in data)
+    for (var i = 0; i < data.length; i++)
     {
         content += '<tr>'
-            + '<td>' + data[elem].name + '</td>'
-            + '<td>' + data[elem].score + '</td>'
-            + '<td>' + data[elem].email + '</td>'
+            + '<td>' + data[i].name + '</td>'
+            + '<td>' + data[i].score + '</td>';
+
+        var list = "";
+        for (var j = 0; j < data[i].list_enigma_done.length; j++)
+            list += ((j>0)?"/":"") + data[i].list_enigma_done[j];
+
+        content += '<td>' + list + '</td>'
+            + '<td>' + data[i].email + '</td>'
             + '</tr>';
     }
 
