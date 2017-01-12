@@ -10,11 +10,13 @@ socket.on('connect', function(){
 // listener, whenever the server emits 'updatechat', this updates the chat body
 socket.on('updatechat', function (username, data) {
     var chatMessage = "<b>" + username + ":</b> " + data + "<br>";
+    conversation = document.querySelector("#conversation");
     conversation.innerHTML += chatMessage;
 });
 
 // listener, whenever the server emits 'updateusers', this updates the username list
 socket.on('updateusers', function(listOfUsers) {
+    users = document.querySelector("#users");
     users.innerHTML = "";
     for(var name in listOfUsers) {
         var userLineOfHTML = '<div>' + name + '</div>';

@@ -28,13 +28,13 @@ socket.on('getteams', function (data) {
     var teams_table = document.querySelector("#teams_table");
 
     var content = "";
-    data.forEach(function(elem){
-        content += '<tr>'
-            + '<td>' + elem.name + '</td>'
-            + '<td>' + elem.score + '</td>'
-            + '<td>' + elem.email + '</td>'
-            + '</tr>';
-    });
+    // data.forEach(function(elem){
+    //     content += '<tr>'
+    //         + '<td>' + elem.name + '</td>'
+    //         + '<td>' + elem.score + '</td>'
+    //         + '<td>' + elem.email + '</td>'
+    //         + '</tr>';
+    // });
 
     teams_table.innerHTML = content;
 });

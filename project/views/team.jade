@@ -46,9 +46,9 @@ html(lang='en')
                                 span.fa.fa-comment
                                 |  Chat
                         li.page-scroll
-                            a(href='#teams')
-                                span.fa.fa-group
-                                |  Teams
+                            a(href='#Infos')
+                                span.fa.fa-info
+                                |  Infos
                         li.page-scroll
                             a(href='/')
                                 span.fa.fa-sign-out
@@ -65,13 +65,19 @@ html(lang='en')
                             hr.star-light
                         .map-wrapper
                             #map
-        section#chat
+        section#infos
             .container
-                // Title
+                .row
+                    .col-lg-12.text-center
+                        h2 Infos
+                        hr.star-primary
+
+        section#chat.success
+            .container
                 .row
                     .col-lg-12.text-center
                         h2 Chat
-                        hr.star-primary
+                        hr.star-light
                 // Chat
                 .row
                     // Users
@@ -86,19 +92,6 @@ html(lang='en')
                             #conversation
                             input#data.my-chat-content-input
                             input#datasend.btn.btn-primary(type='button', value='send')
-        section#teams
-            .container
-                .row
-                    .col-lg-12.text-center
-                        h2 Teams
-                        hr.star-primary
-                    table.col-lg-12.table.table-condensed.table-hover
-                        thead
-                            tr
-                                th Team Name
-                                th Score
-                                th Email
-                        tbody#teams_table
 
 
 
