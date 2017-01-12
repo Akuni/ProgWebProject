@@ -11,23 +11,29 @@ socket.on('getenigmas', function (data) {
     var teams_table = document.querySelector("#enigmas_list_content");
 
     var content = "";
-    data.forEach(function(elem){
-        content += '<tr>'
-            + '<td>' + elem.id + '</td>'
-            + '<td>' + elem.location + '</td>'
-            + '<td>' + elem.question + '</td>'
-            + '<td>' + elem.valid_response + '</td>'
-            + '<td>' + elem.invalid_responses + '</td>'
-            + '<td>' + elem.award + '</td>'
-            + '<td><i class="fa fa-times" onclick="onRemove(' + elem.id + ')"></i></td>'
-            + '</tr>';
-    });
+
+    for(var i = 0; i < data.length; i++){
+        content += '<tr>';
+        content += '<td>' + data[i].id + '</td>';
+        content += '<td>' + data[i].location + '</td>'
+            + '<td>' + data[i].question + '</td>'
+            + '<td>' + data[i].valid_response + '</td>';
+
+        var irs = "";
+        for(var j = 0; j < data[i].invalid_responses.length; j++)
+            irs += (irs.length > 0)?"/":"" + data[i][j];
+
+        content += '<td>' + irs + '</td>';
+        content += '<td>' + data[i].award + '</td>';
+        content += + '<td><i class="fa fa-times" onclick=\"onRemove(' + elem.id + ')\"></i></td>';
+        content += '</tr>';
+    }
 
     teams_table.innerHTML = content;
 });
 
 var onRemove = function(id) {
-
+    console.log("Remove(" + id + ")");
 };
 
 // on load of page
