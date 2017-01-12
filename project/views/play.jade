@@ -74,8 +74,7 @@ html
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(showPosition, errorCallback, {
                     enableHighAccuracy: true,
-                    maximumAge:10000,
-                    timeout: 5000
+                    maximumAge:10000
                 });
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
