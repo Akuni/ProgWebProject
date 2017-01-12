@@ -129,6 +129,7 @@ io.sockets.on('connection', function (socket) {
       else // Team available
         addTeam(data, function(){ // Adding team
           socket.emit('signup', {"status" : true}); // Team added
+          getTeams(function(data){io.sockets.emit('getteams', data);});
         });
     });
   });

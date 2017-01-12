@@ -35,8 +35,10 @@ socket.on('getteams', function (data) {
             + '<td>' + data[i].score + '</td>';
 
         var list = "";
-        for (var j = 0; j < data[i].list_enigma_done.length; j++)
-            list += ((j>0)?"/":"") + data[i].list_enigma_done[j];
+        if (data[i].list_enigma_done != undefined) {
+            for (var j = 0; j < data[i].list_enigma_done.length; j++)
+                list += ((j > 0) ? "/" : "") + data[i].list_enigma_done[j];
+        }
 
         content += '<td>' + list + '</td>'
             + '<td>' + data[i].email + '</td>'
