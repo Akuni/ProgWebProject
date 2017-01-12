@@ -1,18 +1,14 @@
-account
+teams ("admin" team is protected)
 - name
 - password
-- type
-
-teams
-- name
 - score
 - list_enigma_done
 
 enigmas
+- question
 - location :
 	- latitude
 	- longitude
-- question
 - valid_response
 - invalid_response (list of 3 invalid responses)
 - award
