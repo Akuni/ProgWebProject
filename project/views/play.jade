@@ -20,6 +20,7 @@ html
       var map;
       var addedMarker;
       var watchId;
+      var userLocation;
 
       function initMap() {
           getLocation();
@@ -43,25 +44,22 @@ html
       function pan(x,y) {
           var panPoint = new google.maps.LatLng(x, y);
           map.setCenter(panPoint);
-          var marker = new google.maps.Marker({
+          if (userLocation != null && userLocation.position != location) {
+              userLocation.setMap(null);
+          }
+          userLocation = new google.maps.Marker({
               position: panPoint,
-              map: map,
-              title: 'Hello World!'
+              map: map
           });
       }
       function placeMarker(location) {
-            if(addedMarker == null)
-                addedMarker = new google.maps.Marker({
-                  position: location,
-                  map: map
-              });
-            else if (addedMarker.position != location){
-                addedMarker.setMap(null);
-                addedMarker = new google.maps.Marker({
-                    position: location,
-                    map: map
-                });
-            }
+          if (addedMarker != null && addedMarker.position != location) {
+              addedMarker.setMap(null);
+          }
+          addedMarker = new google.maps.Marker({
+              position: location,
+              map: map
+          });
 
           //putLocation = location;
 
@@ -74,8 +72,7 @@ html
             if (navigator.geolocation) {
                 watchId = navigator.geolocation.watchPosition(showPosition, errorCallback, {
                     enableHighAccuracy: true,
-                    maximumAge:10000,
-                    timeout: 5000
+                    maximumAge:5
                 });
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
