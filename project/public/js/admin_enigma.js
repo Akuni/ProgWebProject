@@ -11,15 +11,16 @@ socket.on('getenigmas', function (data) {
     var teams_table = document.querySelector("#enigmas_list_content");
 
     var content = "";
-    data.forEach(function(elem){
-        content += '<tr>'
-            + '<td>' + elem.location + '</td>'
-            + '<td>' + elem.question + '</td>'
-            + '<td>' + elem.valid_response + '</td>'
-            + '<td>' + elem.invalid_responses + '</td>'
-            + '<td>' + elem.award + '</td>'
-            + '</tr>';
-    });
+    for(var i = 0; i < data.length; i++){
+        content += '<tr><td>' + data[i].location + '</td>'
+            + '<td>' + data[i].question + '</td>'
+            + '<td>' + data[i].valid_response + '</td>';
+        for(var j = 0; j < data[i].invalid_responses.length; j++)
+        {
+            content += '<td>' + data[i][j] + '</td>';
+        }
+        content += '<td>' + data[i].award + '</td></tr>';
+    }
 
     teams_table.innerHTML = content;
 });
@@ -139,4 +140,48 @@ var setStatusCorrectnessStyle = function(elem, isWrong){
     else
         elem.classList.remove("my-sign-up-wrong");
 };
+
+var map, addedMarker;
+
+function pan(x,y) {
+    var panPoint = new google.maps.LatLng(x, y);
+    map.setCenter(panPoint);
+    var marker = new google.maps.Marker({
+        position: panPoint,
+        map: map,
+        icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
+    });
+}
+
+function placeMarker(location) {
+    if (addedMarker != null && addedMarker.position != location) {
+        addedMarker.setMap(null);
+    }
+
+    document.querySelector("#latitude").value = location.lat();
+    document.querySelector("#longitude").value = location.lng();
+
+    addedMarker = new google.maps.Marker({
+        position: location,
+        map: map,
+        icon : 'https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/FAQ-32.png'
+    });
+}
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+function showPosition(position) {
+    // var latlon = position.coords.latitude + "," + position.coords.longitude;
+
+    // var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
+    //
+    pan(position.coords.latitude , position.coords.longitude);
+    // document.getElementById('message').innerHTML = "Lat:" + position.coords.latitude + ", long:" +position.coords.longitude;
+}
 

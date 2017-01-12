@@ -10,6 +10,7 @@ var play = require('./routes/play');
 var signup = require('./routes/sign_up');
 var signin = require('./routes/sign_in');
 var admin = require('./routes/admin');
+var team = require('./routes/team');
 var session_test = require('./routes/session_test');
 
 var app = express();
@@ -37,6 +38,7 @@ app.use('/play', play);
 app.use('/sign_up', signup);
 app.use('/sign_in', signin);
 app.use('/admin', admin);
+app.use('/team', team);
 app.use('/session', session_test);
 
 // catch 404 and forward to error handler
