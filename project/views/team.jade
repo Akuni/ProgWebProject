@@ -57,27 +57,35 @@ html(lang='en')
             // /.container-fluid
         // Header
         header
-            section#chat
+            section#game
                 .container
-                    // Title
                     .row
                         .col-lg-12.text-center
-                            h2 Chat
+                            h2 Game
                             hr.star-light
-                    // Chat
-                    .row
-                        // Users
-                        .col-sm-5
-                            .my-chat-users
-                                span.fa.fa-user
-                                b USERS
-                                #users
-                        // Conversation
-                        .col-sm-7
-                            .my-chat-content
-                                #conversation
-                                input#data.my-chat-content-input
-                                input#datasend.btn.btn-primary(type='button', value='send')
+                        .map-wrapper
+                            #map
+        section#chat
+            .container
+                // Title
+                .row
+                    .col-lg-12.text-center
+                        h2 Chat
+                        hr.star-primary
+                // Chat
+                .row
+                    // Users
+                    .col-sm-5
+                        .my-chat-users
+                            span.fa.fa-user
+                            b USERS
+                            #users
+                    // Conversation
+                    .col-sm-7
+                        .my-chat-content
+                            #conversation
+                            input#data.my-chat-content-input
+                            input#datasend.btn.btn-primary(type='button', value='send')
         section#teams
             .container
                 .row
@@ -102,6 +110,19 @@ html(lang='en')
 
         script(src='/socket.io/socket.io.js')
         script(src='/js/team.js')
+
+        script(type='text/javascript').
+            function initMap() {
+                getLocation();
+                var mapOptions = {
+                    zoom: 17,
+                    center: new google.maps.LatLng(0, 0)
+                };
+                map = new google.maps.Map(document.getElementById('map'), mapOptions);
+            }
+
+        script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAUmiBoA1oh9awNJXAIGl3dxQuOgTcmR90&callback=initMap')
+
         // jQuery
         script(src='/vendor/jquery/jquery.min.js')
         // Bootstrap Core JavaScript
