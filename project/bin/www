@@ -64,6 +64,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getteams', function () {
+    console.log(socket.request.headers.behavior);
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received", data);
       socket.emit('getteams', data);
