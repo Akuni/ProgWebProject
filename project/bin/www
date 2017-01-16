@@ -31,6 +31,7 @@ server.on('listening', onListening);
 var usernames = {};
 var listOfPlayers = {};
 
+
 /** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
   socket.on('signup', function (team) {

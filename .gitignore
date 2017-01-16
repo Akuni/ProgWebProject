@@ -3,3 +3,5 @@
 .idea
 node_modules/
 project/data
+id_rsa
+id_rsa.pub
