@@ -1,6 +1,9 @@
 var request = require("request"),
     assert = require('assert'),
+    //test = require('selenium-webdriver/testing'),
+    //webdriver = require('selenium-webdriver'),
     base_url = "http://serversidejan.herokuapp.com/";
+var $ = require("jquery")(require("jsdom").jsdom().defaultView);
 
 var get_options = {
     url: base_url,
@@ -12,6 +15,7 @@ var get_options = {
 var saved_list;
 
 describe("Project Tests", function () {
+
     describe("Test on the main page", function () {
         describe("GET /", function () {
             it("returns status code 200", function (done) {
@@ -43,9 +47,9 @@ describe("Project Tests", function () {
             request.get(get_options, function (error, response, body) {
                 // check response status code
                 assert.equal(200, response.statusCode);
-                var map = body.getElementById('map');
-                assert.notEqual(null, map);
-                assert.notEqual(undefined, map);
+                /*var map = body.getElementById('map');
+                 assert.notEqual(null, map);
+                 assert.notEqual(undefined, map);*/
             });
             // exit
             done();
@@ -53,8 +57,8 @@ describe("Project Tests", function () {
     });
 
     describe("Test on Team page", function () {
+        get_options.url = base_url + 'team';
         describe("GET /team", function () {
-            get_options.url = base_url + 'team';
             // check status code
             it("returns code 200", function (done) {
                 request.get(get_options, function (error, response, body) {
@@ -68,7 +72,8 @@ describe("Project Tests", function () {
                 request.get(get_options, function (error, response, body) {
                     // check response status code
                     assert.equal(200, response.statusCode);
-                    var map = body.getElementById('map');
+                    console.log("laure je t'aime");
+                    var map = $(body).getElementById('map');
                     assert.notEqual(null, map);
                     assert.notEqual(undefined, map);
                 });
@@ -78,13 +83,11 @@ describe("Project Tests", function () {
         });
 
         describe("POST /team", function () {
-
             // check form send
             it("has the right behavior", function (done) {
-                var returned_body;
                 request.get(get_options, function (error, response, body) {
-                    // check response status code
-                    returned_body = body;
+
+                    //var elt = body.getElementById("");
                 });
                 assert.equal(false, true);
                 // exit
@@ -92,6 +95,38 @@ describe("Project Tests", function () {
             });
         });
 
+    });
+
+    describe("Test on Signup page", function () {
+        get_options.url = base_url + 'sign_up';
+        describe("GET /sign_up", function () {
+            it("returns status code 200", function (done) {
+                request.get(get_options, function (error, response, body) {
+                    assert.equal(200, response.statusCode);
+                });
+                // exit
+                done();
+            });
+
+
+
+
+
+            it("has a form", function (done) {
+                request.get(get_options, function (error, response, body) {
+                    var elt = $(body).getElementById("register");
+                     assert.notEqual(null, elt);
+                     assert.notEqual(undefined, elt);
+                     //console.log(elt);
+                     assert.equal(button, elt);
+                     console.log("yes?");
+                });
+
+
+                // exit
+                done();
+            });
+        });
     });
 });
 
