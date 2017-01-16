@@ -6,7 +6,7 @@
 var app = require('../app');
 var debug = require('debug')('project:server');
 var http = require('http');
-var mongodb = require('mongodb');
+var dbmanager = require('../dbmanager');
 
 /**
  * Get port from environment and store in Express.
@@ -31,108 +31,22 @@ server.on('listening', onListening);
 var usernames = {};
 var listOfPlayers = {};
 
-// Database URL on mLab :
-var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
-
-
-/** DATABASE ACCESSES **/
-var getTeams = function (callback) {
-  var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
-    if (err) {
-      console.log('Unable to connect to the mongodb server', err);
-      return callback(false);
-    } else {
-      var collection = db.collection('teams');
-      collection.find({}).toArray(function (err, result) {
-        if (err) {
-          console.log('Unable to get teams', err);
-          return callback(false);
-        } else {
-          return callback(result);
-        }
-      });
-    }
-  });
-};
-
-var addTeam = function(team, callback){
-  var MongoClient = mongodb.MongoClient;
-    var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
-    if (err) {
-      console.log('Unable to connect to the mongodb server', err);
-      return callback(false);
-    } else {
-      var collection = db.collection('teams');
-      collection.insertOne(team, function (err, result) {
-        if (err) {
-          console.log('Unable to get teams', err);
-          return callback(false);
-        } else {
-          return callback(result);
-        }
-      });
-    }
-  });
-};
-
-var teamExists = function(team, callback){
-  var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
-    if (err) {
-      console.log('Unable to connect to the mongodb server', err);
-      return callback(false);
-    } else {
-      var collection = db.collection('teams');
-      collection.find(team).toArray(function (err, result) {
-        if (err) {
-          console.log('Unable to get team', team, err);
-          return callback(false);
-        } else {
-          return callback(result.length);
-        }
-      });
-    }
-  });
-};
-
-var getEnigmas = function (callback) {
-  var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
-    if (err) {
-      console.log('Unable to connect to the mongodb server', err);
-      return callback(false);
-    } else {
-      var collection = db.collection('enigmas');
-      collection.find({}).toArray(function (err, result) {
-        if (err) {
-          console.log('Unable to get enigmas', err);
-          return callback(false);
-        } else {
-          return callback(result);
-        }
-      });
-    }
-  });
-};
 
 /** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
-  socket.on('signup', function (data) {
+  socket.on('signup', function (team) {
     console.log("[Sign Up] Received : " + JSON.stringify(data));
 
-    teamExists({"name":data.name}, function(team){
-      console.log(team);
-      if(team) // Already existing team
+    dbmanager.teams.exists({"name" : team.name}, function (exists) {
+      console.log(exists);
+      if (exists) // Already existing team
         socket.emit('signup', {"status" : false});
       else // Team available
-        addTeam(data, function(){ // Adding team
+        dbmanager.teams.add(team, function () { // Adding team
           socket.emit('signup', {"status" : true}); // Team added
-          getTeams(function(data){io.sockets.emit('getteams', data);});
+          dbmanager.teams.get(function (data) {
+            io.sockets.emit('getteams', data);
+          });
         });
     });
   });
@@ -140,24 +54,24 @@ io.sockets.on('connection', function (socket) {
   socket.on('signin', function (data) {
     console.log("[Sign In] Received : " + JSON.stringify(data));
 
-    teamExists(data, function(team){
+    dbmanager.teams.exists(data, function (team) {
       console.log(team);
-      if(team) // Team exists
-        socket.emit('signin', {"status" : true, "team": team});
+      if (team) // Team exists
+        socket.emit('signin', {"status" : true, "team" : team});
       else // Team doesn't exists
         socket.emit('signin', {"status" : false});
     });
   });
 
   socket.on('getteams', function () {
-    getTeams(function (data) {
+    dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received", data);
       socket.emit('getteams', data);
     });
   });
 
   socket.on('getenigmas', function () {
-    getEnigmas(function (data) {
+    dbmanager.enigmas.get(function (data) {
       console.log("[Get Enigmas] Received", data);
       socket.emit('getenigmas', data);
     });
@@ -165,20 +79,34 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('addenigma', function (enigma) {
     console.log("[Add Enigma] Received");
-
     console.log(JSON.stringify(enigma));
-    // TODO: ADD ENIGMA
+    dbmanager.enigmas.add(enigma, function () { // Adding enigma
+      dbmanager.enigmas.get(function (data) {
+        io.sockets.emit('getenigmas', data);
+      });
+    });
+  });
 
-    getTeams(function(data){io.sockets.emit('getteams', data);});
+  socket.on('removeteam', function (id) {
+    console.log("[Remove Enigma] Received");
+
+    console.log(id);
+    dbmanager.teams.remove(id, function () { // Adding enigma
+      dbmanager.teams.get(function (data) {
+        io.sockets.emit('getteams', data);
+      });
+    });
   });
 
   socket.on('removeenigma', function (id) {
     console.log("[Remove Enigma] Received");
 
     console.log(id);
-    // TODO: REMOVE ENIGMA
-
-    getEnigmas(function(data){io.sockets.emit('getenigmas', data);});
+    dbmanager.enigmas.remove(id, function () { // Adding enigma
+      dbmanager.enigmas.get(function (data) {
+        io.sockets.emit('getenigmas', data);
+      });
+    });
   });
 
   socket.on('sendchat', function (data) {
