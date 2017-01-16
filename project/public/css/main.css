@@ -54,6 +54,18 @@ a {
     height: 520px;
 }
 
+.my-team-label {
+	font-size:150%;
+}
+
+.my-team-question {
+	padding: 30px;
+}
+
+.my-team-submit {
+	margin-top: 20px;
+}
+
 #map {
 	border: 1px solid red;
 	height: 500px;

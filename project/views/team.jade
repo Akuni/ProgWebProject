@@ -57,6 +57,37 @@ html(lang='en')
             // /.container-fluid
         // Header
         header
+            section#enigma
+                .container
+                    .row
+                        .col-lg-12.text-center
+                            h2 Question
+                            hr.star-light
+                        .col-lg-12.text-center
+                            h3#question.my-team-question
+                                | Question Here
+                        .col-lg-6.col-xs-12.text-center
+                            .radio
+                                label#response1.my-team-label
+                                    input(type='radio', name='optradio')
+                                    | Response 1
+                        .col-lg-6.col-xs-12.text-center
+                            .radio
+                                label#response2.my-team-label
+                                    input(type='radio', name='optradio')
+                                    | Response 2
+                        .col-lg-6.col-xs-12.text-center
+                            .radio
+                                label#response3.my-team-label
+                                    input(type='radio', name='optradio')
+                                    | Response 3
+                        .col-lg-6.col-xs-12.text-center
+                            .radio
+                                label#response4.my-team-label
+                                    input(type='radio', name='optradio')
+                                    | Response 4
+                        .col-lg-12.text-center
+                            input#submitEnigma.my-team-submit.btn.btn-primary(type='button', value='Check this out !')
             section#game
                 .container
                     .row
