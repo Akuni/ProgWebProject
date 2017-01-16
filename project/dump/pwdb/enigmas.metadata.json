@@ -1,1 +1,0 @@
-{ "options" : { "create" : "enigmas" }, "indexes" : [ { "v" : 1, "key" : { "_id" : 1 }, "ns" : "pwdb.enigmas", "name" : "_id_" } ] }
