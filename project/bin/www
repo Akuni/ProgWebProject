@@ -31,11 +31,14 @@ server.on('listening', onListening);
 var usernames = {};
 var listOfPlayers = {};
 
+// Database URL on mLab :
+var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
+
 
 /** DATABASE ACCESSES **/
 var getTeams = function (callback) {
   var MongoClient = mongodb.MongoClient;
-  var url = 'mongodb://localhost:27017/pwdb';
+  var url = db_url; //'mongodb://localhost:27017/pwdb';
   MongoClient.connect(url, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
@@ -56,7 +59,7 @@ var getTeams = function (callback) {
 
 var addTeam = function(team, callback){
   var MongoClient = mongodb.MongoClient;
-  var url = 'mongodb://localhost:27017/pwdb';
+  var url = db_url; //'mongodb://localhost:27017/pwdb';
   MongoClient.connect(url, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
@@ -77,7 +80,7 @@ var addTeam = function(team, callback){
 
 var teamExists = function(team, callback){
   var MongoClient = mongodb.MongoClient;
-  var url = 'mongodb://localhost:27017/pwdb';
+  var url = db_url; //'mongodb://localhost:27017/pwdb';
   MongoClient.connect(url, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
@@ -98,7 +101,7 @@ var teamExists = function(team, callback){
 
 var getEnigmas = function (callback) {
   var MongoClient = mongodb.MongoClient;
-  var url = 'mongodb://localhost:27017/pwdb';
+  var url = db_url; //'mongodb://localhost:27017/pwdb';
   MongoClient.connect(url, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
