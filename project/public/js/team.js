@@ -28,6 +28,8 @@ socket.on('updateusers', function(listOfUsers) {
 // on load of page
 window.addEventListener("load", function(){
 
+    socket.emit('getenigmas');
+
     // get handles on various GUI components
     conversation = document.querySelector("#conversation");
     data = document.querySelector("#data");
@@ -57,12 +59,25 @@ window.addEventListener("load", function(){
     }
 });
 
-var map, addedMarker;
+socket.on('getenigmas', function(data){
+    console.log("[Get enigmas] " + JSON.stringify(data));
+    for(var i = 0; i < data.length; i++){
+        var loc = {};
+        loc.lat = data[i].location.latitude;
+        loc.lng = data[i].location.longitude;
+        placeMarker(loc);
+    }
+});
+
+var map, addedMarker, watchId, userLocation;
 
 function pan(x,y) {
     var panPoint = new google.maps.LatLng(x, y);
     map.setCenter(panPoint);
-    var marker = new google.maps.Marker({
+    if (userLocation != null && userLocation.position != location) {
+        userLocation.setMap(null);
+    }
+    userLocation = new google.maps.Marker({
         position: panPoint,
         map: map,
         icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
@@ -70,13 +85,9 @@ function pan(x,y) {
 }
 
 function placeMarker(location) {
-    if (addedMarker != null && addedMarker.position != location) {
-        addedMarker.setMap(null);
-    }
-
-    // document.querySelector("#latitude").value = location.lat();
-    // document.querySelector("#longitude").value = location.lng();
-
+    // if (addedMarker != null && addedMarker.position != location) {
+    //     addedMarker.setMap(null);
+    // }
     addedMarker = new google.maps.Marker({
         position: location,
         map: map,
