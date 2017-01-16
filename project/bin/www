@@ -46,9 +46,9 @@ io.sockets.on('connection', function (socket) {
           socket.emit('signup', {"status" : true}); // Team added
           dbmanager.teams.get(function (data) {
             io.sockets.emit('getteams', data);
-          });
-        });
-    });
+          }, {}, socket.request.headers.behavior);
+        }, socket.request.headers.behavior);
+    }, socket.request.headers.behavior);
   });
 
   socket.on('signin', function (data) {
@@ -60,21 +60,21 @@ io.sockets.on('connection', function (socket) {
         socket.emit('signin', {"status" : true, "team" : team});
       else // Team doesn't exists
         socket.emit('signin', {"status" : false});
-    });
+    }, socket.request.headers.behavior);
   });
 
   socket.on('getteams', function () {
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received", data);
       socket.emit('getteams', data);
-    });
+    }, {}, socket.request.headers.behavior);
   });
 
   socket.on('getenigmas', function () {
     dbmanager.enigmas.get(function (data) {
       console.log("[Get Enigmas] Received", data);
       socket.emit('getenigmas', data);
-    });
+    }, {}, socket.request.headers.behavior);
   });
 
   socket.on('addenigma', function (enigma) {
@@ -83,8 +83,8 @@ io.sockets.on('connection', function (socket) {
     dbmanager.enigmas.add(enigma, function () { // Adding enigma
       dbmanager.enigmas.get(function (data) {
         io.sockets.emit('getenigmas', data);
-      });
-    });
+      }, {}, socket.request.headers.behavior);
+    }, socket.request.headers.behavior);
   });
 
   socket.on('removeteam', function (id) {
@@ -94,8 +94,8 @@ io.sockets.on('connection', function (socket) {
     dbmanager.teams.remove(id, function () { // Adding enigma
       dbmanager.teams.get(function (data) {
         io.sockets.emit('getteams', data);
-      });
-    });
+      }, {}, socket.request.headers.behavior);
+    }, socket.request.headers.behavior);
   });
 
   socket.on('removeenigma', function (id) {
@@ -105,8 +105,8 @@ io.sockets.on('connection', function (socket) {
     dbmanager.enigmas.remove(id, function () { // Adding enigma
       dbmanager.enigmas.get(function (data) {
         io.sockets.emit('getenigmas', data);
-      });
-    });
+      }, {}, socket.request.headers.behavior);
+    }, socket.request.headers.behavior);
   });
 
   socket.on('sendchat', function (data) {

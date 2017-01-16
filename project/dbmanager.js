@@ -6,14 +6,21 @@ var mongodb = require('mongodb');
 var dbmanager = {teams:{}, enigmas:{}};
 
 
-// Database URL on mLab :
+// Database url on mLab :
 var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
 
 /** ----- TEAMS ----- **/
-dbmanager.teams.get = function (callback) {
+dbmanager.teams.get = function (callback, filter, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
+  // default filter parameter
+  filter = typeof filter !== 'undefined' ? filter : {};
+  // function
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
@@ -31,10 +38,14 @@ dbmanager.teams.get = function (callback) {
   });
 };
 
-dbmanager.teams.add = function(team, callback){
+dbmanager.teams.add = function(team, callback, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
@@ -52,10 +63,15 @@ dbmanager.teams.add = function(team, callback){
   });
 };
 
-dbmanager.teams.remove = function(id, callback){
+dbmanager.teams.remove = function(id, callback, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
+  // function
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
@@ -73,10 +89,15 @@ dbmanager.teams.remove = function(id, callback){
   });
 };
 
-dbmanager.teams.exists = function(team, callback){
+dbmanager.teams.exists = function(team, callback, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
+  // function
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
@@ -95,13 +116,17 @@ dbmanager.teams.exists = function(team, callback){
 };
 
 /** ----- ENIGMAS ----- **/
-dbmanager.enigmas.get = function (callback, filter) {
-  // default param
+dbmanager.enigmas.get = function (callback, filter, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
+  // default filter parameter
   filter = typeof filter !== 'undefined' ? filter : {};
   // function
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
@@ -119,10 +144,15 @@ dbmanager.enigmas.get = function (callback, filter) {
   });
 };
 
-dbmanager.enigmas.add = function(enigma, callback){
+dbmanager.enigmas.add = function(enigma, callback, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
+  // function
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
@@ -140,10 +170,15 @@ dbmanager.enigmas.add = function(enigma, callback){
   });
 };
 
-dbmanager.enigmas.remove = function(id, callback){
+dbmanager.enigmas.remove = function(id, callback, test) {
+  /** TEST TRICK **/
+  // Default test parameter
+  test = typeof test !== 'undefined' ? "_" + test : "";
+
+  /** CORE **/
+  // function
   var MongoClient = mongodb.MongoClient;
-  var url = db_url; //'mongodb://localhost:27017/pwdb';
-  MongoClient.connect(url, function (err, db) {
+  MongoClient.connect(db_url + test, function (err, db) {
     if (err) {
       console.log('Unable to connect to the mongodb server', err);
       return callback(false);
