@@ -66,8 +66,6 @@ html(lang='en')
                         table.col-lg-12.table.table-condensed
                             thead
                                 tr
-                                    th id
-                                    th Location
                                     th Question
                                     th Valid Response
                                     th Invalid Responses
@@ -162,7 +160,6 @@ html(lang='en')
                 map = new google.maps.Map(document.getElementById('map'), mapOptions);
                 google.maps.event.addListener(map, 'click', function (event) {
                     placeMarker(event.latLng);
-                    console.log(JSON.stringify(event.latLng));
                 });
                 // listen for the window resize event & trigger Google Maps to update too
                 // $(window).resize(function () {

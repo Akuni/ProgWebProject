@@ -145,7 +145,7 @@ dbmanager.enigmas.remove = function(id, callback){
       return callback(false);
     } else {
       var collection = db.collection('enigmas');
-      collection.removeOne(id, function (err, result) {
+      collection.removeOne({_id:new mongodb.ObjectId(id)}, function (err, result) {
         if (err) {
           console.log('Unable to remove enigma' + id, err);
           return callback(false);

@@ -14,14 +14,16 @@ socket.on('getenigmas', function (data) {
 
     for(var i = 0; i < data.length; i++){
         content += '<tr>';
-        content += '<td>' + data[i]._id.slice(-6) + '</td>';
-        content += '<td>[' + data[i].location.latitude + " ; " + data[i].location.longitude + ']</td>'
-            + '<td>' + data[i].question + '</td>'
+        // content += '<td>' + data[i]._id.slice(-6) + '</td>';
+        // content += '<td>' + data[i].location.latitude + "<br/>" + data[i].location.longitude + '</td>'
+
+        content += '<td>' + data[i].question + '</td>'
             + '<td>' + data[i].valid_response + '</td>';
 
-        var irs = "";
-        for(var j = 0; j < data[i].invalid_response.length; j++)
-            irs += ((j > 0)?"/":"") + data[i].invalid_response[j];
+        var irs = "<ul class=\"text-justify\">";
+        for(var j = 0; j < data[i].invalid_responses.length; j++)
+            irs += '<li>' + data[i].invalid_responses[j] + '</li>';
+        irs += "</ul>";
 
         content += '<td>' + irs + '</td>';
         content += '<td>' + data[i].award + '</td>';
@@ -29,6 +31,11 @@ socket.on('getenigmas', function (data) {
 
         content += test;
         content += '</tr>';
+
+        var location = {};
+        location.lat = data[i].location.latitude;
+        location.lng = data[i].location.longitude;
+        // TODO : place marker
     }
 
     teams_table.innerHTML = content;
@@ -122,9 +129,7 @@ var sendEnigma = function(){
 
     enigma.question =  question.value;
     enigma.valid_response =  vr.value;
-    enigma.invalid_response1 =  ir1.value;
-    enigma.invalid_response2 =  ir2.value;
-    enigma.invalid_response3 =  ir3.value;
+    enigma.invalid_responses = [ir1.value, ir2.value, ir3.value];
 
     enigma.award = award.value;
 
