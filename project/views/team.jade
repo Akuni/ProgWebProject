@@ -67,25 +67,25 @@ html(lang='en')
                             h3#question.my-team-question
                                 | Question Here
                         .col-lg-6.col-xs-12.text-center
-                            .radio
-                                label#response1.my-team-label
-                                    input(type='radio', name='optradio')
-                                    | Response 1
+                            .radio.my-team-radio
+                                input#radio1(type='radio', name='optradio')
+                                label#response1(for="radio1")
+                                    span Response 1
                         .col-lg-6.col-xs-12.text-center
-                            .radio
-                                label#response2.my-team-label
-                                    input(type='radio', name='optradio')
-                                    | Response 2
+                            .radio.my-team-radio
+                                input#radio2(type='radio', name='optradio')
+                                label#response2(for="radio2")
+                                    span Response 2
                         .col-lg-6.col-xs-12.text-center
-                            .radio
-                                label#response3.my-team-label
-                                    input(type='radio', name='optradio')
-                                    | Response 3
+                            .radio.my-team-radio
+                                input#radio3(type='radio', name='optradio')
+                                label#response3(for="radio3")
+                                    span Response 3
                         .col-lg-6.col-xs-12.text-center
-                            .radio
-                                label#response4.my-team-label
-                                    input(type='radio', name='optradio')
-                                    | Response 4
+                            .radio.my-team-radio
+                                input#radio4(type='radio', name='optradio')
+                                label#response4(for='radio4')
+                                    span Response 4
                         .col-lg-12.text-center
                             input#submitEnigma.my-team-submit.btn.btn-primary(type='button', value='Check this out !')
             section#game

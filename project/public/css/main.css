@@ -58,6 +58,27 @@ a {
 	font-size:150%;
 }
 
+.my-team-radio input[type="radio"] {
+	display: none;
+}
+
+.my-team-radio {
+	margin-left: -20px;
+}
+
+.my-team-radio input[type="radio"]:checked + label span {
+	padding: 5px;
+	background-color: #2C3E50;
+	border: 1px solid #202D3B;
+	border-radius: 4px;
+	box-shadow: -5px 5px 10px 0px black;
+	/*border-color: white;*/
+	/*border-radius: 10px;*/
+	/*-webkit-box-shadow: -15px 10px 20px 0px rgba(125,125,125,1);*/
+	/*-moz-box-shadow: -15px 10px 20px 0px rgba(125,125,125,1);*/
+	/*box-shadow: -15px 10px 20px 0px rgba(125,125,125,1);*/
+}
+
 .my-team-question {
 	padding: 30px;
 }

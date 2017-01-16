@@ -35,7 +35,7 @@ var listOfPlayers = {};
 /** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
   socket.on('signup', function (team) {
-    console.log("[Sign Up] Received : " + JSON.stringify(data));
+    console.log("[Sign Up] Received : " + JSON.stringify(team));
 
     dbmanager.teams.exists({"name" : team.name}, function (exists) {
       console.log(exists);
