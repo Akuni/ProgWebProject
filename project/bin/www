@@ -166,8 +166,16 @@ io.sockets.on('connection', function (socket) {
     console.log(JSON.stringify(enigma));
     // TODO: ADD ENIGMA
 
-    var enigmas = getEnigmas();
-    io.sockets.emit('getenigmas', enigmas);
+    getTeams(function(data){io.sockets.emit('getteams', data);});
+  });
+
+  socket.on('removeenigma', function (id) {
+    console.log("[Remove Enigma] Received");
+
+    console.log(id);
+    // TODO: REMOVE ENIGMA
+
+    getEnigmas(function(data){io.sockets.emit('getenigmas', data);});
   });
 
   socket.on('sendchat', function (data) {

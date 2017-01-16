@@ -36,6 +36,7 @@ socket.on('getenigmas', function (data) {
 
 var onRemove = function(id) {
     console.log("Remove(" + id + ")");
+    socket.emit('removeenigma', id);
 };
 
 // on load of page
