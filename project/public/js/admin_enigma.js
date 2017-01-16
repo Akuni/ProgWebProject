@@ -154,12 +154,15 @@ var setStatusCorrectnessStyle = function(elem, isWrong){
         elem.classList.remove("my-sign-up-wrong");
 };
 
-var map, addedMarker;
+var map, addedMarker, watchId, userLocation;
 
 function pan(x,y) {
     var panPoint = new google.maps.LatLng(x, y);
     map.setCenter(panPoint);
-    var marker = new google.maps.Marker({
+    if (userLocation != null && userLocation.position != location) {
+        userLocation.setMap(null);
+    }
+    userLocation = new google.maps.Marker({
         position: panPoint,
         map: map,
         icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
@@ -183,10 +186,33 @@ function placeMarker(location) {
 
 function getLocation() {
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
+        watchId = navigator.geolocation.watchPosition(showPosition, errorCallback, {
+            enableHighAccuracy: true,
+            maximumAge:5
+        });
     } else {
         x.innerHTML = "Geolocation is not supported by this browser.";
     }
+}
+
+function errorCallback(error){
+    var msg;
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            msg = "User denied the request for Geolocation.";
+            break;
+        case error.POSITION_UNAVAILABLE:
+            msg = "Location information is unavailable.";
+            break;
+        case error.TIMEOUT:
+            msg = "The request to get user location timed out.";
+            break;
+        case error.UNKNOWN_ERROR:
+            msg = "An unknown error occurred.";
+            break;
+    }
+
+    window.alert(msg);
 }
 
 function showPosition(position) {
