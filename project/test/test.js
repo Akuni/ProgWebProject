@@ -134,9 +134,6 @@ describe("Project Tests", function () {
                      done();
                 });
 
-
-                // exit
-                //done();
             });
         });
     });
