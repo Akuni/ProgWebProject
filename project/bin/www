@@ -40,7 +40,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('signup', function (team) {
     console.log("[Sign Up] Received : " + JSON.stringify(team));
     console.log("REQUEST: " + util.inspect(socket.request));
-    console.log("HEADER : " + JSON.stringify(socket.request.headers));
+    console.log("HEADER : " + JSON.stringify(socket.request.extraHeaders));
     console.log("HEADER : " + socket.request.headers.behavior);
     dbmanager.teams.exists({"name" : team.name}, function (exists) {
       console.log(exists);
