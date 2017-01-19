@@ -1,7 +1,7 @@
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
-var cookieParser = require('cookie-parser');
+var cookieParser = require('cookie-parser')();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
@@ -25,14 +25,60 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({
+/** ----- SESSION STUFF START ----- */
+/* OLD SHIAT : app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true
-}));
+})); */
+var passport = require('passport');
+var passportInit = passport.initialize();
+var passportSession = passport.session();
+/**
+ * Get port from environment and store in Express.
+ */
+var port = normalizePort(process.env.PORT || '3001');
+app.set('port', port);
 
+/**
+ * Create HTTP server.
+ */
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
+
+server.listen(port);
+
+var sessionMiddleware = session({
+  secret: 'some secret',
+  key: 'express.sid',
+  resave: false,
+  httpOnly: false,
+  saveUninitialized: true,
+  cookie: {}
+});
+
+app.use(sessionMiddleware);
+
+io.use(function(socket, next){
+  socket.client.request.originalUrl = socket.client.request.url;
+  cookieParser(socket.client.request, socket.client.request.res, next);
+});
+
+io.use(function(socket, next){
+  socket.client.request.originalUrl = socket.client.request.url;
+  sessionMiddleware(socket.client.request,   socket.client.request.res, next);
+});
+
+io.use(function(socket, next){
+  passportInit(socket.client.request, socket.client.request.res, next);
+});
+
+io.use(function(socket, next){
+  passportSession(socket.client.request, socket.client.request.res, next);
+});
+/** ----- SESSION STUFF END ----- */
 app.use('/', index);
 app.use('/play', play);
 app.use('/sign_up', signup);
@@ -62,4 +108,24 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-module.exports = app;
+/**
+ * Normalize a port into a number, string, or false.
+ */
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+// module.exports = app;
+module.exports = {app:app, server:server, io:io};
