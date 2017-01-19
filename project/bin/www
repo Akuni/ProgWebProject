@@ -47,8 +47,8 @@ io.sockets.on('connection', function (socket) {
 
     dbmanager.teams.exists(data, function (team) {
       console.log(team);
-      if (team) // Team exists
-        socket.emit('signin', {"status" : true, "team" : team});
+      if (team.length || 0) // Team exists
+        socket.emit('signin', {"status" : true, "admin" : (team[0].name === "admin")});
       else // Team doesn't exists
         socket.emit('signin', {"status" : false});
     }, socket.request.headers.behavior);
@@ -72,6 +72,17 @@ io.sockets.on('connection', function (socket) {
     console.log(socket.request.headers.behavior);
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received", data);
+
+      // Remove admin 'team'
+      for (var i = 0; i < data.length; i++)
+      {
+        if (data[i].name == 'admin')
+        {
+          data.splice(i, 1);
+          break;
+        }
+      }
+
       socket.emit('getteams', data);
     }, {}, socket.request.headers.behavior);
   });

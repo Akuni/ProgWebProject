@@ -96,7 +96,7 @@ dbmanager.teams.exists = function (team, callback, test) {
             console.log('Unable to get team', team, err);
             return callback(false);
           } else {
-            return callback(result.length);
+            return callback(result);
           }
         });
       }

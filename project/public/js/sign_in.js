@@ -16,23 +16,23 @@ var onConnectionClick = function()
     socket.emit('signin', {"name": tname.value, "password": pwd.value} );
 };
 
-socket.on('getteams', function (data) {
-    console.log(JSON.stringify(data));
-
-    var teams_list = document.querySelector("#name");
-
-    var content = "";
-    for(var i = 0; i < data.length; i++){
-        content += '<option>' + data[i].name + '</option>';
-    }
-
-    teams_list.innerHTML = content + teams_list.innerHTML;
-});
+// socket.on('getteams', function (data) {
+//     console.log(JSON.stringify(data));
+//
+//     var teams_list = document.querySelector("#name");
+//
+//     var content = "";
+//     for(var i = 0; i < data.length; i++){
+//         content += '<option>' + data[i].name + '</option>';
+//     }
+//
+//     teams_list.innerHTML = content + teams_list.innerHTML;
+// });
 
 // On page load
 window.addEventListener("load", function() {
 
-    socket.emit('getteams');
+    // socket.emit('getteams');
 
     document.querySelector("#connection").onclick = onConnectionClick;
 
@@ -51,7 +51,8 @@ socket.on('signin', function(data){
 
     if (data.status)
     {
-        window.location.pathname = window.location.pathname.replace("sign_in", "admin");
+        var redirect = (data.admin)?"admin":"team";
+        window.location.pathname = window.location.pathname.replace("sign_in", redirect);
     }
     else
     {
