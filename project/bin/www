@@ -3,27 +3,18 @@
 /**
  * Module dependencies.
  */
-var app = require('../app');
+var tmp = require('../app');
+var app = tmp.app;
+var server = tmp.server;
+var io = tmp.io;
+
+// var app = require('../app');
 var debug = require('debug')('project:server');
-var http = require('http');
 var dbmanager = require('../dbmanager');
-
-/**
- * Get port from environment and store in Express.
- */
-var port = normalizePort(process.env.PORT || '3001');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-var server = http.createServer(app);
-var io = require('socket.io').listen(server);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
-server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 
@@ -64,6 +55,20 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getteams', function () {
+    /** ----- SESSION WEBSOCKET SIDE TEST STARRT ----- */
+    var views = socket.client.request.session.views;
+    // console.log(socket);
+    // console.log(socket.client.request.session);
+    if (!views) { views = socket.client.request.session.views = {}; }
+    // get the url pathname
+    var pathname = 'bleh2';
+    // count the views
+    views[pathname] = (views[pathname] || 0) + 1;
+    // console.log(socket.client.request.session);
+    console.log("You've seen this page " + views[pathname] + " times.");
+    /** ----- SESSION WEBSOCKET SIDE TEST END ----- */
+
+
     console.log(socket.request.headers.behavior);
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received", data);
@@ -141,25 +146,6 @@ io.sockets.on('connection', function (socket) {
     socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });
 });
-
-/**
- * Normalize a port into a number, string, or false.
- */
-function normalizePort(val) {
-  var port = parseInt(val, 10);
-
-  if (isNaN(port)) {
-    // named pipe
-    return val;
-  }
-
-  if (port >= 0) {
-    // port number
-    return port;
-  }
-
-  return false;
-}
 
 /**
  * Event listener for HTTP server "error" event.
