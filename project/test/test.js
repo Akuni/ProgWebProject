@@ -3,6 +3,16 @@ var request = require("request"),
     //test = require('selenium-webdriver/testing'),
     //webdriver = require('selenium-webdriver'),
     base_url = "http://serversidejan.herokuapp.com/";
+
+
+var io = require('socket.io-client');
+var socketURL = 'https://serversidejan.herokuapp.com';
+var options ={
+    transports: ['websocket'],
+    'force new connection': true
+};
+
+
 var $ = require("jquery")(require("jsdom").jsdom().defaultView);
 
 var get_options = {
@@ -46,13 +56,13 @@ describe("Project Tests", function () {
         it("has a google map", function (done) {
             request.get(get_options, function (error, response, body) {
                 // check response status code
-                assert.equal(200, response.statusCode);
-                /*var map = body.getElementById('map');
+                //assert.equal(200, response.statusCode);
+                var map = $('map').html(body);
                  assert.notEqual(null, map);
-                 assert.notEqual(undefined, map);*/
+                 assert.notEqual(undefined, map);
+                // exit
+                done();
             });
-            // exit
-            done();
         });
     });
 
@@ -72,13 +82,14 @@ describe("Project Tests", function () {
                 request.get(get_options, function (error, response, body) {
                     // check response status code
                     assert.equal(200, response.statusCode);
-                    console.log("laure je t'aime");
-                    var map = $(body).getElementById('map');
+                    var map = $('map').html(body);
+                    //map = map.getElementById('map');
                     assert.notEqual(null, map);
                     assert.notEqual(undefined, map);
+                    done();
                 });
                 // exit
-                done();
+                //done();
             });
         });
 
@@ -114,19 +125,55 @@ describe("Project Tests", function () {
 
             it("has a form", function (done) {
                 request.get(get_options, function (error, response, body) {
-                    var elt = $(body).getElementById("register");
+                    var elt = $('button').html(body);
                      assert.notEqual(null, elt);
+                     assert.notEqual({}, elt);
                      assert.notEqual(undefined, elt);
                      //console.log(elt);
                      assert.equal(button, elt);
-                     console.log("yes?");
+                     done();
                 });
 
 
                 // exit
-                done();
+                //done();
             });
         });
     });
+});
+
+describe("Socket tests", function(){
+    this.timeout(0);
+    describe("Team test", function(){
+        it('Should be greater than 0', function(done){
+            var client1 = io.connect(socketURL, options);
+
+            client1.on('connect', function(){
+                client1.emit('getteams');
+            });
+
+            client1.on('getteams', function(teams){
+                var jteams = JSON.stringify(teams);
+                assert.notEqual(jteams.length, 0);
+                client1.disconnect();
+                done();
+            });
+
+        });
+
+        it('can register team', function(done){
+            var client1 = io.connect(socketURL, options);
+            var team = {"email":"test@gmail.com", "password":"4W350M3_P455", "name":"team_test"};
+            client1.on('connect', function(){
+               client1.emit('signup', team);
+            });
+
+            client1.on('signup', function(result){
+               console.log(result);
+               done();
+            });
+        });
+    });
+
 });
 
