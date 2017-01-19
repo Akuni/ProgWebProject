@@ -10,7 +10,9 @@ var socketURL = 'https://serversidejan.herokuapp.com';
 var options ={
     transports: ['websocket'],
     'force new connection': true,
-    'behavior' : 'test'
+    headers: {
+        'behavior' : 'test'
+    }
 };
 
 
