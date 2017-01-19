@@ -3,6 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  req.session.teamName = "Un nom de team mais j'ai la flemme de prendre de la db";
+
   res.render('admin');
 });
 

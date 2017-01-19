@@ -1,5 +1,7 @@
 var conversation, data, datasend, users;
 var enigma_list = null;
+var current_enigma = null;
+
 var socket = io.connect();
 
 var threshold = 0.0001;
@@ -29,6 +31,7 @@ socket.on('updateusers', function(listOfUsers) {
 
 // on load of page
 window.addEventListener("load", function(){
+    document.querySelector("#submitEnigma").onclick = checkAnswer;
 
     socket.emit('getenigmas');
 
@@ -72,6 +75,24 @@ socket.on('getenigmas', function(data){
     console.log(userLocation.position.lat(), userLocation.position.lng());
     checkEnigmaWithMyPosition(userLocation.position.lat(), userLocation.position.lng());
 });
+
+var checkAnswer = function()
+{
+    var answer = document.querySelector('input[name="answer"]:checked').value;
+    var correct_answer = current_enigma.valid_response;
+
+    console.log(answer);
+    console.log(correct_answer);
+
+    if (answer == correct_answer)
+    {
+        alert("JA");
+    }
+    else
+    {
+        alert("NEIN");
+    }
+};
 
 var map, addedMarker, watchId, userLocation;
 
@@ -127,12 +148,22 @@ function checkEnigmaWithMyPosition(lat, lng)
         if (diffLat < threshold && diffLng < threshold)
         {
             console.log("ENIGMA DETECTED --> " + JSON.stringify(enigma_list[i]));
-            showEnigma(enigma_list[i]);
+            current_enigma = enigma_list[i];
             return showEnigma(enigma_list[i]);
         }
     }
 
     return hideEnigma();
+}
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i--) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
 }
 
 function hideEnigma(){
@@ -143,16 +174,34 @@ function showEnigma(enigma){
     var enigma_section = document.querySelector("#enigma");
     var question = document.querySelector("#question");
 
-    var r1 = document.querySelector("#response1");
-    var r2 = document.querySelector("#response2");
-    var r3 = document.querySelector("#response3");
-    var r4 = document.querySelector("#response4");
+    var rl1 = document.querySelector("#response1");
+    var rl2 = document.querySelector("#response2");
+    var rl3 = document.querySelector("#response3");
+    var rl4 = document.querySelector("#response4");
+
+    var r1 = document.querySelector("#radio1");
+    var r2 = document.querySelector("#radio2");
+    var r3 = document.querySelector("#radio3");
+    var r4 = document.querySelector("#radio4");
+
+
+    var irs = enigma.invalid_responses;
+    irs.push(enigma.valid_response);
+    shuffle(irs);
 
     question.innerHTML = enigma.question;
-    r1.innerHTML = enigma.valid_response;
-    r2.innerHTML = enigma.invalid_responses[0];
-    r3.innerHTML = enigma.invalid_responses[1];
-    r4.innerHTML = enigma.invalid_responses[2];
+
+    rl1.innerHTML = irs[0];
+    r1.value = irs[0];
+
+    rl2.innerHTML = irs[1];
+    r2.value = irs[1];
+
+    rl3.innerHTML = irs[2];
+    r3.value = irs[2];
+
+    rl4.innerHTML = irs[3];
+    r4.value = irs[3];
 
     enigma_section.classList.remove("collapse");
 
