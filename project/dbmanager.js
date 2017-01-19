@@ -6,9 +6,9 @@ var mongodb = require('mongodb');
 var dbmanager = {teams : {}, enigmas : {}};
 
 // Database urls on mLab :
-//var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
+var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
 var db_test_url = 'mongodb://admin:superpass@ds141937.mlab.com:41937/progwebjan_test';
-var db_url = 'mongodb://localhost:27017/pwdb';
+//var db_url = 'mongodb://localhost:27017/pwdb';
 
 /** ----- TEAMS ----- **/
 dbmanager.teams.get = function (callback, filter, test) {
@@ -17,9 +17,10 @@ dbmanager.teams.get = function (callback, filter, test) {
   filter = typeof filter !== 'undefined' ? filter : {};
   // function
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
     , function (err, db) {
-      console.log("L'URL : " + db_url);
+      console.log("L'URL : " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
@@ -40,8 +41,10 @@ dbmanager.teams.get = function (callback, filter, test) {
 dbmanager.teams.add = function (team, callback, test) {
   /** CORE **/
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+    var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+    MongoClient.connect(connection
     , function (err, db) {
+      console.log("URL : " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
@@ -62,8 +65,10 @@ dbmanager.teams.add = function (team, callback, test) {
 dbmanager.teams.remove = function (id, callback, test) {
   /** CORE **/
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
     , function (err, db) {
+    console.log("URL : " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
@@ -84,8 +89,10 @@ dbmanager.teams.remove = function (id, callback, test) {
 dbmanager.teams.exists = function (team, callback, test) {
   /** CORE **/
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
     , function (err, db) {
+    console.log("URL " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
@@ -110,8 +117,10 @@ dbmanager.enigmas.get = function (callback, filter, test) {
   filter = typeof filter !== 'undefined' ? filter : {};
   // function
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
     , function (err, db) {
+    console.log("URL " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
@@ -132,8 +141,10 @@ dbmanager.enigmas.get = function (callback, filter, test) {
 dbmanager.enigmas.add = function (enigma, callback, test) {
   /** CORE **/
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
     , function (err, db) {
+      console.log("URL " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
@@ -154,8 +165,10 @@ dbmanager.enigmas.add = function (enigma, callback, test) {
 dbmanager.enigmas.remove = function (id, callback, test) {
   /** CORE **/
   var MongoClient = mongodb.MongoClient;
-  MongoClient.connect(/** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
     , function (err, db) {
+    console.log("URL " + connection);
       if (err) {
         console.log('Unable to connect to the mongodb server', err);
         return callback(false);
