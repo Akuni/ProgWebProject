@@ -10,7 +10,7 @@ var socketURL = 'https://serversidejan.herokuapp.com';
 var options ={
     transports: ['websocket'],
     'force new connection': true,
-    headers: {
+    extraHeaders: {
         'behavior' : 'test'
     }
 };
@@ -21,8 +21,9 @@ var $ = require("jquery")(require("jsdom").jsdom().defaultView);
 var get_options = {
     url: base_url,
     headers: {
-        'Accept': 'application/json',
-        'behavior': 'test'
+        'Accept': 'application/json'
+    }, extraHeaders: {
+        'behavior' : 'test'
     }
 };
 var saved_list;
