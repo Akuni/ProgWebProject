@@ -1,6 +1,8 @@
 var conversation, data, datasend, users;
-
+var enigma_list = null;
 var socket = io.connect();
+
+var threshold = 0.0001;
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
@@ -62,11 +64,13 @@ window.addEventListener("load", function(){
 socket.on('getenigmas', function(data){
     console.log("[Get enigmas] " + JSON.stringify(data));
     for(var i = 0; i < data.length; i++){
-        var loc = {};
-        loc.lat = data[i].location.latitude;
-        loc.lng = data[i].location.longitude;
+        var loc = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude);
         placeMarker(loc);
     }
+
+    enigma_list = data;
+    console.log(userLocation.position.lat(), userLocation.position.lng());
+    checkEnigmaWithMyPosition(userLocation.position.lat(), userLocation.position.lng());
 });
 
 var map, addedMarker, watchId, userLocation;
@@ -85,9 +89,6 @@ function pan(x,y) {
 }
 
 function placeMarker(location) {
-    // if (addedMarker != null && addedMarker.position != location) {
-    //     addedMarker.setMap(null);
-    // }
     addedMarker = new google.maps.Marker({
         position: location,
         map: map,
@@ -107,12 +108,55 @@ function getLocation() {
 }
 
 function showPosition(position) {
-    // var latlon = position.coords.latitude + "," + position.coords.longitude;
-
-    // var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
-    //
     pan(position.coords.latitude , position.coords.longitude);
-    // document.getElementById('message').innerHTML = "Lat:" + position.coords.latitude + ", long:" +position.coords.longitude;
+    checkEnigmaWithMyPosition(position.coords.latitude , position.coords.longitude);
+}
+
+function checkEnigmaWithMyPosition(lat, lng)
+{
+    if (enigma_list == null)
+        return;
+
+    for(var i = 0; i < enigma_list.length; i++){
+
+        var diffLat = Math.abs(lat - enigma_list[i].location.latitude);
+        var diffLng = Math.abs(lng - enigma_list[i].location.longitude);
+
+        console.log("Checking {" + lat + " ; " + lng + "} & {"+ enigma_list[i].location.latitude + " ; " + enigma_list[i].location.longitude + "}");
+
+        if (diffLat < threshold && diffLng < threshold)
+        {
+            console.log("ENIGMA DETECTED --> " + JSON.stringify(enigma_list[i]));
+            showEnigma(enigma_list[i]);
+            return showEnigma(enigma_list[i]);
+        }
+    }
+
+    return hideEnigma();
+}
+
+function hideEnigma(){
+    document.querySelector("#enigma").classList.add("collapse");
+}
+
+function showEnigma(enigma){
+    var enigma_section = document.querySelector("#enigma");
+    var question = document.querySelector("#question");
+
+    var r1 = document.querySelector("#response1");
+    var r2 = document.querySelector("#response2");
+    var r3 = document.querySelector("#response3");
+    var r4 = document.querySelector("#response4");
+
+    question.innerHTML = enigma.question;
+    r1.innerHTML = enigma.valid_response;
+    r2.innerHTML = enigma.invalid_responses[0];
+    r3.innerHTML = enigma.invalid_responses[1];
+    r4.innerHTML = enigma.invalid_responses[2];
+
+    enigma_section.classList.remove("collapse");
+
+    scroll(0,0);
 }
 
 function errorCallback(error){

@@ -57,35 +57,36 @@ html(lang='en')
             // /.container-fluid
         // Header
         header
-            section#enigma
+            section#enigma.collapse
                 .container
                     .row
                         .col-lg-12.text-center
-                            h2 Question
+                            h2 Enigma Detected !
                             hr.star-light
                         .col-lg-12.text-center
                             h3#question.my-team-question
                                 | Question Here
+                            p Answers
                         .col-lg-6.col-xs-12.text-center
                             .radio.my-team-radio
                                 input#radio1(type='radio', name='optradio')
-                                label#response1(for="radio1")
-                                    span Response 1
+                                label(for="radio1")
+                                    span#response1 Response 1
                         .col-lg-6.col-xs-12.text-center
                             .radio.my-team-radio
                                 input#radio2(type='radio', name='optradio')
-                                label#response2(for="radio2")
-                                    span Response 2
+                                label(for="radio2")
+                                    span#response2 Response 2
                         .col-lg-6.col-xs-12.text-center
                             .radio.my-team-radio
                                 input#radio3(type='radio', name='optradio')
-                                label#response3(for="radio3")
-                                    span Response 3
+                                label(for="radio3")
+                                    span#response3 Response 3
                         .col-lg-6.col-xs-12.text-center
                             .radio.my-team-radio
                                 input#radio4(type='radio', name='optradio')
-                                label#response4(for='radio4')
-                                    span Response 4
+                                label(for='radio4')
+                                    span#response4 Response 4
                         .col-lg-12.text-center
                             input#submitEnigma.my-team-submit.btn.btn-primary(type='button', value='Check this out !')
             section#game

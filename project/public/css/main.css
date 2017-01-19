@@ -62,6 +62,12 @@ a {
 	display: none;
 }
 
+.my-team-radio input[type="radio"] + label span {
+	padding: 5px;
+	border: 1px solid #202D3B;
+	border-radius: 4px;
+}
+
 .my-team-radio {
 	margin-left: -20px;
 }
