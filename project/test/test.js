@@ -163,6 +163,7 @@ describe("Socket tests", function(){
 
         it('can register team', function(done){
             var client1 = io.connect(socketURL, options);
+            console.log(options);
             var team = {"email":"test@gmail.com", "password":"4W350M3_P455", "name":"team_test"};
             client1.on('connect', function(){
                client1.emit('signup', team);
