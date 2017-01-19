@@ -9,7 +9,8 @@ var io = require('socket.io-client');
 var socketURL = 'https://serversidejan.herokuapp.com';
 var options ={
     transports: ['websocket'],
-    'force new connection': true
+    'force new connection': true,
+    'behavior' : 'test'
 };
 
 
