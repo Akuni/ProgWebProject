@@ -89,8 +89,14 @@ socket.on('getsessionip', function(data){
 });
 
 socket.on('getteams', function(data){
-    current_team = data[0];
-    updateInfo();
+    console.log(JSON.stringify(data));
+    if (data.length == 1)
+    {
+        current_team = data[0];
+        updateInfo();
+    } else {
+        socket.emit('getteams', {name: current_team.name});
+    }
 });
 
 var updateInfo = function()
@@ -106,8 +112,11 @@ var checkAnswer = function()
 
     if (answer == correct_answer)
     {
-        // socket.emit('solveenigma', );
-        socket.emit('getteams', {name: current_team.name});
+        var req = {};
+        req.enigma_id = current_enigma._id;
+        req.team_name = current_team.name;
+        socket.emit('solveenigma', req);
+
         alert("Well done !");
     }
     else

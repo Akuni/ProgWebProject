@@ -87,12 +87,12 @@ dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
         return callback(false);
       } else {
         dbmanager.enigmas.get(function(neasted_result){
-          if(neasted_result.length > 0){
+          if(neasted_result.length == 0){
             console.log('Unable to get enigma ', enigma_id);
             return callback(false);
           }
           var collection = db.collection('teams');
-          collection.update({"name": team_name}, {$inc:{score:neasted_result[0].award}}, function (err, result) {
+          collection.update({"name": team_name}, {$inc:{score:parseInt(neasted_result[0].award)}}, function (err, result) {
             if (err) {
               console.log('Unable to add score to team', err);
               return callback(false);
@@ -100,7 +100,7 @@ dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
               return callback(result);
             }
           });
-        }, {"_id" : ObjectId(enigma_id)}, test);
+        }, {"_id" : new mongodb.ObjectId(enigma_id)}, test);
       }
     });
 };

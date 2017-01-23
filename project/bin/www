@@ -60,13 +60,13 @@ io.sockets.on('connection', function (socket) {
     }, socket.request.headers.behavior);
   });
 
-  socket.on('getteams', function () {
+  socket.on('getteams', function (filter) {
     console.log(socket.request.headers.behavior);
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received", data);
 
       socket.emit('getteams', data);
-    }, {}, socket.request.headers.behavior);
+    }, filter, socket.request.headers.behavior);
   });
 
   socket.on('getenigmas', function () {
