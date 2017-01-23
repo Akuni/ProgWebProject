@@ -57,6 +57,12 @@ html(lang='en')
             // /.container-fluid
         // Header
         header
+            .container
+                .row
+                    .col-lg-12
+                        .intro-text
+                            span.name#tname Hi there !
+                            hr.star-light
             section#enigma.collapse
                 .container
                     .row
@@ -89,14 +95,14 @@ html(lang='en')
                                     span#response4 Response 4
                         .col-lg-12.text-center
                             input#submitEnigma.my-team-submit.btn.btn-primary(type='button', value='Check this out !')
-            section#game
-                .container
-                    .row
-                        .col-lg-12.text-center
-                            h2 Game
-                            hr.star-light
-                        .map-wrapper
-                            #map
+        section#game
+            .container
+                .row
+                    .col-lg-12.text-center
+                        h2 Game
+                        hr.star-primary
+                    .map-wrapper
+                        #map
         section#infos
             .container
                 .row

@@ -94,6 +94,8 @@ socket.on('getteams', function(data){
     {
         current_team = data[0];
         updateInfo();
+        if (saved_position != null)
+            checkEnigmaWithMyPosition(saved_position.coords.latitude , saved_position.coords.longitude);
     } else {
         socket.emit('getteams', {name: current_team.name});
     }
@@ -101,6 +103,7 @@ socket.on('getteams', function(data){
 
 var updateInfo = function()
 {
+    document.querySelector("#tname").innerHTML = (current_team.name || 0) ? "Hello " + current_team.name : "Hi there !";
     document.querySelector("#score").innerHTML = (current_team.score || 0) ? current_team.score : "0";
     document.querySelector("#enigma_count").innerHTML = (current_team.list_enigma_done) ? current_team.list_enigma_done.length : "0";
 };
@@ -126,6 +129,7 @@ var checkAnswer = function()
 };
 
 var map, addedMarker, watchId, userLocation;
+var saved_position = null;
 
 function pan(x,y) {
     var panPoint = new google.maps.LatLng(x, y);
@@ -160,13 +164,14 @@ function getLocation() {
 }
 
 function showPosition(position) {
+    saved_position = position;
     pan(position.coords.latitude , position.coords.longitude);
     checkEnigmaWithMyPosition(position.coords.latitude , position.coords.longitude);
 }
 
 function checkEnigmaWithMyPosition(lat, lng)
 {
-    if (enigma_list == null)
+    if (enigma_list == null || current_team == null)
         return;
 
     for(var i = 0; i < enigma_list.length; i++){
@@ -180,6 +185,7 @@ function checkEnigmaWithMyPosition(lat, lng)
         {
             if (!isEnigmaDone(enigma_list[i]._id))
             {
+                console.log("ENIGMA NOT DONE YET");
                 current_enigma = enigma_list[i];
                 return showEnigma(enigma_list[i]);
             }
@@ -191,11 +197,12 @@ function checkEnigmaWithMyPosition(lat, lng)
 
 function isEnigmaDone(id)
 {
-    if (current_team == null)
-        return false;
-
     if (current_team.list_enigma_done || 0)
-        return current_team.list_enigma_done.contains(id);
+    {
+        var res = current_team.list_enigma_done.indexOf(id) > -1;
+        console.log("isEnigmaDone(" + id + ") -> " + res);
+        return res;
+    }
 
     return false;
 }
