@@ -27,7 +27,7 @@ router.get('/bar', function(req, res, next) {
     res.end('welcome to the session demo. refresh!');
   }
 });
-router.get('/team', function(req, res, netx){
+router.get('/team', function(req, res, next){
   var teamName = req.session.teamName;
   if(!teamName) { teamName = "Not logged"; }
   res.setHeader('Content-Type', 'text/html');
