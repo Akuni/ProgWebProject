@@ -28,173 +28,176 @@ var listOfPlayers = {};
 
 /** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
-  socket.on('signup', function (team) {
-    console.log("[Sign Up] Received : " + JSON.stringify(team));
-    dbmanager.teams.exists({"name" : team.name}, function (exists) {
-      console.log(exists);
-      if (exists) // Already existing team
-        socket.emit('signup', {"status" : false});
-      else // Team available
-        dbmanager.teams.add(team, function () { // Adding team
-          socket.emit('signup', {"status" : true}); // Team added
-          dbmanager.teams.get(function (data) {
-            io.sockets.emit('getteams', data);
-          }, {}, socket.request.headers.behavior);
+    socket.on('signup', function (team) {
+        console.log("[Sign Up] Received : " + JSON.stringify(team));
+
+        dbmanager.teams.exists({"name": team.name}, function (exists) {
+            console.log(exists);
+
+            if (exists) // Already existing team
+                socket.emit('signup', {"status": false});
+            else // Team available
+                team.score = 0;
+                dbmanager.teams.add(team, function () { // Adding team
+                socket.emit('signup', {"status": true}); // Team added
+                dbmanager.teams.get(function (data) {
+                    io.sockets.emit('getteams', data);
+                }, {}, socket.request.headers.behavior);
+            }, socket.request.headers.behavior);
         }, socket.request.headers.behavior);
-    }, socket.request.headers.behavior);
-  });
+    });
 
-  socket.on('signin', function (data) {
-    console.log("[Sign In] Received : " + JSON.stringify(data));
+    socket.on('signin', function (data) {
+        console.log("[Sign In] Received : " + JSON.stringify(data));
 
-    dbmanager.teams.exists(data, function (team) {
-      console.log(team);
-      if (team.length || 0) // Team exists
-        socket.emit('signin', {"status" : true, "admin" : (team[0].name === "admin")});
-      else // Team doesn't exists
-        socket.emit('signin', {"status" : false});
-    }, socket.request.headers.behavior);
-  });
+        dbmanager.teams.exists(data, function (team) {
+            console.log(team);
+            if (team.length || 0) // Team exists
+                socket.emit('signin', {"status": true, "admin": (team[0].name === "admin")});
+            else // Team doesn't exists
+                socket.emit('signin', {"status": false});
+        }, socket.request.headers.behavior);
+    });
 
-  socket.on('getteams', function () {
-    /** ----- SESSION WEBSOCKET SIDE TEST STARRT ----- */
-    var views = socket.client.request.session.views;
-    // console.log(socket);
-    // console.log(socket.client.request.session);
-    if (!views) { views = socket.client.request.session.views = {}; }
-    // get the url pathname
-    var pathname = 'bleh2';
-    // count the views
-    views[pathname] = (views[pathname] || 0) + 1;
-    // console.log(socket.client.request.session);
-    console.log("You've seen this page " + views[pathname] + " times.");
-    /** ----- SESSION WEBSOCKET SIDE TEST END ----- */
-
-
-    console.log(socket.request.headers.behavior);
-    dbmanager.teams.get(function (data) {
-      console.log("[Get Teams] Received", data);
-
-      // Remove admin 'team'
-      for (var i = 0; i < data.length; i++)
-      {
-        if (data[i].name == 'admin')
-        {
-          data.splice(i, 1);
-          break;
+    socket.on('getteams', function () {
+        /** ----- SESSION WEBSOCKET SIDE TEST STARRT ----- */
+        var views = socket.client.request.session.views;
+        // console.log(socket);
+        // console.log(socket.client.request.session);
+        if (!views) {
+            views = socket.client.request.session.views = {};
         }
-      }
+        // get the url pathname
+        var pathname = 'bleh2';
+        // count the views
+        views[pathname] = (views[pathname] || 0) + 1;
+        // console.log(socket.client.request.session);
+        console.log("You've seen this page " + views[pathname] + " times.");
+        /** ----- SESSION WEBSOCKET SIDE TEST END ----- */
 
-      socket.emit('getteams', data);
-    }, {}, socket.request.headers.behavior);
-  });
 
-  socket.on('getenigmas', function () {
-    dbmanager.enigmas.get(function (data) {
-      console.log("[Get Enigmas] Received", data);
-      socket.emit('getenigmas', data);
-    }, {}, socket.request.headers.behavior);
-  });
+        console.log(socket.request.headers.behavior);
+        dbmanager.teams.get(function (data) {
+            console.log("[Get Teams] Received", data);
 
-  socket.on('addenigma', function (enigma) {
-    console.log("[Add Enigma] Received");
-    console.log(JSON.stringify(enigma));
-    dbmanager.enigmas.add(enigma, function () { // Adding enigma
-      dbmanager.enigmas.get(function (data) {
-        io.sockets.emit('getenigmas', data);
-      }, {}, socket.request.headers.behavior);
-    }, socket.request.headers.behavior);
-  });
+            // Remove admin 'team'
+            for (var i = 0; i < data.length; i++) {
+                if (data[i].name == 'admin') {
+                    data.splice(i, 1);
+                    break;
+                }
+            }
 
-  socket.on('removeteam', function (id) {
-    console.log("[Remove Enigma] Received");
+            socket.emit('getteams', data);
+        }, {}, socket.request.headers.behavior);
+    });
 
-    console.log(id);
-    dbmanager.teams.remove(id, function () { // Adding enigma
-      dbmanager.teams.get(function (data) {
-        io.sockets.emit('getteams', data);
-      }, {}, socket.request.headers.behavior);
-    }, socket.request.headers.behavior);
-  });
+    socket.on('getenigmas', function () {
+        dbmanager.enigmas.get(function (data) {
+            console.log("[Get Enigmas] Received", data);
+            socket.emit('getenigmas', data);
+        }, {}, socket.request.headers.behavior);
+    });
 
-  socket.on('removeenigma', function (id) {
-    console.log("[Remove Enigma] Received");
+    socket.on('addenigma', function (enigma) {
+        console.log("[Add Enigma] Received");
+        console.log(JSON.stringify(enigma));
+        dbmanager.enigmas.add(enigma, function () { // Adding enigma
+            dbmanager.enigmas.get(function (data) {
+                io.sockets.emit('getenigmas', data);
+            }, {}, socket.request.headers.behavior);
+        }, socket.request.headers.behavior);
+    });
 
-    console.log(id);
-    dbmanager.enigmas.remove(id, function () { // Adding enigma
-      dbmanager.enigmas.get(function (data) {
-        io.sockets.emit('getenigmas', data);
-      }, {}, socket.request.headers.behavior);
-    }, socket.request.headers.behavior);
-  });
+    socket.on('removeteam', function (id) {
+        console.log("[Remove Enigma] Received");
 
-  socket.on('sendchat', function (data) {
-    io.sockets.emit('updatechat', socket.username, data);
-  });
+        console.log(id);
+        dbmanager.teams.remove(id, function () { // Adding enigma
+            dbmanager.teams.get(function (data) {
+                io.sockets.emit('getteams', data);
+            }, {}, socket.request.headers.behavior);
+        }, socket.request.headers.behavior);
+    });
 
-  socket.on('sendpos', function (newPos) {
-    socket.broadcast.emit('updatepos', socket.username, newPos);
-  });
+    socket.on('removeenigma', function (id) {
+        console.log("[Remove Enigma] Received");
 
-  socket.on('adduser', function (username) {
-    socket.username = username;
-    usernames[username] = username;
-    socket.emit('updatechat', 'SERVER', 'you have connected');
-    socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
-    io.sockets.emit('updateusers', usernames);
+        console.log(id);
+        dbmanager.enigmas.remove(id, function () { // Adding enigma
+            dbmanager.enigmas.get(function (data) {
+                io.sockets.emit('getenigmas', data);
+            }, {}, socket.request.headers.behavior);
+        }, socket.request.headers.behavior);
+    });
 
-    var player = {'x' : 0, 'y' : 0, 'v' : 0};
-    listOfPlayers[username] = player;
-    io.sockets.emit('updatePlayers', listOfPlayers);
-  });
+    socket.on('sendchat', function (data) {
+        io.sockets.emit('updatechat', socket.username, data);
+    });
 
-  socket.on('disconnect', function () {
+    socket.on('sendpos', function (newPos) {
+        socket.broadcast.emit('updatepos', socket.username, newPos);
+    });
 
-    delete usernames[socket.username];
-    io.sockets.emit('updateusers', usernames);
+    socket.on('adduser', function (username) {
+        socket.username = username;
+        usernames[username] = username;
+        socket.emit('updatechat', 'SERVER', 'you have connected');
+        socket.broadcast.emit('updatechat', 'SERVER', username + ' has connected');
+        io.sockets.emit('updateusers', usernames);
 
-    delete listOfPlayers[socket.username];
-    io.sockets.emit('updatePlayers', listOfPlayers);
+        var player = {'x': 0, 'y': 0, 'v': 0};
+        listOfPlayers[username] = player;
+        io.sockets.emit('updatePlayers', listOfPlayers);
+    });
 
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
-  });
+    socket.on('disconnect', function () {
+
+        delete usernames[socket.username];
+        io.sockets.emit('updateusers', usernames);
+
+        delete listOfPlayers[socket.username];
+        io.sockets.emit('updatePlayers', listOfPlayers);
+
+        socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+    });
 });
 
 /**
  * Event listener for HTTP server "error" event.
  */
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
+    if (error.syscall !== 'listen') {
+        throw error;
+    }
 
-  var bind = typeof port === 'string'
-    ? 'Pipe ' + port
-    : 'Port ' + port;
+    var bind = typeof port === 'string'
+        ? 'Pipe ' + port
+        : 'Port ' + port;
 
-  // handle specific listen errors with friendly messages
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
+    // handle specific listen errors with friendly messages
+    switch (error.code) {
+        case 'EACCES':
+            console.error(bind + ' requires elevated privileges');
+            process.exit(1);
+            break;
+        case 'EADDRINUSE':
+            console.error(bind + ' is already in use');
+            process.exit(1);
+            break;
+        default:
+            throw error;
+    }
 }
 
 /**
  * Event listener for HTTP server "listening" event.
  */
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string'
-    ? 'pipe ' + addr
-    : 'port ' + addr.port;
-  debug('Listening on ' + bind);
-  console.log('Listening on ' + bind);
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+    console.log('Listening on ' + bind);
 }
