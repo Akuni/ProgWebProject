@@ -117,7 +117,7 @@ var checkAnswer = function()
         req.team_name = current_team.name;
         socket.emit('solveenigma', req);
 
-        alert("Well done !");
+        hideEnigma();
     }
     else
     {
@@ -178,13 +178,26 @@ function checkEnigmaWithMyPosition(lat, lng)
 
         if (diffLat < threshold && diffLng < threshold)
         {
-            //console.log("ENIGMA DETECTED --> " + JSON.stringify(enigma_list[i]));
-            current_enigma = enigma_list[i];
-            return showEnigma(enigma_list[i]);
+            if (!isEnigmaDone(enigma_list[i]._id))
+            {
+                current_enigma = enigma_list[i];
+                return showEnigma(enigma_list[i]);
+            }
         }
     }
 
     return hideEnigma();
+}
+
+function isEnigmaDone(id)
+{
+    if (current_team == null)
+        return false;
+
+    if (current_team.list_enigma_done || 0)
+        return current_team.list_enigma_done.contains(id);
+
+    return false;
 }
 
 function shuffle(a) {
