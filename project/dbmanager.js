@@ -92,17 +92,16 @@ dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
             return callback(false);
           }
           var collection = db.collection('teams');
-<
           collection.update({"name": team_name},
             {$inc:{score:parseInt(neasted_result[0].award)},
               $push:{list_enigma_done:neasted_result[0]._id}},
             function (err, result) {
->           if (err) {
-              console.log('Unable to add score to team', err);
-              return callback(false);
-            } else {
-              return callback(result);
-            }
+             if (err) {
+                console.log('Unable to add score to team', err);
+                return callback(false);
+              } else {
+                return callback(result);
+              }
           });
         }, {"_id" : new mongodb.ObjectId(enigma_id)}, test);
       }
