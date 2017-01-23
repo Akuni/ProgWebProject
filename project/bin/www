@@ -108,6 +108,31 @@ io.sockets.on('connection', function (socket) {
     }, socket.request.headers.behavior);
   });
 
+
+    socket.on('addsessionip', function (data) {
+        console.log("[Add Session] " + JSON.stringify(data));
+        sessions_ip[data.ip] = data.name;
+    });
+
+    socket.on('getsessionip', function (data) {
+        console.log("[Get Session] " + JSON.stringify(data));
+
+        var res = {};
+
+        if (!(data.ip || 0))
+        {
+            console.log("data.ip undefined!");
+            socket.emit('getsessionip', {status: false});
+            return;
+        }
+
+        res.status = sessions_ip.hasOwnProperty(data.ip); //contains?
+        res.name = (res.status) ? sessions_ip[data.ip] : "YOU HACKER!";
+
+        console.log("--> " + JSON.stringify(res));
+        socket.emit('getsessionip', res);
+    });
+
   socket.on('sendchat', function (data) {
     io.sockets.emit('updatechat', socket.username, data);
   });
