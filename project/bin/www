@@ -86,6 +86,17 @@ io.sockets.on('connection', function (socket) {
     }, socket.request.headers.behavior);
   });
 
+  socket.on('solveenigma', function(data){
+    console.log("[Solve enigma] Received");
+    console.log(JSON.stringify(data));
+    dbmanager.teams.solve(data.enigma_id, data.team_name, function(res) {
+      if(res !== false)
+        dbmanager.teams.get(function (data) {
+          socket.emit('getteams', data);
+        }, {}, socket.request.headers.behavior);
+    });
+  });
+
   socket.on('removeteam', function (id) {
     console.log("[Remove Enigma] Received");
 
