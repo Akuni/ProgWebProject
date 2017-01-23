@@ -1,4 +1,5 @@
 var tname, pwd;
+var my_ip;
 
 var socket = io.connect();
 
@@ -16,19 +17,6 @@ var onConnectionClick = function()
     socket.emit('signin', {"name": tname.value, "password": pwd.value} );
 };
 
-// socket.on('getteams', function (data) {
-//     console.log(JSON.stringify(data));
-//
-//     var teams_list = document.querySelector("#name");
-//
-//     var content = "";
-//     for(var i = 0; i < data.length; i++){
-//         content += '<option>' + data[i].name + '</option>';
-//     }
-//
-//     teams_list.innerHTML = content + teams_list.innerHTML;
-// });
-
 // On page load
 window.addEventListener("load", function() {
 
@@ -42,8 +30,6 @@ window.addEventListener("load", function() {
             onConnectionClick();
         }
     });
-
-
 });
 
 socket.on('signin', function(data){
@@ -52,6 +38,11 @@ socket.on('signin', function(data){
     if (data.status)
     {
         var redirect = (data.admin)?"admin":"team";
+
+        var sessionip = {};
+        sessionip.ip = my_ip;
+        sessionip.name = document.getElementById("name").value;
+        socket.emit('addsessionip', sessionip);
         window.location.pathname = window.location.pathname.replace("sign_in", redirect);
     }
     else

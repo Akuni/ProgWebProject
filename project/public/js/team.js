@@ -1,15 +1,16 @@
 var conversation, data, datasend, users;
+var my_ip;
 var enigma_list = null;
 var current_enigma = null;
+var current_team = null;
 
 var socket = io.connect();
 
 var threshold = 0.0001;
 
 // on connection to server, ask for user's name with an anonymous callback
-socket.on('connect', function(){
-    socket.emit('adduser', "user#"+socket.id.toString().slice(1,5));
-});
+socket.on('connect', function(){}
+);
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
 socket.on('updatechat', function (username, data) {
@@ -33,7 +34,7 @@ socket.on('updateusers', function(listOfUsers) {
 window.addEventListener("load", function(){
     document.querySelector("#submitEnigma").onclick = checkAnswer;
 
-    socket.emit('getenigmas');
+    socket.emit('getsessionip', {ip: my_ip});
 
     // get handles on various GUI components
     conversation = document.querySelector("#conversation");
@@ -65,32 +66,53 @@ window.addEventListener("load", function(){
 });
 
 socket.on('getenigmas', function(data){
-    console.log("[Get enigmas] " + JSON.stringify(data));
+    //console.log("[Get enigmas] " + JSON.stringify(data));
     for(var i = 0; i < data.length; i++){
         var loc = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude);
         placeMarker(loc);
     }
 
     enigma_list = data;
-    console.log(userLocation.position.lat(), userLocation.position.lng());
+    //console.log(userLocation.position.lat(), userLocation.position.lng());
     checkEnigmaWithMyPosition(userLocation.position.lat(), userLocation.position.lng());
 });
+
+socket.on('getsessionip', function(data){
+    if (data.status) {
+        // Loading info
+        socket.emit('adduser', data.name + "#" + socket.id.toString().slice(1,5));
+        socket.emit('getenigmas');
+        socket.emit('getteams', {name: data.name});
+    } else {
+        window.location.pathname = window.location.pathname.replace("team", "sign_in");
+    }
+});
+
+socket.on('getteams', function(data){
+    current_team = data[0];
+    updateInfo();
+});
+
+var updateInfo = function()
+{
+    document.querySelector("#score").innerHTML = (current_team.score || 0) ? current_team.score : "0";
+    document.querySelector("#enigma_count").innerHTML = (current_team.list_enigma_done) ? current_team.list_enigma_done.length : "0";
+};
 
 var checkAnswer = function()
 {
     var answer = document.querySelector('input[name="answer"]:checked').value;
     var correct_answer = current_enigma.valid_response;
 
-    console.log(answer);
-    console.log(correct_answer);
-
     if (answer == correct_answer)
     {
-        alert("JA");
+        // socket.emit('solveenigma', );
+        socket.emit('getteams', {name: current_team.name});
+        alert("Well done !");
     }
     else
     {
-        alert("NEIN");
+        alert("Bad answer :'(");
     }
 };
 
@@ -143,11 +165,11 @@ function checkEnigmaWithMyPosition(lat, lng)
         var diffLat = Math.abs(lat - enigma_list[i].location.latitude);
         var diffLng = Math.abs(lng - enigma_list[i].location.longitude);
 
-        console.log("Checking {" + lat + " ; " + lng + "} & {"+ enigma_list[i].location.latitude + " ; " + enigma_list[i].location.longitude + "}");
+        //console.log("Checking {" + lat + " ; " + lng + "} & {"+ enigma_list[i].location.latitude + " ; " + enigma_list[i].location.longitude + "}");
 
         if (diffLat < threshold && diffLng < threshold)
         {
-            console.log("ENIGMA DETECTED --> " + JSON.stringify(enigma_list[i]));
+            //console.log("ENIGMA DETECTED --> " + JSON.stringify(enigma_list[i]));
             current_enigma = enigma_list[i];
             return showEnigma(enigma_list[i]);
         }

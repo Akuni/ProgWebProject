@@ -109,14 +109,14 @@ html(lang='en')
                             span.fa.fa-trophy
                             |  Score
                         h4.text-primary
-                            #score 666
+                            #score -1
 
                     .col-lg-12.text-center
                         h3
                             span.fa.fa-star
                             |  Enigma completed
                         h4.text-primary
-                            #enigma_count 69
+                            #enigma_count -1
 
 
 
@@ -148,7 +148,6 @@ html(lang='en')
             a.btn.btn-primary(href='#page-top')
                 i.fa.fa-chevron-up
 
-
         script(src='/socket.io/socket.io.js')
         script(src='/js/team.js')
 
@@ -166,6 +165,12 @@ html(lang='en')
 
         // jQuery
         script(src='/vendor/jquery/jquery.min.js')
+
+        script(type='application/javascript').
+            $.getJSON('//freegeoip.net/json/?callback=?', function (data) {
+                my_ip = data.ip;
+            });
+
         // Bootstrap Core JavaScript
         script(src='/vendor/bootstrap/js/bootstrap.min.js')
         // Plugin JavaScript

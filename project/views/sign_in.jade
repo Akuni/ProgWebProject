@@ -81,8 +81,16 @@ html(lang='en')
         i.fa.fa-chevron-up
     script(src='/socket.io/socket.io.js')
     script(src='/js/sign_in.js')
+
+
     // jQuery
     script(src='/vendor/jquery/jquery.min.js')
+
+    script(type='application/javascript').
+      $.getJSON('//freegeoip.net/json/?callback=?', function (data) {
+        my_ip = data.ip;
+      });
+
     // Bootstrap Core JavaScript
     script(src='/vendor/bootstrap/js/bootstrap.min.js')
     // Plugin JavaScript
