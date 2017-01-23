@@ -92,7 +92,10 @@ dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
             return callback(false);
           }
           var collection = db.collection('teams');
-          collection.update({"name": team_name}, {$inc:{score:neasted_result[0].award}}, function (err, result) {
+          collection.update({"name": team_name},
+            {$inc:{score:neasted_result[0].award},
+              $push:{list_enigma_done:neasted_result[0]._id}},
+            function (err, result) {
             if (err) {
               console.log('Unable to add score to team', err);
               return callback(false);
