@@ -27,23 +27,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 /** ----- SESSION STUFF START ----- */
-/* OLD SHIAT : app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-})); */
 var passport = require('passport');
 var passportInit = passport.initialize();
 var passportSession = passport.session();
-/**
- * Get port from environment and store in Express.
- */
+/** Get port from environment and store in Express. */
 var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+/** Create HTTP server. */
 var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -68,7 +59,7 @@ io.use(function(socket, next){
 
 io.use(function(socket, next){
   socket.client.request.originalUrl = socket.client.request.url;
-  sessionMiddleware(socket.client.request,   socket.client.request.res, next);
+  sessionMiddleware(socket.client.request, socket.client.request.res, next);
 });
 
 io.use(function(socket, next){
