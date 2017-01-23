@@ -47,17 +47,20 @@ io.sockets.on('connection', function (socket) {
   socket.on('signin', function (data) {
     console.log("[Sign In] Received : " + JSON.stringify(data));
 
+      socket.handshake.session.SIGNIN_DATA = data;
+
     dbmanager.teams.exists(data, function (team) {
       console.log(team);
-      if (team) // Team exists
-        socket.emit('signin', {"status" : true, "team" : team});
-      else // Team doesn't exists
+      if (team) {// Team exists
+          socket.handshake.session.SIGNIN_TEAM = team;
+          socket.emit('signin', {"status": true, "team": team});
+      } else // Team doesn't exists
         socket.emit('signin', {"status" : false});
     }, socket.request.headers.behavior);
   });
 
   socket.on('getteams', function () {
-    /** ----- SESSION WEBSOCKET SIDE TEST STARRT ----- */
+    /** ----- SESSION WEBSOCKET SIDE TEST STARRT ----- *
     var views = socket.client.request.session.views;
     // console.log(socket);
     // console.log(socket.client.request.session);
@@ -68,7 +71,7 @@ io.sockets.on('connection', function (socket) {
     views[pathname] = (views[pathname] || 0) + 1;
     // console.log(socket.client.request.session);
     console.log("You've seen this page " + views[pathname] + " times.");
-    /** ----- SESSION WEBSOCKET SIDE TEST END ----- */
+    ** ----- SESSION WEBSOCKET SIDE TEST END ----- */
 
 
     console.log(socket.request.headers.behavior);

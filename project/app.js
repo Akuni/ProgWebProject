@@ -3,7 +3,12 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser')();
 var bodyParser = require('body-parser');
-var session = require('express-session');
+var session = require('express-session')({
+    secret: "my-secret",
+    resave: true,
+    saveUninitialized: true
+});
+var sharedsession = require("express-socket.io-session");
 
 var index = require('./routes/index');
 var play = require('./routes/play');
@@ -27,14 +32,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 /** ----- SESSION STUFF START ----- */
-/* OLD SHIAT : app.use(session({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: true
-})); */
-var passport = require('passport');
-var passportInit = passport.initialize();
-var passportSession = passport.session();
+
 /**
  * Get port from environment and store in Express.
  */
@@ -50,34 +48,13 @@ var io = require('socket.io').listen(server);
 
 server.listen(port);
 
-var sessionMiddleware = session({
-  secret: 'some secret',
-  key: 'express.sid',
-  resave: false,
-  httpOnly: false,
-  saveUninitialized: true,
-  cookie: {}
-});
+// Use express-session middleware for express
+app.use(session);
 
-app.use(sessionMiddleware);
+// Use shared session middleware for socket.io
+// setting autoSave:true
+io.use(sharedsession(session));
 
-io.use(function(socket, next){
-  socket.client.request.originalUrl = socket.client.request.url;
-  cookieParser(socket.client.request, socket.client.request.res, next);
-});
-
-io.use(function(socket, next){
-  socket.client.request.originalUrl = socket.client.request.url;
-  sessionMiddleware(socket.client.request,   socket.client.request.res, next);
-});
-
-io.use(function(socket, next){
-  passportInit(socket.client.request, socket.client.request.res, next);
-});
-
-io.use(function(socket, next){
-  passportSession(socket.client.request, socket.client.request.res, next);
-});
 /** ----- SESSION STUFF END ----- */
 app.use('/', index);
 app.use('/play', play);

@@ -51,6 +51,8 @@ socket.on('signin', function(data){
 
     if (data.status)
     {
+        //socket.handshake.session.SIGNIN_TEAM = data.team;
+        alert(socket.handshake.session.SIGNIN_TEAM);
         window.location.pathname = window.location.pathname.replace("sign_in", "admin");
     }
     else
