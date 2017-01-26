@@ -1,3 +1,15 @@
+.modal-body .img-responsive{
+	padding: 8px 0px;
+}
+
+.modal-header, .modal-footer{
+	border-width: 0px;
+}
+
+.modal-header{
+	max-height:0px;
+}
+
 .btn{
 padding: 8px 16px;
 }
