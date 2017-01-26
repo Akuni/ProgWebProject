@@ -1,3 +1,7 @@
+.btn{
+padding: 8px 16px;
+}
+
 .my-body {
 	padding: 50px;
 	font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -63,9 +67,11 @@ a {
 }
 
 .my-team-radio input[type="radio"] + label span {
-	padding: 5px;
-	border: 1px solid #202D3B;
-	border-radius: 4px;
+	padding: 8px 16px;
+	border: 1px solid #0E6C5A;
+	border-radius: 5px;
+	box-shadow: -3px 3px 10px -3px black;
+	background: #0D6353;
 }
 
 .my-team-radio {
@@ -73,7 +79,7 @@ a {
 }
 
 .my-team-radio input[type="radio"]:checked + label span {
-	padding: 5px;
+	padding: 8px 16px;
 	background-color: #2C3E50;
 	border: 1px solid #202D3B;
 	border-radius: 4px;

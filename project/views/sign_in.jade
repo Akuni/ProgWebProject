@@ -62,8 +62,10 @@ html(lang='en')
               // Team Name
               .my-sign-up-field
                 p What's your team name already ?
-                .form-group
-                  select#name.form-control
+                .input-group
+                  span.input-group-addon
+                    i.fa.fa-group
+                  input#name.form-control(type='text', name='name', placeholder='Team name')
               // Password1
               .my-sign-up-field
                 p And.. You know... Our little secret ?

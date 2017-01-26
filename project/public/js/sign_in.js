@@ -1,5 +1,4 @@
 var tname, pwd;
-
 var socket = io.connect();
 
 var onConnectionClick = function()
