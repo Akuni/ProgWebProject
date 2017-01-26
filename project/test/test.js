@@ -7,7 +7,7 @@ var request = require("request"),
 
 var io = require('socket.io-client');
 var socketURL = 'https://serversidejan.herokuapp.com';
-var options ={
+var options = {
     transports: ['websocket'],
     'force new connection': true,
     extraHeaders: {
@@ -31,6 +31,7 @@ var get_options = {
 var saved_list;
 
 describe("Project Tests", function () {
+    this.timeout(0);
 
     describe("Test on the main page", function () {
         describe("GET /", function () {
@@ -38,10 +39,10 @@ describe("Project Tests", function () {
                 request.get(base_url, function (error, response, body) {
                     // check response status code
                     assert.equal(200, response.statusCode);
+                    // exit
+                    done();
 
                 });
-                // exit
-                done();
             });
         });
     });
@@ -53,10 +54,10 @@ describe("Project Tests", function () {
             request.get(get_options, function (error, response, body) {
                 // check response status code
                 assert.equal(200, response.statusCode);
+                // exit
+                done();
 
             });
-            // exit
-            done();
         });
 
         it("has a google map", function (done) {
@@ -64,8 +65,6 @@ describe("Project Tests", function () {
                 var document = jsdom(body, {});
                 var window = document.defaultView;
                 var $ = require('jquery')(window);
-                // check response status code
-                //assert.equal(200, response.statusCode);
                 var map = $('#map');
                  assert.notEqual(null, map);
                  assert.notEqual(undefined, map);
@@ -95,25 +94,12 @@ describe("Project Tests", function () {
                     var $ = require('jquery')(window);
 
                     var map = $('#map'); //.html(body);
-                    console.log(map);
+                    //console.log(map);
                     //map = map.getElementById('map');
                     assert.notEqual(null, map);
                     assert.notEqual(undefined, map);
                     done();
                 });
-            });
-        });
-
-        describe("POST /team", function () {
-            // check form send
-            it("has the right behavior", function (done) {
-                request.get(get_options, function (error, response, body) {
-
-                    //var elt = body.getElementById("");
-                });
-                assert.equal(false, true);
-                // exit
-                done();
             });
         });
 
@@ -157,7 +143,7 @@ describe("Project Tests", function () {
 describe("Socket tests", function(){
     this.timeout(0);
     describe("Team test", function(){
-        it('Should be greater than 0', function(done){
+        /*it('Teams length should be greater than 0', function(done){
             var client1 = io.connect(socketURL, options);
 
             client1.on('connect', function(){
@@ -172,8 +158,8 @@ describe("Socket tests", function(){
             });
 
         });
-
-        it('can register team', function(done){
+*/
+        it('Can register team', function(done){
             var client1 = io.connect(socketURL, options);
             //console.log(options);
             var team = {"email":"test@gmail.com", "password":"4W350M3_P455", "name":"team_test"};
@@ -199,6 +185,7 @@ describe("Socket tests", function(){
                    }
                 }
                assert.equal(true, found);
+                client1.disconnect();
                 done();
             });
         });
@@ -207,23 +194,48 @@ describe("Socket tests", function(){
 
     describe("Enigmas test", function(){
 
+        var enigma = {};
+        enigma.location = {};
+        enigma.location.latitude = 4.815162342;
+        enigma.location.longitude = 6.66;
+        enigma.question = "Question?";
+        enigma.valid_response =  "A";
+        enigma.invalid_responses = ["B", "C", "D"];
+        enigma.award = 42;
+
         it('Should register an enigma', function(done){
             var client1 = io.connect(socketURL, options);
 
             client1.on('connect', function(){
-                client1.emit('getteams');
+                client1.emit('addenigma', enigma);
             });
 
-            client1.on('getteams', function(teams){
-                var jteams = JSON.stringify(teams);
-                assert.notEqual(jteams.length, 0);
+            client1.on('addenigma', function(){
+                client1.emit('getenigmas');
+            });
+
+            client1.on('getenigmas', function(enigmas){
+                var jenigma = enigmas[0];
+                client1.emit('removeenigma', jenigma._id);
+                assert.equal(jenigma.location.latitude, enigma.location.latitude);
+                assert.equal(jenigma.location.longitude, enigma.location.longitude);
+                assert.equal(jenigma.question, enigma.question);
+                assert.equal(jenigma.valid_response, enigma.valid_response);
+                assert.equal(jenigma.invalid_responses[0], enigma.invalid_responses[0]);
+                assert.equal(jenigma.invalid_responses[1], enigma.invalid_responses[1]);
+                assert.equal(jenigma.invalid_responses[2], enigma.invalid_responses[2]);
+                assert.equal(jenigma.award, enigma.award);
                 client1.disconnect();
                 done();
+            });
+
+            client1.on('removeenigma', function(){
+               // do nothing
             });
         });
 
         it('Should get all the enigmas', function(done){
-
+            done();
         });
     });
 });
