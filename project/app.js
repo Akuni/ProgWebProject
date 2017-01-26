@@ -35,15 +35,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 /** ----- SESSION STUFF START ----- */
 
-/**
- * Get port from environment and store in Express.
- */
+var passport = require('passport');
+var passportInit = passport.initialize();
+var passportSession = passport.session();
+/** Get port from environment and store in Express. */
 var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
+/** Create HTTP server. */
 var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
@@ -53,9 +52,15 @@ server.listen(port);
 // Use express-session middleware for express
 app.use(session);
 
-// Use shared session middleware for socket.io
-// setting autoSave:true
-io.use(sharedsession(session));
+io.use(function(socket, next){
+  socket.client.request.originalUrl = socket.client.request.url;
+  cookieParser(socket.client.request, socket.client.request.res, next);
+});
+
+io.use(function(socket, next){
+  socket.client.request.originalUrl = socket.client.request.url;
+  sessionMiddleware(socket.client.request, socket.client.request.res, next);
+});
 
 /** ----- SESSION STUFF END ----- */
 app.use('/', index);

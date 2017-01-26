@@ -5,6 +5,18 @@ var mongodb = require('mongodb');
 
 var dbmanager = {teams : {}, enigmas : {}};
 
+var hideAdminTeam = function(teams){
+  // Remove admin 'team'
+  for (var i = 0; i < teams.length; i++)
+  {
+    if (teams[i].name == 'admin')
+    {
+      teams.splice(i, 1);
+      break;
+    }
+  }
+};
+
 // Database urls on mLab :
 // var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
 var db_test_url = 'mongodb://admin:superpass@ds141937.mlab.com:41937/progwebjan_test';
@@ -31,6 +43,7 @@ dbmanager.teams.get = function (callback, filter, test) {
             console.log('Unable to get teams', err);
             return callback(false);
           } else {
+            hideAdminTeam(result);
             return callback(result);
           }
         });
@@ -58,6 +71,39 @@ dbmanager.teams.add = function (team, callback, test) {
             return callback(result);
           }
         });
+      }
+    });
+};
+
+dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
+  /** CORE **/
+  var MongoClient = mongodb.MongoClient;
+  var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
+  MongoClient.connect(connection
+    , function (err, db) {
+      console.log("URL : " + connection);
+      if (err) {
+        console.log('Unable to connect to the mongodb server', err);
+        return callback(false);
+      } else {
+        dbmanager.enigmas.get(function(neasted_result){
+          if(neasted_result.length == 0){
+            console.log('Unable to get enigma ', enigma_id);
+            return callback(false);
+          }
+          var collection = db.collection('teams');
+          collection.update({"name": team_name},
+            {$inc:{score:parseInt(neasted_result[0].award)},
+              $push:{list_enigma_done:neasted_result[0]._id}},
+            function (err, result) {
+             if (err) {
+                console.log('Unable to add score to team', err);
+                return callback(false);
+              } else {
+                return callback(result);
+              }
+          });
+        }, {"_id" : new mongodb.ObjectId(enigma_id)}, test);
       }
     });
 };
