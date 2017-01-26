@@ -63,6 +63,7 @@ app.use(sessionMiddleware);
 
 io.use(function(socket, next){
   socket.client.request.originalUrl = socket.client.request.url;
+  console.log("RES : " + socket.client.request.res);
   cookieParser(socket.client.request, socket.client.request.res, next);
 });
 
