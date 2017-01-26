@@ -1,6 +1,8 @@
 var conversation, data, datasend, users;
 var my_ip;
 var enigma_list = null;
+var answered_enigma = false;
+var g_won = false;
 var current_enigma = null;
 var current_team = null;
 var map_initialized = false;
@@ -120,6 +122,17 @@ socket.on('getteams', function(data){
 
 var updateInfo = function()
 {
+    if(answered_enigma){
+        answered_enigma = false;
+        var msg = "Invalid response\nThe answer was: " + current_enigma.valid_response + ".";
+        var img = "img/animations/loser.gif";
+        if(g_won){
+            msg = "Congratulations !! Your team earns " + current_enigma.award + " point(s).";
+            img = "img/animations/money.gif";
+        }
+        $("#enigmaModal .modal-body div")[0].innerHTML = msg;
+        $("#enigmaModal .modal-body img")[0].src = img;
+    }
     document.querySelector("#tname").innerHTML = (current_team.name || 0) ? "Hello " + current_team.name : "Hi there !";
     document.querySelector("#score").innerHTML = (current_team.score || 0) ? current_team.score : "0";
     document.querySelector("#enigma_count").innerHTML = (current_team.list_enigma_done) ? current_team.list_enigma_done.length : "0";
@@ -128,6 +141,8 @@ var updateInfo = function()
 var checkAnswer = function()
 {
     var answer = document.querySelector('input[name="answer"]:checked').value;
+    $("#enigmaModal").modal('show');
+    answered_enigma = true;
     var correct_answer = current_enigma.valid_response;
 
     var won = (answer == correct_answer);
@@ -141,10 +156,7 @@ var checkAnswer = function()
 
     hideEnigma();
 
-    var msg = (won)?"Congratulations !! Your team earns " + current_enigma.award + " point(s).":"Invalid response\nThe answer was: " + correct_answer + ".";
-
-
-    alert(msg);
+    g_won = won;
 };
 
 var map, addedMarker, watchId, userLocation;

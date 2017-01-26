@@ -151,11 +151,10 @@ html(lang='en')
     #enigmaModal.modal.fade.text-center(tabindex='-1', role='dialog', aria-labelledby='enigmaModalLabel')
       .modal-dialog(role='document')
         .modal-content
-          .modal-header
+          .modal-body
             button.close(type='button', data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
-          .modal-body
-            | Wait for it... The server will answer !
+            div Wait for it... The server will answer !
             img.img-responsive.col-xs-12(src='img/animations/wait.gif' alt='waiting...')
           .modal-footer
             button.btn.btn-default(type='button', data-dismiss='modal') Aaall Right !
