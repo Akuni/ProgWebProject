@@ -133,6 +133,8 @@ var updateInfo = function()
         $("#enigmaModal .modal-body div")[0].innerHTML = msg;
         $("#enigmaModal .modal-body img")[0].src = img;
     }
+
+    document.querySelector("#pagename").innerHTML = "EnigMap - " + ((current_team.name || 0) ? current_team.name : "Unknown");
     document.querySelector("#tname").innerHTML = (current_team.name || 0) ? "Hello " + current_team.name : "Hi there !";
     document.querySelector("#score").innerHTML = (current_team.score || 0) ? current_team.score : "0";
     document.querySelector("#enigma_count").innerHTML = (current_team.list_enigma_done) ? current_team.list_enigma_done.length : "0";
