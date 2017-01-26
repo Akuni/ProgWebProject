@@ -83,7 +83,8 @@ function initEnigmaMap()
     {
         var loc = new google.maps.LatLng(enigma_list[i].location.latitude, enigma_list[i].location.longitude);
         var isDone = isEnigmaDone(enigma_list[i]._id);
-        placeMarker(loc, isDone);
+        var title = ((isDone)?(enigma_list[i].question + " - "):"") + enigma_list[i].award + " point(s)";
+        placeMarker(loc, isDone, title);
     }
 
     map_initialized = true;
@@ -173,13 +174,15 @@ function pan(x,y) {
     userLocation = new google.maps.Marker({
         position: panPoint,
         map: map,
+        title: "You are here",
         icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
     });
 }
 
-function placeMarker(location, isDone) {
+function placeMarker(location, isDone, title) {
     console.log("placeMarker --> " + isDone);
     addedMarker = new google.maps.Marker({
+        title: title,
         position: location,
         map: map,
         icon : (isDone)?

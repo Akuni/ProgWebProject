@@ -1,5 +1,5 @@
 var latitude, longitude, question, vr, ir1, ir2, ir3, award;
-
+var my_ip;
 var socket = io.connect();
 
 // on connection to server, ask for user's name with an anonymous callback
@@ -31,7 +31,7 @@ socket.on('getenigmas', function (data) {
         content += '</tr>';
 
         var loc = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude);
-        placeDoneMarker(loc);
+        placeDoneMarker(loc, data[i].question + " - " + data[i].award + " point(s)");
     }
 
     teams_table.innerHTML = content;
@@ -41,19 +41,32 @@ var onRemove = function(id) {
     socket.emit('removeenigma', id);
 };
 
+var onDisconnect = function()
+{
+    socket.emit('removesessionip', {ip: my_ip});
+};
+
 // on load of page
 window.addEventListener("load", function(){
-
-    socket.emit('getenigmas');
-
+    document.querySelector("#disconnect").onclick = onDisconnect;
     document.querySelector("#register").onclick = sendEnigma;
 
+    socket.emit('getsessionip', {ip: my_ip});
+    
     document.addEventListener("keypress", function (evt) {
         // if pressed ENTER, then send
         if (evt.keyCode == 13) {
             sendEnigma();
         }
     });
+});
+
+socket.on('getsessionip', function(data){
+    if (data.status) {
+        socket.emit('getenigmas');
+    } else {
+        window.location.pathname = window.location.pathname.replace("admin/enigma", "sign_in");
+    }
 });
 
 var sendEnigma = function(){
@@ -164,6 +177,7 @@ function pan(x,y) {
     userLocation = new google.maps.Marker({
         position: panPoint,
         map: map,
+        title: "You are here",
         icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
     });
 }
@@ -178,14 +192,16 @@ function placeMarker(location) {
     addedMarker = new google.maps.Marker({
         position: location,
         map: map,
+        title: "New Enigma",
         icon :'https://maxcdn.icons8.com/windows8/PNG/26/Messaging/star-26.png'
     });
 }
 
-function placeDoneMarker(location) {
+function placeDoneMarker(location, title) {
     new google.maps.Marker({
         position: location,
         map: map,
+        title: title,
         icon : 'https://www.materialui.co/materialIcons/action/done_black_32x32.png'
     });
 }
