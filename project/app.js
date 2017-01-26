@@ -3,12 +3,7 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser')();
 var bodyParser = require('body-parser');
-var session = require('express-session')({
-    secret: "my-secret",
-    resave: true,
-    saveUninitialized: true
-});
-var sharedsession = require("express-socket.io-session");
+var session = require('express-session');
 
 var index = require('./routes/index');
 var play = require('./routes/play');
@@ -27,30 +22,44 @@ app.set('view engine', 'jade');
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'html');
 
-
-
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 /** ----- SESSION STUFF START ----- */
-
+/* OLD SHIAT : app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+})); */
 var passport = require('passport');
 var passportInit = passport.initialize();
 var passportSession = passport.session();
-/** Get port from environment and store in Express. */
+/**
+ * Get port from environment and store in Express.
+ */
 var port = normalizePort(process.env.PORT || '3001');
 app.set('port', port);
 
-/** Create HTTP server. */
+/**
+ * Create HTTP server.
+ */
 var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
 server.listen(port);
 
-// Use express-session middleware for express
-app.use(session);
+var sessionMiddleware = session({
+  secret: 'some secret',
+  key: 'express.sid',
+  resave: false,
+  httpOnly: false,
+  saveUninitialized: true,
+  cookie: {}
+});
+
+app.use(sessionMiddleware);
 
 io.use(function(socket, next){
   socket.client.request.originalUrl = socket.client.request.url;
@@ -59,9 +68,16 @@ io.use(function(socket, next){
 
 io.use(function(socket, next){
   socket.client.request.originalUrl = socket.client.request.url;
-  sessionMiddleware(socket.client.request, socket.client.request.res, next);
+  sessionMiddleware(socket.client.request,   socket.client.request.res, next);
 });
 
+io.use(function(socket, next){
+  passportInit(socket.client.request, socket.client.request.res, next);
+});
+
+io.use(function(socket, next){
+  passportSession(socket.client.request, socket.client.request.res, next);
+});
 /** ----- SESSION STUFF END ----- */
 app.use('/', index);
 app.use('/play', play);
