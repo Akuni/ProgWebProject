@@ -30,16 +30,13 @@ socket.on('getteams', function (data) {
     for (var i = 0; i < data.length; i++)
     {
         content += '<tr>'
-            + '<td>' + data[i].name + '</td>'
-            + '<td>' + data[i].score + '</td>';
+            + '<td>' + data[i].name + '</td>';
 
-        var list = "";
-        if (data[i].list_enigma_done != undefined) {
-            for (var j = 0; j < data[i].list_enigma_done.length; j++)
-                list += ((j > 0) ? "/" : "") + data[i].list_enigma_done[j];
-        }
+        var score = (data[i].score || 0) ? data[i].score: "0";
+            content+= '<td>' + score + '</td>';
 
-        content += '<td>' + list + '</td>'
+        var count = (data[i].list_enigma_done) ? data[i].list_enigma_done.length : "0";
+        content += '<td>' + count + '</td>'
             + '<td>' + data[i].email + '</td>'
             + '</tr>';
     }

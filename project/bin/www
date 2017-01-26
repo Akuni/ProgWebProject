@@ -89,7 +89,7 @@ io.sockets.on('connection', function (socket) {
   socket.on('solveenigma', function(data){
     console.log("[Solve enigma] Received");
     console.log(JSON.stringify(data));
-    dbmanager.teams.solve(data.enigma_id, data.team_name, function(res) {
+    dbmanager.teams.solve(data.enigma_id, data.team_name, data.won, function(res) {
       if(res !== false)
         dbmanager.teams.get(function (data) {
           socket.emit('getteams', data);
@@ -123,7 +123,6 @@ io.sockets.on('connection', function (socket) {
     socket.on('addsessionip', function (data) {
         console.log("[Add Session] " + JSON.stringify(data));
         sessions_ip[data.ip] = data.name;
-        console.log("Sessions IP : " + sessions_ip);
     });
 
     socket.on('getsessionip', function (data) {

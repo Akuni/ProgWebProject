@@ -75,7 +75,7 @@ dbmanager.teams.add = function (team, callback, test) {
     });
 };
 
-dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
+dbmanager.teams.solve = function(enigma_id, team_name, won, callback, test){
   /** CORE **/
   var MongoClient = mongodb.MongoClient;
   var connection = /** TEST TRICK **/ (typeof test !== 'undefined') ? db_test_url : db_url /** TEST TRICK **/;
@@ -93,7 +93,7 @@ dbmanager.teams.solve = function(enigma_id, team_name, callback, test){
           }
           var collection = db.collection('teams');
           collection.update({"name": team_name},
-            {$inc:{score:parseInt(neasted_result[0].award)},
+            {$inc:{score: won ? parseInt(neasted_result[0].award) : 0},
               $push:{list_enigma_done:neasted_result[0]._id}},
             function (err, result) {
              if (err) {

@@ -121,19 +121,21 @@ var checkAnswer = function()
     var answer = document.querySelector('input[name="answer"]:checked').value;
     var correct_answer = current_enigma.valid_response;
 
-    if (answer == correct_answer)
-    {
-        var req = {};
-        req.enigma_id = current_enigma._id;
-        req.team_name = current_team.name;
-        socket.emit('solveenigma', req);
+    var won = (answer == correct_answer);
 
-        hideEnigma();
-    }
-    else
-    {
-        alert("Bad answer :'(");
-    }
+    var req = {};
+    req.enigma_id = current_enigma._id;
+    req.team_name = current_team.name;
+    req.won = won;
+
+    socket.emit('solveenigma', req);
+
+    hideEnigma();
+
+    var msg = (won)?"Congratulations !! Your team earns " + current_enigma.award + " point(s).":"Invalid response\nThe answer was: " + correct_answer + ".";
+
+
+    alert(msg);
 };
 
 var map, addedMarker, watchId, userLocation;
@@ -248,7 +250,7 @@ function showEnigma(enigma){
     irs.push(enigma.valid_response);
     shuffle(irs);
 
-    question.innerHTML = enigma.question;
+    question.innerHTML = enigma.question + " -- " + enigma.award + "point(s)";
 
     rl1.innerHTML = irs[0];
     r1.value = irs[0];
