@@ -56,7 +56,7 @@ io.sockets.on('connection', function (socket) {
 
     dbmanager.teams.exists(data, function (team) {
       console.log(team);
-      if (team.length || 0) // Team exists
+      if (team) // Team exists
         socket.emit('signin', {"status": true, "admin": (team[0].name === "admin")});
       else // Team doesn't exists
         socket.emit('signin', {"status": false});
