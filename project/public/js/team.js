@@ -33,6 +33,7 @@ socket.on('updateusers', function(listOfUsers) {
 // on load of page
 window.addEventListener("load", function(){
     document.querySelector("#submitEnigma").onclick = checkAnswer;
+    document.querySelector("#disconnect").onclick = onDisconnect;
 
     socket.emit('getsessionip', {ip: my_ip});
 
@@ -41,6 +42,8 @@ window.addEventListener("load", function(){
     data = document.querySelector("#data");
     datasend = document.querySelector("#datasend");
     users = document.querySelector("#users");
+
+
 
     // Listener for send button
     datasend.addEventListener("click", function(evt) {
@@ -64,6 +67,11 @@ window.addEventListener("load", function(){
         socket.emit('sendchat', message);
     }
 });
+
+var onDisconnect = function()
+{
+    socket.emit('removesessionip', {ip: my_ip});
+};
 
 socket.on('getenigmas', function(data){
     //console.log("[Get enigmas] " + JSON.stringify(data));
