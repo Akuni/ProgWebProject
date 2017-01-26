@@ -3,6 +3,7 @@ var my_ip;
 var enigma_list = null;
 var current_enigma = null;
 var current_team = null;
+var map_initialized = false;
 
 var socket = io.connect();
 
@@ -43,8 +44,6 @@ window.addEventListener("load", function(){
     datasend = document.querySelector("#datasend");
     users = document.querySelector("#users");
 
-
-
     // Listener for send button
     datasend.addEventListener("click", function(evt) {
         sendMessage();
@@ -73,15 +72,24 @@ var onDisconnect = function()
     socket.emit('removesessionip', {ip: my_ip});
 };
 
-socket.on('getenigmas', function(data){
-    //console.log("[Get enigmas] " + JSON.stringify(data));
-    for(var i = 0; i < data.length; i++){
-        var loc = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude);
-        placeMarker(loc);
+function initEnigmaMap()
+{
+    if (map_initialized || current_team == null || enigma_list == null)
+        return;
+
+    for(var i = 0; i < enigma_list.length; i++)
+    {
+        var loc = new google.maps.LatLng(enigma_list[i].location.latitude, enigma_list[i].location.longitude);
+        var isDone = isEnigmaDone(enigma_list[i]._id);
+        placeMarker(loc, isDone);
     }
 
+    map_initialized = true;
+}
+
+socket.on('getenigmas', function(data){
+    initEnigmaMap();
     enigma_list = data;
-    //console.log(userLocation.position.lat(), userLocation.position.lng());
     checkEnigmaWithMyPosition(userLocation.position.lat(), userLocation.position.lng());
 });
 
@@ -102,6 +110,7 @@ socket.on('getteams', function(data){
     {
         current_team = data[0];
         updateInfo();
+        initEnigmaMap();
         if (saved_position != null)
             checkEnigmaWithMyPosition(saved_position.coords.latitude , saved_position.coords.longitude);
     } else {
@@ -154,11 +163,14 @@ function pan(x,y) {
     });
 }
 
-function placeMarker(location) {
+function placeMarker(location, isDone) {
+    console.log("placeMarker --> " + isDone);
     addedMarker = new google.maps.Marker({
         position: location,
         map: map,
-        icon : 'https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/FAQ-32.png'
+        icon : (isDone)?
+            'https://www.materialui.co/materialIcons/action/done_black_32x32.png'
+            :'https://maxcdn.icons8.com/windows8/PNG/26/Messaging/star-26.png'
     });
 }
 
@@ -207,6 +219,10 @@ function checkEnigmaWithMyPosition(lat, lng)
 
 function isEnigmaDone(id)
 {
+
+    // if(!(current_team || 0))
+    //     return false;
+
     if (current_team.list_enigma_done || 0)
     {
         var res = current_team.list_enigma_done.indexOf(id) > -1;

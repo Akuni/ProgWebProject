@@ -6,8 +6,6 @@ var socket = io.connect();
 socket.on('connect', function(){});
 
 socket.on('getenigmas', function (data) {
-    console.log(JSON.stringify(data));
-
     var teams_table = document.querySelector("#enigmas_list_content");
 
     var content = "";
@@ -27,22 +25,19 @@ socket.on('getenigmas', function (data) {
 
         content += '<td>' + irs + '</td>';
         content += '<td>' + data[i].award + '</td>';
-        var test = '<td><i class="fa fa-times" onclick="onRemove(\'' + data[i]._id + '\');"></i></td>';
+        var rm = '<td><i class="fa fa-times" onclick="onRemove(\'' + data[i]._id + '\');"></i></td>';
 
-        content += test;
+        content += rm;
         content += '</tr>';
 
-        var location = {};
-        location.lat = data[i].location.latitude;
-        location.lng = data[i].location.longitude;
-        // TODO : place marker
+        var loc = new google.maps.LatLng(data[i].location.latitude, data[i].location.longitude);
+        placeDoneMarker(loc);
     }
 
     teams_table.innerHTML = content;
 });
 
 var onRemove = function(id) {
-    console.log("Remove(" + id + ")");
     socket.emit('removeenigma', id);
 };
 
@@ -133,7 +128,6 @@ var sendEnigma = function(){
 
     enigma.award = award.value;
 
-    console.log("[Add Enigma] " + JSON.stringify(enigma));
     socket.emit('addenigma', enigma);
 
     window.location.reload();
@@ -175,9 +169,8 @@ function pan(x,y) {
 }
 
 function placeMarker(location) {
-    if (addedMarker != null && addedMarker.position != location) {
+    if (addedMarker != null && addedMarker.position != location)
         addedMarker.setMap(null);
-    }
 
     document.querySelector("#latitude").value = location.lat();
     document.querySelector("#longitude").value = location.lng();
@@ -185,9 +178,19 @@ function placeMarker(location) {
     addedMarker = new google.maps.Marker({
         position: location,
         map: map,
-        icon : 'https://cdn4.iconfinder.com/data/icons/e-commerce-icon-set/48/FAQ-32.png'
+        icon :'https://maxcdn.icons8.com/windows8/PNG/26/Messaging/star-26.png'
     });
 }
+
+function placeDoneMarker(location) {
+    new google.maps.Marker({
+        position: location,
+        map: map,
+        icon : 'https://www.materialui.co/materialIcons/action/done_black_32x32.png'
+    });
+}
+
+
 
 function getLocation() {
     if (navigator.geolocation) {
