@@ -81,6 +81,7 @@ socket.on('signup', function(data){
     console.log("[Sign Up] Received : " + JSON.stringify(data));
     if (data.status)
     {
+        //socket.handshake.session.SIGNIN_DATA = data;
         window.location.pathname = window.location.pathname.replace("sign_up", "sign_in");
     }
     else

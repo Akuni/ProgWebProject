@@ -3,7 +3,12 @@ var path = require('path');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser')();
 var bodyParser = require('body-parser');
-var session = require('express-session');
+var session = require('express-session')({
+    secret: "my-secret",
+    resave: true,
+    saveUninitialized: true
+});
+var sharedsession = require("express-socket.io-session");
 
 var index = require('./routes/index');
 var play = require('./routes/play');
@@ -22,11 +27,14 @@ app.set('view engine', 'jade');
 // app.engine('html', require('ejs').renderFile);
 // app.set('view engine', 'html');
 
+
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 /** ----- SESSION STUFF START ----- */
+
 var passport = require('passport');
 var passportInit = passport.initialize();
 var passportSession = passport.session();
@@ -41,16 +49,8 @@ var io = require('socket.io').listen(server);
 
 server.listen(port);
 
-var sessionMiddleware = session({
-  secret: 'some secret',
-  key: 'express.sid',
-  resave: false,
-  httpOnly: false,
-  saveUninitialized: true,
-  cookie: {}
-});
-
-app.use(sessionMiddleware);
+// Use express-session middleware for express
+app.use(session);
 
 io.use(function(socket, next){
   socket.client.request.originalUrl = socket.client.request.url;
@@ -62,13 +62,6 @@ io.use(function(socket, next){
   sessionMiddleware(socket.client.request, socket.client.request.res, next);
 });
 
-io.use(function(socket, next){
-  passportInit(socket.client.request, socket.client.request.res, next);
-});
-
-io.use(function(socket, next){
-  passportSession(socket.client.request, socket.client.request.res, next);
-});
 /** ----- SESSION STUFF END ----- */
 app.use('/', index);
 app.use('/play', play);

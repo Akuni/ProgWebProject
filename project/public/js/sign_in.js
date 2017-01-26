@@ -17,10 +17,11 @@ var onConnectionClick = function()
     socket.emit('signin', {"name": tname.value, "password": pwd.value} );
 };
 
+
 // On page load
 window.addEventListener("load", function() {
 
-    // socket.emit('getteams');
+    socket.emit('getteams');
 
     document.querySelector("#connection").onclick = onConnectionClick;
 

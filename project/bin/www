@@ -29,6 +29,7 @@ var sessions_ip = [];
 
 /** SOCKET IO **/
 io.sockets.on('connection', function (socket) {
+
   socket.on('signup', function (team) {
     console.log("[Sign Up] Received : " + JSON.stringify(team));
 
@@ -175,6 +176,7 @@ io.sockets.on('connection', function (socket) {
     listOfPlayers[username] = player;
     io.sockets.emit('updatePlayers', listOfPlayers);
   });
+
 
   socket.on('disconnect', function () {
 
