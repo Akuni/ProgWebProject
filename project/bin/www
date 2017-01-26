@@ -38,15 +38,17 @@ io.sockets.on('connection', function (socket) {
 
       if (exists) // Already existing team
         socket.emit('signup', {"status": false});
-      else // Team available
-        team.score = 0;
-      dbmanager.teams.add(team, function () { // Adding team
-        socket.emit('signup', {"status": true}); // Team added
-        dbmanager.teams.get(function (data) {
-          io.sockets.emit('getteams', data);
-        }, {}, socket.request.headers.behavior);
-      }, socket.request.headers.behavior);
+      else { // Team available
+          team.score = 0;
+          dbmanager.teams.add(team, function () { // Adding team
+              socket.emit('signup', {"status": true}); // Team added
+              dbmanager.teams.get(function (data) {
+                  io.sockets.emit('getteams', data);
+              }, {}, socket.request.headers.behavior);
+          }, socket.request.headers.behavior);
+      }
     }, socket.request.headers.behavior);
+
   });
 
   socket.on('signin', function (data) {
