@@ -1,3 +1,7 @@
+.modal-header, .modal-footer{
+	border-width: 0px;
+}
+
 .btn{
 padding: 8px 16px;
 }
