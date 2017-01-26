@@ -61,6 +61,7 @@ var sessionMiddleware = session({
 
 app.use(sessionMiddleware);
 
+/*
 io.use(function(socket, next){
   socket.client.request.originalUrl = socket.client.request.url;
   console.log("RES : " + socket.client.request.res);
@@ -79,6 +80,7 @@ io.use(function(socket, next){
 io.use(function(socket, next){
   passportSession(socket.client.request, socket.client.request.res, next);
 });
+*/
 /** ----- SESSION STUFF END ----- */
 app.use('/', index);
 app.use('/play', play);
