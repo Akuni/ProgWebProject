@@ -1,10 +1,9 @@
 var conversation, data, datasend, users;
-
+var my_ip;
 var socket = io.connect();
 
 // on connection to server, ask for user's name with an anonymous callback
 socket.on('connect', function(){
-    socket.emit('adduser', "admin#"+socket.id.toString().slice(1,5));
 });
 
 // listener, whenever the server emits 'updatechat', this updates the chat body
@@ -48,10 +47,16 @@ socket.on('getteams', function (data) {
     teams_table.innerHTML = content;
 });
 
+var onDisconnect = function()
+{
+    socket.emit('removesessionip', {ip: my_ip});
+};
+
 // on load of page
 window.addEventListener("load", function(){
+    document.querySelector("#disconnect").onclick = onDisconnect;
 
-    socket.emit('getteams');
+    socket.emit('getsessionip', {ip: my_ip});
 
     // get handles on various GUI components
     conversation = document.querySelector("#conversation");
@@ -79,5 +84,14 @@ window.addEventListener("load", function(){
         data.value = "";
         // tell server to execute 'sendchat' and send along one parameter
         socket.emit('sendchat', message);
+    }
+});
+
+socket.on('getsessionip', function(data){
+    if (data.status) {
+        socket.emit('getteams');
+        socket.emit('adduser', "admin#"+socket.id.toString().slice(1,5));
+    } else {
+        window.location.pathname = window.location.pathname.replace("admin", "sign_in");
     }
 });

@@ -64,15 +64,14 @@ io.sockets.on('connection', function (socket) {
   socket.on('getteams', function (filter) {
     console.log(socket.request.headers.behavior);
     dbmanager.teams.get(function (data) {
-      console.log("[Get Teams] Received", data);
-
+      console.log("[Get Teams] Received");
       socket.emit('getteams', data);
     }, filter, socket.request.headers.behavior);
   });
 
   socket.on('getenigmas', function () {
     dbmanager.enigmas.get(function (data) {
-      console.log("[Get Enigmas] Received", data);
+      console.log("[Get Enigmas] Received");
       socket.emit('getenigmas', data);
     }, {}, socket.request.headers.behavior);
   });
@@ -124,6 +123,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('addsessionip', function (data) {
         console.log("[Add Session] " + JSON.stringify(data));
         sessions_ip[data.ip] = data.name;
+        console.log("Sessions IP : " + sessions_ip);
     });
 
     socket.on('getsessionip', function (data) {
@@ -143,6 +143,18 @@ io.sockets.on('connection', function (socket) {
 
         console.log("--> " + JSON.stringify(res));
         socket.emit('getsessionip', res);
+    });
+
+    socket.on('removesessionip', function(data) {
+      console.log("[Remove Session] " + JSON.stringify(data));
+      if (!(data.ip || 0))
+      {
+        console.log("data.ip not found");
+        return;
+      }
+
+      if (sessions_ip.hasOwnProperty(data.ip))
+        delete sessions_ip[data.ip];
     });
 
   socket.on('sendchat', function (data) {

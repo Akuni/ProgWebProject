@@ -50,7 +50,7 @@ html(lang='en')
                                 span.fa.fa-star
                                 |  Enigmas
                         li.page-scroll
-                            a(href='/')
+                            a#disconnect(href='/')
                                 span.fa.fa-sign-out
                                 |  Disconnect
                 // /.navbar-collapse
@@ -105,6 +105,12 @@ html(lang='en')
         script(src='/js/admin.js')
         // jQuery
         script(src='/vendor/jquery/jquery.min.js')
+
+        script(type='application/javascript').
+            $.getJSON('//freegeoip.net/json/?callback=?', function (data) {
+                my_ip = data.ip;
+            });
+
         // Bootstrap Core JavaScript
         script(src='/vendor/bootstrap/js/bootstrap.min.js')
         // Plugin JavaScript
