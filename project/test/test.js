@@ -143,7 +143,7 @@ describe("Project Tests", function () {
 describe("Socket tests", function(){
     this.timeout(0);
     describe("Team test", function(){
-        it('Teams length should be greater than 0', function(done){
+        /*it('Teams length should be greater than 0', function(done){
             var client1 = io.connect(socketURL, options);
 
             client1.on('connect', function(){
@@ -158,7 +158,7 @@ describe("Socket tests", function(){
             });
 
         });
-
+*/
         it('Can register team', function(done){
             var client1 = io.connect(socketURL, options);
             //console.log(options);
@@ -185,6 +185,7 @@ describe("Socket tests", function(){
                    }
                 }
                assert.equal(true, found);
+                client1.disconnect();
                 done();
             });
         });
@@ -215,7 +216,7 @@ describe("Socket tests", function(){
 
             client1.on('getenigmas', function(enigmas){
                 var jenigma = enigmas[0];
-                client1.emit('removeenigma', jenigma.id);
+                client1.emit('removeenigma', jenigma._id);
                 assert.equal(jenigma.location.latitude, enigma.location.latitude);
                 assert.equal(jenigma.location.longitude, enigma.location.longitude);
                 assert.equal(jenigma.question, enigma.question);
