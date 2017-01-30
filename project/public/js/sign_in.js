@@ -1,6 +1,5 @@
 var tname, pwd;
 var my_ip;
-var crypto = require('crypto-js');
 
 var socket = io.connect();
 
@@ -16,7 +15,7 @@ var onConnectionClick = function()
         window.alert("Password ?");
         return;
     }
-    pwd.value = crypto.AES.encrypt(pwd.value, julien);
+    pwd.value = AES.encrypt(pwd.value, julien);
     socket.emit('signin', {"name": tname.value, "password": pwd.value} );
 };
 
