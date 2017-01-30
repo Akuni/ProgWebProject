@@ -20,6 +20,7 @@
     "passport": "^0.3.2",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.7.2",
-    "crypto-js":"^3.1.8"
+    "crypto-js":"^3.1.8",
+    "xmlhttprequest":"^1.8.0"
   }
 }

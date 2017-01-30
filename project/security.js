@@ -2,11 +2,18 @@
  * Created by Nicolas on 30/01/17.
  */
 var CryptoJS = require("crypto-js");
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+const fs = require('fs');
 
 var security ={};
 
 function readTextFile(file)
 {
+    fs.readdir(__dirname, function(err, files)  {
+        files.forEach(function(file)  {
+            console.log(file);
+        });
+    });
     var rawFile = new XMLHttpRequest();
     console.log("DIR NAME : " + __dirname);
     console.log("OPENNING : " + file);
