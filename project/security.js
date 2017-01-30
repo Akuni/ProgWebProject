@@ -22,13 +22,13 @@ var encryptString = function(message){
 var decryptString = function(message){
     var key = readTextFile("dump.txt");
     console.log("KEY : " + key);
-    return CryptoJS.AES.decrypt(message.toString(CryptoJS.enc.Utf8), key);
+    return CryptoJS.AES.decrypt(message.toString(), key);
 };
 
 var decryptClientString = function(message){
     var key = readTextFile("client_dump.txt");
     console.log("KEY : " + key);
-    return CryptoJS.AES.decrypt(message.toString(CryptoJS.enc.Utf8), key);
+    return CryptoJS.AES.decrypt(message.toString(), key);
 };
 
 
@@ -42,7 +42,7 @@ security.decryptTeam = function(team){
 };
 
 security.decryptClientTeam = function(team){
-    team.password = decryptClientString(team.password);
+    team.password = decryptClientString(team.password).words;
 };
 
 module.exports = security;
