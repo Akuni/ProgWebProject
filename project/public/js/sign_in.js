@@ -15,7 +15,7 @@ var onConnectionClick = function()
         window.alert("Password ?");
         return;
     }
-    pwd.value = AES.encrypt(pwd.value, julien);
+    pwd.value = CryptoJS.AES.encrypt(pwd.value, julien);
     socket.emit('signin', {"name": tname.value, "password": pwd.value} );
 };
 

@@ -45,7 +45,7 @@ var onRegisterClick = function()
     }
 
     console.log("[Sign Up] Emiting...");
-    p1.value = AES.encrypt(p1.value, julien);
+    p1.value = CryptoJS.AES.encrypt(p1.value, julien);
     socket.emit('signup', {"name": tname.value, "email": mail.value, "password": p1.value} );
 };
 
