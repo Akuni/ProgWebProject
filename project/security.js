@@ -8,7 +8,7 @@ var security ={};
 function readTextFile(file)
 {
     var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, false);
+    rawFile.open("GET", "file://"+ file, false);
     rawFile.onreadystatechange = function () {
         if(rawFile.readyState === 4)
         {
@@ -23,20 +23,36 @@ function readTextFile(file)
     rawFile.send(null);
 }
 
-security.encryptString = function(message){
+var encryptString = function(message){
     var key = readTextFile("dump.txt");
     console.log("KEY : " + key);
     return CryptoJS.AES.encrypt(message.toString(), key);
 };
 
-security.decryptString = function(message){
-    var key =readTextFile("dump.txt");
+var decryptString = function(message){
+    var key = readTextFile("dump.txt");
     console.log("KEY : " + key);
-    return CryptoJS.AES.decrypt(message.toString(), key);
+    return CryptoJS.AES.decrypt(message.toString(CryptoJS.enc.Utf8), key);
 };
 
+var decryptClientString = function(message){
+    var key = readTextFile("client_dump.txt");
+    console.log("KEY : " + key);
+    return CryptoJS.AES.decrypt(message.toString(CryptoJS.enc.Utf8), key);
+};
+
+
+
 security.encryptTeam = function(team){
-    team.password = security.encryptString(team.password);
+    team.password = encryptString(team.password);
+};
+
+security.decryptTeam = function(team){
+    team.password = decryptString(team.password);
+};
+
+security.decryptClientTeam = function(team){
+    team.password = decryptClientString(team.password);
 };
 
 module.exports = security;

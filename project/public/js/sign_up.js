@@ -1,5 +1,8 @@
 var tname, mail, p1, p2, p3, p4;
 
+var crypto = require('crypto-js');
+var julien = "CL13NT_K3Y";
+
 var socket = io.connect();
 
 var onRegisterClick = function()
@@ -43,6 +46,7 @@ var onRegisterClick = function()
     }
 
     console.log("[Sign Up] Emiting...");
+    p1.value = crypto.AES.encrypt(p1.value, julien);
     socket.emit('signup', {"name": tname.value, "email": mail.value, "password": p1.value} );
 };
 

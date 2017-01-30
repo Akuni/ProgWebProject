@@ -8,6 +8,8 @@ var app = tmp.app;
 var server = tmp.server;
 var io = tmp.io;
 
+var security = require("../security");
+
 // var app = require('../app');
 var debug = require('debug')('project:server');
 var dbmanager = require('../dbmanager');
@@ -40,6 +42,13 @@ io.sockets.on('connection', function (socket) {
         socket.emit('signup', {"status": false});
       else { // Team available
           team.score = 0;
+          // decrypt client password
+          console.log("TEAM " + team);
+          security.decryptClientTeam(team);
+          console.log("TEAM " + team);
+          // encrypt password
+          security.encryptTeam(team);
+          console.log("TEAM " + team);
           dbmanager.teams.add(team, function () { // Adding team
               socket.emit('signup', {"status": true}); // Team added
               dbmanager.teams.get(function (data) {
@@ -53,7 +62,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('signin', function (data) {
     console.log("[Sign In] Received : " + JSON.stringify(data));
-
+    // decrypt password
+    security.decryptClientTeam(data);
+    // encrypt to check DB
+    security.encryptTeam(data);
     dbmanager.teams.exists(data, function (team) {
       console.log(team);
       if (team != null && team.length > 0) // Team exists
