@@ -2,29 +2,15 @@
  * Created by Nicolas on 30/01/17.
  */
 var CryptoJS = require("crypto-js");
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const fs = require('fs');
 
 var security ={};
 
 function readTextFile(file)
 {
-    var rawFile = new XMLHttpRequest();
     console.log("DIR NAME : " + __dirname);
     console.log("OPENNING : " + file);
-    rawFile.open("GET", "file://app/project/"+ file, false);
-    rawFile.onreadystatechange = function () {
-        if(rawFile.readyState === 4)
-        {
-            if(rawFile.status === 200 || rawFile.status == 0)
-            {
-                return  rawFile.responseText;
-            } else {
-                return "NO KEY FOUND";
-            }
-        }
-    };
-    rawFile.send(null);
+    return fs.readFileSync(file).toString();
 }
 
 var encryptString = function(message){
