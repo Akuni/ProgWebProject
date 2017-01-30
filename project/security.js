@@ -36,7 +36,7 @@ security.decryptString = function(message){
 };
 
 security.encryptTeam = function(team){
-    team.
+    team.password = security.encryptString(team.password);
 };
 
 module.exports = security;
