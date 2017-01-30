@@ -12,4 +12,3 @@ enigmas
 - valid_response
 - invalid_response (list of 3 invalid responses)
 - award
-hero
