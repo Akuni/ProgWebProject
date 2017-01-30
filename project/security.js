@@ -9,15 +9,10 @@ var security ={};
 
 function readTextFile(file)
 {
-    fs.readdir(__dirname, function(err, files)  {
-        files.forEach(function(file)  {
-            console.log(file);
-        });
-    });
     var rawFile = new XMLHttpRequest();
     console.log("DIR NAME : " + __dirname);
     console.log("OPENNING : " + file);
-    rawFile.open("GET", "file://"+ file, false);
+    rawFile.open("GET", "file://app/project/"+ file, false);
     rawFile.onreadystatechange = function () {
         if(rawFile.readyState === 4)
         {
