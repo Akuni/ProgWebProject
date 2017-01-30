@@ -10,7 +10,7 @@ function readTextFile(file)
 {
     console.log("DIR NAME : " + __dirname);
     console.log("OPENNING : " + file);
-    return fs.readFileSync(file).toString();
+    return fs.readFileSync("/app/project/" + file).toString();
 }
 
 var encryptString = function(message){
