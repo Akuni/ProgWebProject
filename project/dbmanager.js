@@ -2,6 +2,7 @@
  * Created by user on 16/01/2017.
  */
 var mongodb = require('mongodb');
+var security = require('./security');
 
 var dbmanager = {teams : {}, enigmas : {}};
 
@@ -18,9 +19,9 @@ var hideAdminTeam = function(teams){
 };
 
 // Database urls on mLab :
-// var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
+var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
 var db_test_url = 'mongodb://admin:superpass@ds141937.mlab.com:41937/progwebjan_test';
-var db_url = 'mongodb://localhost:27017/pwdb';
+//var db_url = 'mongodb://localhost:27017/pwdb';
 
 /** ----- TEAMS ----- **/
 dbmanager.teams.get = function (callback, filter, test) {
