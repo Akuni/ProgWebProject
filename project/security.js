@@ -42,7 +42,7 @@ security.decryptTeam = function(team){
 };
 
 security.decryptClientTeam = function(team){
-    team.password = decryptClientString(team.password).words;
+    team.password = decryptClientString(team.password).toString(CryptoJS.enc.utf8);
 };
 
 module.exports = security;
