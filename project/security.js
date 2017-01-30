@@ -8,6 +8,8 @@ var security ={};
 function readTextFile(file)
 {
     var rawFile = new XMLHttpRequest();
+    console.log("DIR NAME : " + __dirname);
+    console.log("OPENNING : " + file);
     rawFile.open("GET", "file://"+ file, false);
     rawFile.onreadystatechange = function () {
         if(rawFile.readyState === 4)

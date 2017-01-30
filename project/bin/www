@@ -43,12 +43,12 @@ io.sockets.on('connection', function (socket) {
       else { // Team available
           team.score = 0;
           // decrypt client password
-          console.log("TEAM " + team);
+          console.log("TEAM " + JSON.stringify(team));
           security.decryptClientTeam(team);
-          console.log("TEAM " + team);
+          console.log("TEAM " + JSON.stringify(team));
           // encrypt password
           security.encryptTeam(team);
-          console.log("TEAM " + team);
+          console.log("TEAM " + JSON.stringify(team));
           dbmanager.teams.add(team, function () { // Adding team
               socket.emit('signup', {"status": true}); // Team added
               dbmanager.teams.get(function (data) {
