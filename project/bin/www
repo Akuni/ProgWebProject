@@ -26,7 +26,7 @@ var listOfPlayers = {};
 var sessions_ip = [];
 
 /** DEBUG **/
-//var util = require('util');
+var util = require('util');
 
 
 /** SOCKET IO **/
@@ -42,13 +42,9 @@ io.sockets.on('connection', function (socket) {
         socket.emit('signup', {"status": false});
       else { // Team available
           team.score = 0;
-          // decrypt client password
-          console.log("TEAM " + JSON.stringify(team));
           security.decryptClientTeam(team);
-          console.log("TEAM " + JSON.stringify(team));
           // encrypt password
           security.encryptTeam(team);
-          console.log("TEAM " + JSON.stringify(team));
           dbmanager.teams.add(team, function () { // Adding team
               socket.emit('signup', {"status": true}); // Team added
               dbmanager.teams.get(function (data) {
@@ -62,13 +58,10 @@ io.sockets.on('connection', function (socket) {
 
   socket.on('signin', function (data) {
     console.log("[Sign In] Received : " + JSON.stringify(data));
-    // decrypt password
     security.decryptClientTeam(data);
-    // encrypt to check DB
-    security.encryptTeam(data);
-    dbmanager.teams.exists(data, function (team) {
-      console.log(team);
-      if (team != null && team.length > 0) // Team exists
+    dbmanager.teams.exists({'name' : data.name}, function (team) {
+        security.decryptTeam(team[0]);
+      if (team != null && team.length == 1 && team[0].password === data.password) // Team exists
         socket.emit('signin', {"status": true, "admin": (team[0].name === "admin")});
       else // Team doesn't exists
         socket.emit('signin', {"status": false});

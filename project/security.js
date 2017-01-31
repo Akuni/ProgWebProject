@@ -8,41 +8,46 @@ var security ={};
 
 function readTextFile(file)
 {
-    console.log("DIR NAME : " + __dirname);
-    console.log("OPENNING : " + file);
-    return fs.readFileSync("/app/project/" + file).toString();
+    return fs.readFileSync(/*"/app/project/" + */__dirname+"/"+file).toString();
 }
 
 var encryptString = function(message){
     var key = readTextFile("dump.txt");
-    console.log("KEY : " + key);
     return CryptoJS.AES.encrypt(message.toString(), key);
 };
 
 var decryptString = function(message){
     var key = readTextFile("dump.txt");
-    console.log("KEY : " + key);
     return CryptoJS.AES.decrypt(message.toString(), key);
 };
 
 var decryptClientString = function(message){
     var key = readTextFile("client_dump.txt");
-    console.log("KEY : " + key);
     return CryptoJS.AES.decrypt(message.toString(), key);
 };
 
 
 
 security.encryptTeam = function(team){
-    team.password = encryptString(team.password);
+    team.password = encryptString(team.password).toString();
 };
 
 security.decryptTeam = function(team){
-    team.password = decryptString(team.password);
+    var code= decryptString(team.password);
+    team.password = hex2a(code);
 };
 
+function hex2a(hexx) {
+    var hex = hexx.toString();//force conversion
+    var str = '';
+    for (var i = 0; i < hex.length; i += 2)
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+    return str;
+}
+
 security.decryptClientTeam = function(team){
-    team.password = decryptClientString(team.password).toString(CryptoJS.enc.utf8);
+    var code = decryptClientString(team.password).toString();
+    team.password = hex2a(code);
 };
 
 module.exports = security;
