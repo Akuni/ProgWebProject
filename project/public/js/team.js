@@ -119,7 +119,7 @@ socket.on('getteams', function(data){
         if (saved_position != null)
             checkEnigmaWithMyPosition(saved_position.coords.latitude , saved_position.coords.longitude);
     } else {
-        socket.emit('getteams', {name: current_team.name});
+        socket.emit('getteams', {name: current_team.name}, true);
     }
 });
 
