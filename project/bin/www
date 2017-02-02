@@ -140,7 +140,7 @@ io.sockets.on('connection', function (socket) {
         if (!(data.ip || 0))
         {
             console.log("data.ip undefined!");
-            socket.emit('getsessionip', {status: false});
+            socket.emit('getsessionip', {status: false, name: "ERROR"});
             return;
         }
 

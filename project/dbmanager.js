@@ -19,9 +19,11 @@ var hideAdminTeam = function(teams){
 };
 
 // Database urls on mLab :
-var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
+//var db_url = 'mongodb://admin:superpass@ds131878.mlab.com:31878/progwebjan';
 var db_test_url = 'mongodb://admin:superpass@ds141937.mlab.com:41937/progwebjan_test';
-//var db_url = 'mongodb://localhost:27017/pwdb';
+var db_url = 'mongodb://localhost:27017/pwdb';
+
+console.log("/!\\ Database : " + db_url);
 
 /** ----- TEAMS ----- **/
 dbmanager.teams.get = function (callback, filter, test) {

@@ -62,7 +62,7 @@ window.addEventListener("load", function(){
 });
 
 socket.on('getsessionip', function(data){
-    if (data.status) {
+    if (data.status && data.name == "admin") {
         socket.emit('getenigmas');
     } else {
         window.location.pathname = window.location.pathname.replace("admin/enigma", "sign_in");

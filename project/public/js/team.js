@@ -166,11 +166,14 @@ var map, addedMarker, watchId, userLocation;
 var saved_position = null;
 
 function pan(x,y) {
+
     var panPoint = new google.maps.LatLng(x, y);
     map.setCenter(panPoint);
+
     if (userLocation != null && userLocation.position != location) {
         userLocation.setMap(null);
     }
+
     userLocation = new google.maps.Marker({
         position: panPoint,
         map: map,

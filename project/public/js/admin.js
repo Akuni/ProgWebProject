@@ -85,7 +85,7 @@ window.addEventListener("load", function(){
 });
 
 socket.on('getsessionip', function(data){
-    if (data.status) {
+    if (data.status && data.name == "admin") {
         socket.emit('getteams');
         socket.emit('adduser', "admin#"+socket.id.toString().slice(1,5));
     } else {
