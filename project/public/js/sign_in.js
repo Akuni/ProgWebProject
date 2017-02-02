@@ -52,6 +52,6 @@ socket.on('signin', function(data){
     }
     else
     {
-        window.alert("ACCESS DENIED !! Invalid password. Are you OK ?!")
+        window.alert("ACCESS DENIED !! Invalid login. Are you OK ?!")
     }
 });

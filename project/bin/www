@@ -60,20 +60,21 @@ io.sockets.on('connection', function (socket) {
     console.log("[Sign In] Received : " + JSON.stringify(data));
     security.decryptClientTeam(data);
     dbmanager.teams.exists({'name' : data.name}, function (team) {
+      console.log(team[0]);
+      if (team.length === 1) {
         security.decryptTeam(team[0]);
-      if (team != null && team.length == 1 && team[0].password === data.password) // Team exists
-        socket.emit('signin', {"status": true, "admin": (team[0].name === "admin")});
-      else // Team doesn't exists
+        if (team[0].password === data.password) // Team exists
+          socket.emit('signin', {"status" : true, "admin" : (team[0].name === "admin")});
+      } else // Team doesn't exists
         socket.emit('signin', {"status": false});
     }, socket.request.headers.behavior);
   });
 
-  socket.on('getteams', function (filter) {
-    console.log(socket.request.headers.behavior);
+  socket.on('getteams', function (filter, withRank) {
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received");
       socket.emit('getteams', data);
-    }, filter, socket.request.headers.behavior);
+    }, filter, socket.request.headers.behavior, (withRank || 0));
   });
 
   socket.on('getenigmas', function () {

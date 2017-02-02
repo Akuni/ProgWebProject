@@ -5,6 +5,7 @@ var answered_enigma = false;
 var g_won = false;
 var current_enigma = null;
 var current_team = null;
+var current_rank = null;
 var map_initialized = false;
 
 var socket = io.connect();
@@ -101,7 +102,7 @@ socket.on('getsessionip', function(data){
         // Loading info
         socket.emit('adduser', data.name + "#" + socket.id.toString().slice(1,5));
         socket.emit('getenigmas');
-        socket.emit('getteams', {name: data.name});
+        socket.emit('getteams', {name: data.name}, true);
     } else {
         window.location.pathname = window.location.pathname.replace("team", "sign_in");
     }
@@ -112,6 +113,7 @@ socket.on('getteams', function(data){
     if (data.length == 1)
     {
         current_team = data[0];
+      console.log(data[0].rank);
         updateInfo();
         initEnigmaMap();
         if (saved_position != null)
@@ -120,6 +122,17 @@ socket.on('getteams', function(data){
         socket.emit('getteams', {name: current_team.name});
     }
 });
+
+function compareRank(a, b) {
+  return a.score - b.score;
+}
+
+var getRank = function(name, data){
+  data.sort(compareRank);
+  for(var i = 0; i < data.length; i++)
+    if(name === data[i].name)
+      return i;
+};
 
 var updateInfo = function()
 {
@@ -137,6 +150,7 @@ var updateInfo = function()
 
     document.querySelector("#pagename").innerHTML = "EnigMap - " + ((current_team.name || 0) ? current_team.name : "Unknown");
     document.querySelector("#tname").innerHTML = (current_team.name || 0) ? "Hello " + current_team.name : "Hi there !";
+    document.querySelector("#rank").innerHTML = (current_team.rank || 0) ? current_team.rank : "L0S3R";
     document.querySelector("#score").innerHTML = (current_team.score || 0) ? current_team.score : "0";
     document.querySelector("#enigma_count").innerHTML = (current_team.list_enigma_done) ? current_team.list_enigma_done.length : "0";
 };

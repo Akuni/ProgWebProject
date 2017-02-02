@@ -26,7 +26,7 @@ var db_url = 'mongodb://localhost:27017/pwdb';
 console.log("/!\\ Database : " + db_url);
 
 /** ----- TEAMS ----- **/
-dbmanager.teams.get = function (callback, filter, test) {
+dbmanager.teams.get = function (callback, filter, test, withRank) {
   /** CORE **/
   // default filter parameter
   filter = typeof filter !== 'undefined' ? filter : {};
@@ -47,7 +47,19 @@ dbmanager.teams.get = function (callback, filter, test) {
             return callback(false);
           } else {
             hideAdminTeam(result);
-            return callback(result);
+            if(withRank)
+              // Number of team with higher score
+              collection.count(({name : {$ne : "admin"}, score : {$gt : result[0].score}}), function (err, count) {
+                if (err) {
+                  console.log('Unable to count higher teams', err);
+                  return callback(false);
+                } else {
+                  result[0].rank = count + 1;
+                  return callback(result);
+                }
+              });
+            else
+             return callback(result);
           }
         });
       }
