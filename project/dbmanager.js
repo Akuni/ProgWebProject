@@ -54,8 +54,15 @@ dbmanager.teams.get = function (callback, filter, test, withRank) {
                   console.log('Unable to count higher teams', err);
                   return callback(false);
                 } else {
-                  result[0].rank = count + 1;
-                  return callback(result);
+                  collection.count(({name : {$ne : "admin"}}), function (err, teamsCount) {
+                    if (err) {
+                      console.log('Unable to count teams', err);
+                      return callback(false);
+                    } else {
+                      result[0].rank = (count + 1) + "/" + teamsCount;
+                      return callback(result);
+                    }
+                  });
                 }
               });
             else
