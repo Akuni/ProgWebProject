@@ -70,6 +70,13 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('getteams', function (filter, withRank) {
+    if(filter || 0)
+      if(filter.name === "admin"){
+        console.log("[Get Teams] Tatata ! Don't check the admin team only :c");
+        socket.emit('getteams', filter);
+        return;
+      }
+
     dbmanager.teams.get(function (data) {
       console.log("[Get Teams] Received");
       socket.emit('getteams', data);

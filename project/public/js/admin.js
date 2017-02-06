@@ -10,6 +10,8 @@ socket.on('connect', function(){
 socket.on('updatechat', function (username, data) {
     var chatMessage = "<b>" + username + ":</b> " + data + "<br>";
     conversation.innerHTML += chatMessage;
+    conversation.scrollTop = conversation.scrollHeight;
+    document.querySelector("#data").focus();
 });
 
 // listener, whenever the server emits 'updateusers', this updates the username list
@@ -75,6 +77,8 @@ window.addEventListener("load", function(){
 
     // sends the chat message to the server
     function sendMessage() {
+        if(data.value === "")
+            return;
         var message = data.value;
         data.value = "";
         // tell server to execute 'sendchat' and send along one parameter
@@ -87,6 +91,9 @@ socket.on('getsessionip', function(data){
         socket.emit('getteams');
         socket.emit('adduser', "admin#"+socket.id.toString().slice(1,5));
     } else {
-        window.location.pathname = window.location.pathname.replace("admin", "sign_in");
+        if(data.status)
+            window.location.pathname = window.location.pathname.replace("admin", "team");
+        else
+            window.location.pathname = window.location.pathname.replace("admin", "sign_in");
     }
 });

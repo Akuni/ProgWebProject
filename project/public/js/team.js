@@ -21,6 +21,8 @@ socket.on('updatechat', function (username, data) {
     var chatMessage = "<b>" + username + ":</b> " + data + "<br>";
     conversation = document.querySelector("#conversation");
     conversation.innerHTML += chatMessage;
+    conversation.scrollTop = conversation.scrollHeight;
+    document.querySelector("#data").focus();
 });
 
 // listener, whenever the server emits 'updateusers', this updates the username list
@@ -63,6 +65,8 @@ window.addEventListener("load", function(){
 
     // sends the chat message to the server
     function sendMessage() {
+        if(data.value === "")
+            return;
         var message = data.value;
         data.value = "";
         // tell server to execute 'sendchat' and send along one parameter
@@ -98,7 +102,12 @@ socket.on('getenigmas', function(data){
 });
 
 socket.on('getsessionip', function(data){
-    if (data.status) {
+    if (data.status){
+        if(data.name === "admin"){
+            window.location.pathname = window.location.pathname.replace("team", "admin");
+            return;
+        }
+
         // Loading info
         socket.emit('adduser', data.name + "#" + socket.id.toString().slice(1,5));
         socket.emit('getenigmas');
@@ -247,7 +256,6 @@ function checkEnigmaWithMyPosition(lat, lng)
 
 function isEnigmaDone(id)
 {
-
     // if(!(current_team || 0))
     //     return false;
 
