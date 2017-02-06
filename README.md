@@ -3,7 +3,7 @@
 ## Summary
 * [Introduction](#introduction)
 * [Server Side](#server-side)
-* [Client Side](#slient-side)
+* [Client Side](#client-side)
 * [Team](#team)
 
 ------------------
