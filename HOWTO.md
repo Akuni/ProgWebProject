@@ -57,7 +57,9 @@ If you encounter problems while launching test, you may need to execute `sudo np
 ------------------
 
 1) In project/dbmanager.js, set the variable db_url to `mongodb://localhost:27017/pwdb`;
+
 2) Create folder '/data/db' in the root directory
+
 3) Launch Mongo : sudo mongod 	(if the needed port being used, kill the mongo process -- `ps -e | grep mongo' and 'kill -9 $pid`)
 
 [Optional] You may want to have an admin account. You can do so by performing a subscription on the project website using the username `admin`. When you will sign in with the `admin` account, you will be redirect to the admin interface.
