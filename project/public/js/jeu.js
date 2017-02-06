@@ -4,7 +4,6 @@ var canvas, ctx, mousePos;
 var allPlayers = {};
 
 function init() {
-  console.log("init");
   canvas = document.querySelector("#myCanvas");
   ctx = canvas.getContext('2d');
   
@@ -16,19 +15,15 @@ function init() {
 }
 
 function traiteMouseDown(evt) {
-  console.log("mousedown");
 }
 
 function traiteMouseMove(evt) {
-  console.log("mousemove");
-  
+
   mousePos = getMousePos(canvas, evt);
-  //console.log(mousePos.x + " " + mousePos.y); 
-  
+
   allPlayers[username].x = mousePos.x;
   allPlayers[username].y = mousePos.y; 
 
-  console.log("On envoie sendPos");
   var pos = {'user':username, 'pos':mousePos}
   socket.emit('sendpos', pos);
 }

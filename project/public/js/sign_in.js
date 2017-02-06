@@ -38,8 +38,6 @@ window.addEventListener("load", function() {
 });
 
 socket.on('signin', function(data){
-    console.log("[Sign In] Received : " + JSON.stringify(data));
-
     if (data.status)
     {
         var redirect = (data.admin)?"admin":"team";

@@ -44,7 +44,6 @@ var onRegisterClick = function()
         return;
     }
 
-    console.log("[Sign Up] Emiting...");
     p1.value = CryptoJS.AES.encrypt(p1.value, julien);
     socket.emit('signup', {"name": tname.value, "email": mail.value, "password": p1.value} );
     p1.value = p2.value;
@@ -82,7 +81,6 @@ window.addEventListener("load", function() {
 });
 
 socket.on('signup', function(data){
-    console.log("[Sign Up] Received : " + JSON.stringify(data));
     if (data.status)
     {
         //socket.handshake.session.SIGNIN_DATA = data;

@@ -109,11 +109,9 @@ socket.on('getsessionip', function(data){
 });
 
 socket.on('getteams', function(data){
-    console.log(JSON.stringify(data));
     if (data.length == 1)
     {
         current_team = data[0];
-      console.log(data[0].rank);
         updateInfo();
         initEnigmaMap();
         if (saved_position != null)
@@ -197,7 +195,6 @@ function pan(x,y) {
 }
 
 function placeMarker(location, isDone, title) {
-    console.log("placeMarker --> " + isDone);
     addedMarker = new google.maps.Marker({
         title: title,
         position: location,
@@ -235,13 +232,10 @@ function checkEnigmaWithMyPosition(lat, lng)
         var diffLat = Math.abs(lat - enigma_list[i].location.latitude);
         var diffLng = Math.abs(lng - enigma_list[i].location.longitude);
 
-        //console.log("Checking {" + lat + " ; " + lng + "} & {"+ enigma_list[i].location.latitude + " ; " + enigma_list[i].location.longitude + "}");
-
         if (diffLat < threshold && diffLng < threshold)
         {
             if (!isEnigmaDone(enigma_list[i]._id))
             {
-                console.log("ENIGMA NOT DONE YET");
                 current_enigma = enigma_list[i];
                 return showEnigma(enigma_list[i]);
             }
@@ -260,7 +254,6 @@ function isEnigmaDone(id)
     if (current_team.list_enigma_done || 0)
     {
         var res = current_team.list_enigma_done.indexOf(id) > -1;
-        console.log("isEnigmaDone(" + id + ") -> " + res);
         return res;
     }
 
