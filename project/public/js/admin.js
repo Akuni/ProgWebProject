@@ -22,8 +22,6 @@ socket.on('updateusers', function(listOfUsers) {
 });
 
 socket.on('getteams', function (data) {
-    console.log(JSON.stringify(data));
-
     var teams_table = document.querySelector("#teams_table");
 
     var content = "";

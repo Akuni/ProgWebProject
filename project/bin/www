@@ -36,7 +36,6 @@ io.sockets.on('connection', function (socket) {
     console.log("[Sign Up] Received : " + JSON.stringify(team));
 
     dbmanager.teams.exists({"name": team.name}, function (exists) {
-      console.log(exists);
 
       if (exists.length > 0) // Already existing team
         socket.emit('signup', {"status": false});
@@ -85,8 +84,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('addenigma', function (enigma) {
-    console.log("[Add Enigma] Received");
-    console.log(JSON.stringify(enigma));
+    console.log("[Add Enigma] Received" + JSON.stringify(enigma));
     dbmanager.enigmas.add(enigma, function () { // Adding enigma
       dbmanager.enigmas.get(function (data) {
         io.sockets.emit('getenigmas', data);
@@ -95,8 +93,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('solveenigma', function(data){
-    console.log("[Solve enigma] Received");
-    console.log(JSON.stringify(data));
+    console.log("[Solve enigma] Received" + JSON.stringify(data));
     dbmanager.teams.solve(data.enigma_id, data.team_name, data.won, function(res) {
       if(res !== false)
         dbmanager.teams.get(function (data) {
@@ -106,9 +103,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('removeteam', function (id) {
-    console.log("[Remove Enigma] Received");
-
-    console.log(id);
+    console.log("[Remove Team] Received id : " + id);
     dbmanager.teams.remove(id, function () { // Adding enigma
       dbmanager.teams.get(function (data) {
         io.sockets.emit('getteams', data);
@@ -117,9 +112,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('removeenigma', function (id) {
-    console.log("[Remove Enigma] Received");
-
-    console.log(id);
+    console.log("[Remove Enigma] Received id : " + id);
     dbmanager.enigmas.remove(id, function () { // Adding enigma
       dbmanager.enigmas.get(function (data) {
         io.sockets.emit('getenigmas', data);
@@ -140,7 +133,7 @@ io.sockets.on('connection', function (socket) {
 
         if (!(data.ip || 0))
         {
-            console.log("data.ip undefined!");
+            console.log("[Get Session] data.ip undefined!");
             socket.emit('getsessionip', {status: false, name: "ERROR"});
             return;
         }
@@ -148,7 +141,7 @@ io.sockets.on('connection', function (socket) {
         res.status = sessions_ip.hasOwnProperty(data.ip); //contains?
         res.name = (res.status) ? sessions_ip[data.ip] : "YOU HACKER!";
 
-        console.log("--> " + JSON.stringify(res));
+        console.log("[Get Session] res --> " + JSON.stringify(res));
         socket.emit('getsessionip', res);
     });
 
@@ -156,7 +149,7 @@ io.sockets.on('connection', function (socket) {
       console.log("[Remove Session] " + JSON.stringify(data));
       if (!(data.ip || 0))
       {
-        console.log("data.ip not found");
+        console.log("[Get Session] data.ip not found");
         return;
       }
 
@@ -165,14 +158,17 @@ io.sockets.on('connection', function (socket) {
     });
 
   socket.on('sendchat', function (data) {
+    console.log("[Send chat] " + JSON.stringify(data));
     io.sockets.emit('updatechat', socket.username, data);
   });
 
   socket.on('sendpos', function (newPos) {
+    console.log("[Send pos] " + JSON.stringify(newPos));
     socket.broadcast.emit('updatepos', socket.username, newPos);
   });
 
   socket.on('adduser', function (username) {
+    console.log("[Add user] " + JSON.stringify(username));
     socket.username = username;
     usernames[username] = username;
     socket.emit('updatechat', 'SERVER', 'you have connected');
@@ -186,6 +182,7 @@ io.sockets.on('connection', function (socket) {
 
 
   socket.on('disconnect', function () {
+    console.log("[Disconnect] " + socket.username);
 
     delete usernames[socket.username];
     io.sockets.emit('updateusers', usernames);
