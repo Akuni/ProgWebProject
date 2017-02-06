@@ -39,7 +39,7 @@ By default, it will use the distant database which is hosted with mLab (https://
 
 ------------------
 
-HOW TO LAUNCH TESTS
+## HOW TO LAUNCH TESTS
 
 ------------------
 
@@ -52,7 +52,7 @@ If you encounter problems while launching test, you may need to execute `sudo np
 
 ------------------
 
-HOW TO USE A LOCAL DATABASE
+## HOW TO USE A LOCAL DATABASE
 
 ------------------
 
