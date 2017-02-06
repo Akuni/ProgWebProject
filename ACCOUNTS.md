@@ -7,7 +7,7 @@
 
 ------------------
 
-ACCOUNTS (distant database)
+ACCOUNTS (distant & local)
 
 ------------------
 
