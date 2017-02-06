@@ -1,10 +1,10 @@
 # ProgWebProject
 ------------------
 ## Summary
-* [Introduction](#Introduction)
-* [Server Side](#Server-side)
-* [Client Side](#Client-side)
-* [Team](#Team)
+* [Introduction](#introduction)
+* [Server Side](#server-side)
+* [Client Side](#slient-side)
+* [Team](#team)
 
 ------------------
 ## Introduction
