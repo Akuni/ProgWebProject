@@ -36,7 +36,9 @@ We tested our application with [Mocha](https://mochajs.org/). This framework all
 
 ## Client Side 
 
-Client description
+The client side exposes all the game's features : account management (creation, authentication), admin's enigma management (add, delete), player's location management, player's enigma detection and solving, global chat, etc.
+- [Bootstrap](http://getbootstrap.com/) : It allows responsive web design, essential for smartphones display.
+
 
 ------------------
 
