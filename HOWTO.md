@@ -8,6 +8,7 @@
 The project is hosted at : https://serversidejan.herokuapp.com/
 The database is also hosted at with mLab (https://mlab.com/).
 
+Git : https://github.com/Akuni/ProgWebProject
 
 ------------------
 
