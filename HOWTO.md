@@ -21,6 +21,23 @@ Git : https://github.com/Akuni/ProgWebProject
 
 ------------------
 
+## HOW TO PREPARE LOCAL DATABASE
+
+------------------
+
+1) In project/dbmanager.js, set the variable db_url to `mongodb://localhost:27017/pwdb`.
+
+2) Create folder '/data/db' in your root directory.
+
+3) Launch Mongo : sudo mongod 	(if the needed port being used, kill the mongo process -- `sudo service mongod stop`).
+
+[Optional] You may want to have an admin account. You can do so by performing a subscription on the project website using the username `admin`. When you will sign in with the `admin` account, you will be redirect to the admin interface.
+
+[Optional] You can import a database using the import_db.sh script. 
+
+
+------------------
+
 ## HOW TO RUN THE PROJECT
 
 ------------------
@@ -30,6 +47,7 @@ Requirements:
 - MongoDB
 - a web browser
 
+Launch the database : sudo mongod
 Run the project by executing : ./run.sh
 
 This script downloads the project dependencies (npm) and launch the server.
@@ -48,21 +66,4 @@ By default, it will use the local database.
 
 The tests uses the distant server hosted with Heroku.
 If you encounter problems while launching test, you may need to execute `sudo npm install` first.
-
-
-------------------
-
-## HOW TO USE A LOCAL DATABASE
-
-------------------
-
-1) In project/dbmanager.js, set the variable db_url to `mongodb://localhost:27017/pwdb`;
-
-2) Create folder '/data/db' in the root directory
-
-3) Launch Mongo : sudo mongod 	(if the needed port being used, kill the mongo process -- `sudo service mongod stop`)
-
-[Optional] You may want to have an admin account. You can do so by performing a subscription on the project website using the username `admin`. When you will sign in with the `admin` account, you will be redirect to the admin interface.
-
-[Optional] You can import a database using the import_db.sh script. 
 
