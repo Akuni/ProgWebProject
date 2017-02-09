@@ -13,11 +13,11 @@ ACCOUNTS (distant & local)
 
 Admin :
 - Pseudo: admin
-- Pswd: admin
+- Pwd: admin
 
 Teams :
 - Pseudo: team1
-- Pswd: team1
+- Pwd: team1
 
 - Pseudo: team2
-- Pswd: team2
+- Pwd: team2
