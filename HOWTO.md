@@ -34,7 +34,7 @@ Run the project by executing : ./run.sh
 
 This script downloads the project dependencies (npm) and launch the server.
 The server will be reachable through `localhost:3001`
-By default, it will use the distant database which is hosted with mLab (https://mlab.com/).
+By default, it will use the local database.
 
 
 ------------------
@@ -60,7 +60,7 @@ If you encounter problems while launching test, you may need to execute `sudo np
 
 2) Create folder '/data/db' in the root directory
 
-3) Launch Mongo : sudo mongod 	(if the needed port being used, kill the mongo process -- `ps -e | grep mongo' and 'kill -9 $pid`)
+3) Launch Mongo : sudo mongod 	(if the needed port being used, kill the mongo process -- `sudo service mongod stop`)
 
 [Optional] You may want to have an admin account. You can do so by performing a subscription on the project website using the username `admin`. When you will sign in with the `admin` account, you will be redirect to the admin interface.
 
