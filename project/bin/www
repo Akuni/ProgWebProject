@@ -241,7 +241,8 @@ io.sockets.on('connection', function (socket) {
     delete listOfPlayers[socket.username];
     io.sockets.emit('updatePlayers', listOfPlayers);
 
-    socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
+    if (socket.username != undefined)
+      socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
   });
 });
 
