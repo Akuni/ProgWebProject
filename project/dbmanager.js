@@ -138,7 +138,7 @@ dbmanager.teams.remove = function (id, callback, test) {
         return callback(false);
       } else {
         var collection = db.collection('teams');
-        collection.removeOne(id, function (err, result) {
+        collection.removeOne({_id : new mongodb.ObjectId(id)}, function (err, result) {
           if (err) {
             console.log('Unable to remove teams', err);
             return callback(false);

@@ -38,11 +38,16 @@ socket.on('getteams', function (data) {
         var count = (data[i].list_enigma_done) ? data[i].list_enigma_done.length : "0";
         content += '<td>' + count + '</td>'
             + '<td>' + data[i].email + '</td>'
+            + '<td><i class="fa fa-times" onclick="onRemove(\'' + data[i]._id + '\');"></i></td>'
             + '</tr>';
     }
 
     teams_table.innerHTML = content;
 });
+
+var onRemove = function(id) {
+    socket.emit('removeteam', id);
+};
 
 var onDisconnect = function()
 {
