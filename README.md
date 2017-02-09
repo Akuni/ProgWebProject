@@ -20,6 +20,26 @@ A group of player can sign up as a team and access a map on which are displayed 
 
 ------------------
 
+## Whodidwat ? WAT ?
+![alt tag](http://6336-presscdn-26-82.pagely.netdna-cdn.com/wp-content/uploads/2013/12/WAT-duck.jpg)
+### Julien
+- Server and client (NodeJS + Express)
+- Server - db communications (Socket.io)
+- Sessions (Express-session)
+- Persistence (MongoDB)
+
+### Antoine
+- Server and client (NodeJS + Express)
+- Client - server communications (Socket.io)
+- Views (Bootstrap + Jade)
+
+### Nicolas
+- Hosting (Heroku + mlab)
+- Geolocation (Google Map)
+- Security (Crypto-JS)
+- Unit testing (Mocha)
+
+------------------
 ## Server Side
 
 The server side ensures the link between the player and the database, and also manages data, encrypt passwords, and so on... It uses several different technologies : [NodeJS](https://nodejs.org/en/) is the most important one. We use the NodeJS engine to run our server. On top of that we also use several packages like :
