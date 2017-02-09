@@ -2,11 +2,16 @@ var conversation, data, datasend, users;
 var my_ip;
 var socket = io.connect();
 
-// on connection to server, ask for user's name with an anonymous callback
+/*
+ * When we connect to the server
+ */
 socket.on('connect', function(){
+    // Do nothing
 });
 
-// listener, whenever the server emits 'updatechat', this updates the chat body
+/*
+ * When we receive a message in chat
+ */
 socket.on('updatechat', function (username, data) {
     var chatMessage = "<b>" + username + ":</b> " + data + "<br>";
     conversation.innerHTML += chatMessage;
@@ -14,7 +19,9 @@ socket.on('updatechat', function (username, data) {
     document.querySelector("#data").focus();
 });
 
-// listener, whenever the server emits 'updateusers', this updates the username list
+/*
+ * When a user connects the chat
+ */
 socket.on('updateusers', function(listOfUsers) {
     users.innerHTML = "";
     for(var name in listOfUsers) {
@@ -23,6 +30,9 @@ socket.on('updateusers', function(listOfUsers) {
     }
 });
 
+/*
+ * When we receive our team info or teams list
+ */
 socket.on('getteams', function (data) {
     var teams_table = document.querySelector("#teams_table");
 
@@ -45,16 +55,24 @@ socket.on('getteams', function (data) {
     teams_table.innerHTML = content;
 });
 
+/*
+ * Send remove team request according to an id
+ */
 var onRemove = function(id) {
     socket.emit('removeteam', id);
 };
 
+/*
+ * When we disconnect from admin interface
+ */
 var onDisconnect = function()
 {
     socket.emit('removesessionip', {ip: my_ip});
 };
 
-// on load of page
+/*
+ * On page load
+ */
 window.addEventListener("load", function(){
     document.querySelector("#disconnect").onclick = onDisconnect;
 
@@ -91,6 +109,9 @@ window.addEventListener("load", function(){
     }
 });
 
+/*
+ * Redirect if no session created
+ */
 socket.on('getsessionip', function(data){
     if (data.status && data.name == "admin") {
         socket.emit('getteams');

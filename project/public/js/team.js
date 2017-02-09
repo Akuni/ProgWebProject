@@ -12,11 +12,15 @@ var socket = io.connect();
 
 var threshold = 0.0001;
 
-// on connection to server, ask for user's name with an anonymous callback
+/*
+ * When we connect the server
+ */
 socket.on('connect', function(){}
 );
 
-// listener, whenever the server emits 'updatechat', this updates the chat body
+/*
+ * When we receive a message in chat
+ */
 socket.on('updatechat', function (username, data) {
     var chatMessage = "<b>" + username + ":</b> " + data + "<br>";
     conversation = document.querySelector("#conversation");
@@ -25,7 +29,9 @@ socket.on('updatechat', function (username, data) {
     document.querySelector("#data").focus();
 });
 
-// listener, whenever the server emits 'updateusers', this updates the username list
+/*
+ * When a user connects the chat
+ */
 socket.on('updateusers', function(listOfUsers) {
     users = document.querySelector("#users");
     users.innerHTML = "";
@@ -36,7 +42,9 @@ socket.on('updateusers', function(listOfUsers) {
 });
 
 
-// on load of page
+/*
+ * When we receive our team info or teams list
+ */
 window.addEventListener("load", function(){
     document.querySelector("#submitEnigma").onclick = checkAnswer;
     document.querySelector("#disconnect").onclick = onDisconnect;
@@ -74,11 +82,17 @@ window.addEventListener("load", function(){
     }
 });
 
+/*
+ * When we disconnect from admin interface
+ */
 var onDisconnect = function()
 {
     socket.emit('removesessionip', {ip: my_ip});
 };
 
+/*
+ * Put enigmas on map according to received enigmas list
+ */
 function initEnigmaMap()
 {
     if (map_initialized || current_team == null || enigma_list == null)
@@ -95,12 +109,18 @@ function initEnigmaMap()
     map_initialized = true;
 }
 
+/*
+ * When we receive enigma list
+ */
 socket.on('getenigmas', function(data){
     initEnigmaMap();
     enigma_list = data;
     checkEnigmaWithMyPosition(userLocation.position.lat(), userLocation.position.lng());
 });
 
+/*
+ * Redirect if no session created
+ */
 socket.on('getsessionip', function(data){
     if (data.status){
         if(data.name === "admin"){
@@ -117,6 +137,9 @@ socket.on('getsessionip', function(data){
     }
 });
 
+/*
+ * When we receive our team info or teams list
+ */
 socket.on('getteams', function(data){
     if (data.length == 1)
     {
@@ -130,17 +153,9 @@ socket.on('getteams', function(data){
     }
 });
 
-function compareRank(a, b) {
-  return a.score - b.score;
-}
-
-var getRank = function(name, data){
-  data.sort(compareRank);
-  for(var i = 0; i < data.length; i++)
-    if(name === data[i].name)
-      return i;
-};
-
+/*
+ * Refresh personal information according to received info
+ */
 var updateInfo = function()
 {
     if(answered_enigma){
@@ -162,6 +177,9 @@ var updateInfo = function()
     document.querySelector("#enigma_count").innerHTML = ((current_team.list_enigma_done) ? current_team.list_enigma_done.length : "0") + "/" + enigma_list.length;
 };
 
+/*
+ * Verify the submitted answer correctness
+ */
 var checkAnswer = function()
 {
     var answer = document.querySelector('input[name="answer"]:checked').value;
@@ -183,54 +201,9 @@ var checkAnswer = function()
     g_won = won;
 };
 
-var map, addedMarker, watchId, userLocation;
-var saved_position = null;
-
-function pan(x,y) {
-
-    var panPoint = new google.maps.LatLng(x, y);
-    map.setCenter(panPoint);
-
-    if (userLocation != null && userLocation.position != location) {
-        userLocation.setMap(null);
-    }
-
-    userLocation = new google.maps.Marker({
-        position: panPoint,
-        map: map,
-        title: "You are here",
-        icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
-    });
-}
-
-function placeMarker(location, isDone, title) {
-    addedMarker = new google.maps.Marker({
-        title: title,
-        position: location,
-        map: map,
-        icon : (isDone)?
-            'https://www.materialui.co/materialIcons/action/done_black_32x32.png'
-            :'https://maxcdn.icons8.com/windows8/PNG/26/Messaging/star-26.png'
-    });
-}
-
-function getLocation() {
-    if (navigator.geolocation) {
-        watchId = navigator.geolocation.watchPosition(showPosition, errorCallback, {
-            enableHighAccuracy: true,
-            maximumAge:5
-        });
-    } else {
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-function showPosition(position) {
-    saved_position = position;
-    pan(position.coords.latitude , position.coords.longitude);
-    checkEnigmaWithMyPosition(position.coords.latitude , position.coords.longitude);
-}
-
+/*
+ * Show enigma according to player location
+ */
 function checkEnigmaWithMyPosition(lat, lng)
 {
     if (enigma_list == null || current_team == null)
@@ -254,6 +227,9 @@ function checkEnigmaWithMyPosition(lat, lng)
     return hideEnigma();
 }
 
+/*
+ * Return true if player's team has already done the enigma with id {id}
+ */
 function isEnigmaDone(id)
 {
     // if(!(current_team || 0))
@@ -268,6 +244,9 @@ function isEnigmaDone(id)
     return false;
 }
 
+/*
+ * Shuffle an array
+ */
 function shuffle(a) {
     var j, x, i;
     for (i = a.length; i; i--) {
@@ -278,10 +257,16 @@ function shuffle(a) {
     }
 }
 
+/*
+ * Hide enigma section
+ */
 function hideEnigma(){
     document.querySelector("#enigma").classList.add("collapse");
 }
 
+/*
+ * Load and show enigma
+ */
 function showEnigma(enigma){
     var enigma_section = document.querySelector("#enigma");
     var question = document.querySelector("#question");
@@ -320,6 +305,70 @@ function showEnigma(enigma){
     scroll(0,0);
 }
 
+/** MAP MANAGEMENT **/
+var map, addedMarker, watchId, userLocation;
+var saved_position = null;
+
+/*
+ * Put a marker on current admin location
+ */
+function pan(x,y) {
+
+    var panPoint = new google.maps.LatLng(x, y);
+    map.setCenter(panPoint);
+
+    if (userLocation != null && userLocation.position != location) {
+        userLocation.setMap(null);
+    }
+
+    userLocation = new google.maps.Marker({
+        position: panPoint,
+        map: map,
+        title: "You are here",
+        icon : 'http://icons.iconarchive.com/icons/icons8/windows-8/32/Sports-Walking-icon.png'
+    });
+}
+
+/*
+ * Place a marker on the map
+ */
+function placeMarker(location, isDone, title) {
+    addedMarker = new google.maps.Marker({
+        title: title,
+        position: location,
+        map: map,
+        icon : (isDone)?
+            'https://www.materialui.co/materialIcons/action/done_black_32x32.png'
+            :'https://maxcdn.icons8.com/windows8/PNG/26/Messaging/star-26.png'
+    });
+}
+
+/*
+ * Retrieve the current admin location
+ */
+function getLocation() {
+    if (navigator.geolocation) {
+        watchId = navigator.geolocation.watchPosition(showPosition, errorCallback, {
+            enableHighAccuracy: true,
+            maximumAge:5
+        });
+    } else {
+        x.innerHTML = "Geolocation is not supported by this browser.";
+    }
+}
+
+/*
+ * Function called everytime the admin moves
+ */
+function showPosition(position) {
+    saved_position = position;
+    pan(position.coords.latitude , position.coords.longitude);
+    checkEnigmaWithMyPosition(position.coords.latitude , position.coords.longitude);
+}
+
+/*
+ * Get message for Google Maps errors
+ */
 function errorCallback(error){
     var msg;
     switch (error.code) {

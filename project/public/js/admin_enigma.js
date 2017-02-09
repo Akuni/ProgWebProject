@@ -2,9 +2,16 @@ var latitude, longitude, question, vr, ir1, ir2, ir3, award;
 var my_ip;
 var socket = io.connect();
 
-// on connection to server, ask for user's name with an anonymous callback
-socket.on('connect', function(){});
+/*
+ * When we connect to the server
+ */
+socket.on('connect', function(){
+    // Do nothing
+});
 
+/*
+ * When we receive enigma list
+ */
 socket.on('getenigmas', function (data) {
     var teams_table = document.querySelector("#enigmas_list_content");
 
@@ -37,16 +44,24 @@ socket.on('getenigmas', function (data) {
     teams_table.innerHTML = content;
 });
 
+/*
+ * Send remove enigma request according to an id
+ */
 var onRemove = function(id) {
     socket.emit('removeenigma', id);
 };
 
+/*
+ * When we disconnect from admin interface
+ */
 var onDisconnect = function()
 {
     socket.emit('removesessionip', {ip: my_ip});
 };
 
-// on load of page
+/*
+ * On page loading
+ */
 window.addEventListener("load", function(){
     document.querySelector("#disconnect").onclick = onDisconnect;
     document.querySelector("#register").onclick = sendEnigma;
@@ -61,6 +76,9 @@ window.addEventListener("load", function(){
     });
 });
 
+/*
+ * Redirect if no session created
+ */
 socket.on('getsessionip', function(data){
     if (data.status && data.name == "admin") {
         socket.emit('getenigmas');
@@ -69,6 +87,9 @@ socket.on('getsessionip', function(data){
     }
 });
 
+/*
+ * Send add enigma request, checking each values
+ */
 var sendEnigma = function(){
     latitude = document.querySelector("#latitude");
     longitude = document.querySelector("#longitude");
@@ -146,6 +167,9 @@ var sendEnigma = function(){
     window.location.reload();
 };
 
+/*
+ * Reset form inputs styles
+ */
 var clearStatusCorrectnessStyle = function()
 {
     setStatusCorrectnessStyle(latitude, false);
@@ -158,6 +182,9 @@ var clearStatusCorrectnessStyle = function()
     setStatusCorrectnessStyle(award, false);
 };
 
+/*
+ * Set the style of elem with according to isWrong
+ */
 var setStatusCorrectnessStyle = function(elem, isWrong){
 
     if (isWrong)
@@ -166,8 +193,12 @@ var setStatusCorrectnessStyle = function(elem, isWrong){
         elem.classList.remove("my-sign-up-wrong");
 };
 
+/** MAP MANAGEMENT **/
 var map, addedMarker, watchId, userLocation;
 
+/*
+ * Put a marker on current admin location
+ */
 function pan(x,y) {
     var panPoint = new google.maps.LatLng(x, y);
     map.setCenter(panPoint);
@@ -182,6 +213,9 @@ function pan(x,y) {
     });
 }
 
+/*
+ * Place a marker on the map for new enigma
+ */
 function placeMarker(location) {
     if (addedMarker != null && addedMarker.position != location)
         addedMarker.setMap(null);
@@ -197,6 +231,9 @@ function placeMarker(location) {
     });
 }
 
+/*
+ * Place a marker on the map for already placed enigma
+ */
 function placeDoneMarker(location, title) {
     new google.maps.Marker({
         position: location,
@@ -206,8 +243,9 @@ function placeDoneMarker(location, title) {
     });
 }
 
-
-
+/*
+ * Retrieve the current admin location
+ */
 function getLocation() {
     if (navigator.geolocation) {
         watchId = navigator.geolocation.watchPosition(showPosition, errorCallback, {
@@ -219,6 +257,9 @@ function getLocation() {
     }
 }
 
+/*
+ * Get message for Google Maps errors
+ */
 function errorCallback(error){
     var msg;
     switch (error.code) {
@@ -239,12 +280,10 @@ function errorCallback(error){
     window.alert(msg);
 }
 
+/*
+ * Function called everytime the admin moves
+ */
 function showPosition(position) {
-    // var latlon = position.coords.latitude + "," + position.coords.longitude;
-
-    // var img_url = "https://maps.googleapis.com/maps/api/staticmap?center="+latlon+"&zoom=14&size=400x300&sensor=false";
-    //
     pan(position.coords.latitude , position.coords.longitude);
-    // document.getElementById('message').innerHTML = "Lat:" + position.coords.latitude + ", long:" +position.coords.longitude;
 }
 

@@ -5,6 +5,9 @@ var socket = io.connect();
 
 var julien = "CL13NT_K3Y";
 
+/*
+ * Send authentication request
+ */
 var onConnectionClick = function()
 {
     tname = document.getElementById("name");
@@ -22,7 +25,9 @@ var onConnectionClick = function()
 };
 
 
-// On page load
+/*
+ * On page loading
+ */
 window.addEventListener("load", function() {
 
     socket.emit('getteams');
@@ -37,6 +42,9 @@ window.addEventListener("load", function() {
     });
 });
 
+/*
+ * When we receive an authentication response
+ */
 socket.on('signin', function(data){
     if (data.status)
     {

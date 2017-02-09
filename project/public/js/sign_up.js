@@ -4,6 +4,9 @@ var julien = "CL13NT_K3Y";
 
 var socket = io.connect();
 
+/*
+ * Send a sign up request, checking each value
+ */
 var onRegisterClick = function()
 {
     tname = document.getElementById("name");
@@ -59,6 +62,9 @@ var clearStatusCorrectnessStyle = function()
     setStatusCorrectnessStyle(p4, false);
 };
 
+/*
+ * Set the style of elem with according to isWrong
+ */
 var setStatusCorrectnessStyle = function(elem, isWrong){
 
     if (isWrong)
@@ -80,10 +86,12 @@ window.addEventListener("load", function() {
     });
 });
 
+/*
+ * When we receive account creation response
+ */
 socket.on('signup', function(data){
     if (data.status)
     {
-        //socket.handshake.session.SIGNIN_DATA = data;
         window.location.pathname = window.location.pathname.replace("sign_up", "sign_in");
     }
     else
