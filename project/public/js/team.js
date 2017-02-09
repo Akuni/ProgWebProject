@@ -26,7 +26,6 @@ socket.on('updatechat', function (username, data) {
     conversation = document.querySelector("#conversation");
     conversation.innerHTML += chatMessage;
     conversation.scrollTop = conversation.scrollHeight;
-    document.querySelector("#data").focus();
 });
 
 /*
@@ -79,6 +78,7 @@ window.addEventListener("load", function(){
         data.value = "";
         // tell server to execute 'sendchat' and send along one parameter
         socket.emit('sendchat', message);
+        document.querySelector("#data").focus();
     }
 });
 
@@ -216,10 +216,18 @@ function checkEnigmaWithMyPosition(lat, lng)
 
         if (diffLat < threshold && diffLng < threshold)
         {
-            if (!isEnigmaDone(enigma_list[i]._id) && (current_enigma._id != enigma_list[i]._id))
+            if (!isEnigmaDone(enigma_list[i]._id))
             {
-                current_enigma = enigma_list[i];
-                return showEnigma(enigma_list[i]);
+                if (current_enigma != null){
+                    if (current_enigma._id != enigma_list[i]._id)
+                    {
+                        current_enigma = enigma_list[i];
+                        return showEnigma(enigma_list[i]);
+                    }
+                } else {
+                    current_enigma = enigma_list[i];
+                    return showEnigma(enigma_list[i]);
+                }
             }
         }
     }
