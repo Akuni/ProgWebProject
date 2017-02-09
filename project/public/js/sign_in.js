@@ -33,6 +33,7 @@ window.addEventListener("load", function() {
     socket.emit('getteams');
 
     document.querySelector("#connection").onclick = onConnectionClick;
+    $("#name").focus();
 
     document.addEventListener("keypress", function (evt) {
         // if pressed ENTER, then send

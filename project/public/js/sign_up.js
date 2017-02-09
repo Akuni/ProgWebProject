@@ -77,6 +77,7 @@ var setStatusCorrectnessStyle = function(elem, isWrong){
 window.addEventListener("load", function() {
 
     document.querySelector("#register").onclick = onRegisterClick;
+    $("#name").focus();
 
     document.addEventListener("keypress", function (evt) {
         // if pressed ENTER, then send
