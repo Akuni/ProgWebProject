@@ -216,7 +216,7 @@ function checkEnigmaWithMyPosition(lat, lng)
 
         if (diffLat < threshold && diffLng < threshold)
         {
-            if (!isEnigmaDone(enigma_list[i]._id))
+            if (!isEnigmaDone(enigma_list[i]._id) && (current_enigma._id != enigma_list[i]._id))
             {
                 current_enigma = enigma_list[i];
                 return showEnigma(enigma_list[i]);
@@ -301,8 +301,6 @@ function showEnigma(enigma){
     r4.value = irs[3];
 
     enigma_section.classList.remove("collapse");
-
-    scroll(0,0);
 }
 
 /** MAP MANAGEMENT **/
