@@ -70,62 +70,17 @@ html(lang='en')
             hr.star-primary
             .text-justify
               p
-                | Des équipes se promènent dans une zone géographique avec leurs smartphones et font tourner l’appli des “joueurs”. Elles doivent atteindre des lieux pour déclencher des énigmes, répondre aux questions ou remplir les conditions demandées, puis on leur donne une nouvelle destination qu’ils doivent atteindre, etc.
+                | Teams are walking in a geographical area with their smartphones and are running EnigMap. They must reach a specific place to trigger an enigma, answer questions and earn points.
               p
-                | Les énigmes démarrent donc lorsqu’on entre dans une zone (cercle sur la carte). Les smartphones qui ont lancé l’application du jeu déclenchent alors des notifications et un nouvel écran affiche les étapes de l’énigme (la première étape active, les autres en grisé ou bien n’apparaissent pas encore). Par exemple, on affiche un fragment mystérieux de photo (ex: un bout de plaque d’un immeuble, un pied de statue, un panneau, etc.) et l’équipe doit localiser l’endroit et indiquer dans un champ de texte de quoi il s’agit, ou mieux, doit envoyer la photo de l’objet complet. Autre possibilité, une question avec plusieurs réponses possibles (nombre d’essais limités), il faut observer l’environnement pour répondre (de quelle couleur est le vieux sage qui a créé Sophia-Antipolis ?, la réponse est bleue car le créateur de Sophia Antipolis est le sénateur Lafitte, et vous êtes en ce moment sur la place Sophie Laffitte. Sur la place quelque part, figure un buste du Sénateur que des étudiants en Bizutage ont peint en bleu à ce moment là), etc…
+                | The enigmas start when entering an area (star on the map). A new screen displays the enigma. For example, a mysterious fragment of a photo is displayed (eg, a piece of plaque in a building, a statue foot, a panel, etc.) and the team must locate the place and indicate in a text field of What it is, or better, must send the picture of the complete object. Another possibility, a question with several possible answers (number of limited essays), we must observe the environment to answer (of what color is the old sage who created Sophia-Antipolis ?, the answer is blue because the creator of Sophia Antipolis is Senator Lafitte, and you are at the moment on Place Sophie Laffitte. On the square somewhere, there is a Senator's bust which students in Hazuerage painted blue at that time.
               p
-                | L’application mobile permet aussi de chatter librement avec les “maîtres du jeu”, voir de les appeler au tel (le No est affiché) en cas de détresse (on comprend vraiment rien). On pourra aussi prévoir de l’affichage d’indice mais ça enlèvera des points à la fin, lors du calcul du score final. Cet aspect est optionnel, à vous de voir comment vous pensez qu’un jeu de piste doit se dérouler pour que cela soit fun ! Si vous avez d’autres idées, on en discutera. Lors du premier lancement de l’appli mobile on doit choisir son équipe dans un menu (Nice, Toulouse, etc.) ou bien on le tape librement ?
-    // <section class="success" id="canvas">
-    // <div class="container">
-    // <div class="row">
-    // <div class="col-lg-12 text-center">
-    // <h2>Canvas</h2>
-    // <hr class="star-light">
-    // </div>
-    // </div>
-    // <div class="row">
-    // <div class="col-sm-5 portfolio-item">
-    // <img src="img/portfolio/game.png" class="img-responsive img-thumbnail" alt="">
-    // </div>
-    // <div class="col-sm-6 text-center">
-    // <canvas width = 300 height = 300 id="myCanvas"></canvas>
-    // </div>
-    // </div>
-    // </div>
-    // </section>
-    // <section id="chat">
-    // <div class="container">
-    // <div class="row">
-    // <div class="col-lg-12 text-center">
-    // <h2>Chat</h2>
-    // <hr class="star-primary">
-    // </div>
-    // </div>
-    // <div class="row">
-    // <div class="col-sm-7">
-    // <div class="my-chat-users">
-    // <b>USERS</b>
-    // <div id="users"></div>
-    // </div>
-    // <div class="my-chat-content">
-    // <div id="conversation"></div>
-    // <input id="data" class="my-chat-content-data"/>
-    // <input type="button" id="datasend" value="send" />
-    // </div>
-    // </div>
-    // <div class="col-sm-5 portfolio-item">
-    // <img src="img/portfolio/cabin.png" class="img-responsive img-circle" alt="">
-    // </div>
-    // </div>
-    // </div>
-    // </section>
+                | The mobile application also allows to chat freely with the "masters of the game", in case of distress (one understands really nothing). We can also provide index display but it will remove points at the end, when calculating the final score. This aspect is optional, it is up to you to see how you think that a game of track has to unfold to make it fun! If you have any other ideas, we will discuss them. The first time you launch the mobile app you have to choose your team in a menu (Nice, Toulouse, etc.) or you can type it freely?
+
     // Scroll to Top Button (Only visible on small and extra-small screen sizes)
     .scroll-top.page-scroll.hidden-sm.hidden-xs.hidden-lg.hidden-md
       a.btn.btn-primary(href='#page-top')
         i.fa.fa-chevron-up
     script(src='/socket.io/socket.io.js')
-    // <script src="js/jeu.js"></script>
-    // <script src="js/simpleChat.js"></script>
     // jQuery
     script(src='/vendor/jquery/jquery.min.js')
     // Bootstrap Core JavaScript
