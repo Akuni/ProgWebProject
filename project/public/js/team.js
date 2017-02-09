@@ -214,17 +214,21 @@ function checkEnigmaWithMyPosition(lat, lng)
         var diffLat = Math.abs(lat - enigma_list[i].location.latitude);
         var diffLng = Math.abs(lng - enigma_list[i].location.longitude);
 
+        // close enough
         if (diffLat < threshold && diffLng < threshold)
         {
+            // enigma not done
             if (!isEnigmaDone(enigma_list[i]._id))
             {
+                // engima already bind
                 if (current_enigma != null){
+                    // different enigma
                     if (current_enigma._id != enigma_list[i]._id)
                     {
                         current_enigma = enigma_list[i];
                         return showEnigma(enigma_list[i]);
-                    }
-                } else {
+                    } else return;
+                } else { // first time coming there
                     current_enigma = enigma_list[i];
                     return showEnigma(enigma_list[i]);
                 }
